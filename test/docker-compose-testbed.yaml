@@ -1,0 +1,55 @@
+version: '3'
+
+networks:
+  sbc-inbound:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.38.0.0/16
+
+services:
+  sbc:
+    image: drachtio/drachtio-server:latest
+    command: drachtio --contact "sip:*;transport=udp" --loglevel debug --sofia-loglevel 9
+    ports:
+      - "9060:9022/tcp"
+    networks:
+      sbc-inbound:
+        ipv4_address: 172.38.0.10
+
+  appserver:
+    image: drachtio/sipp:latest
+    command: sipp -sf /tmp/uas.xml
+    volumes:
+      - ./scenarios:/tmp
+    tty: true
+    networks:
+      sbc-inbound:
+        ipv4_address: 172.38.0.11
+
+  auth-server:
+    image: jambonz/customer-auth-server:latest
+    command: npm start
+    ports:
+      - "4000:4000/tcp"
+    env_file: docker.env
+    networks:
+      sbc-inbound:
+        ipv4_address: 172.38.0.12
+
+  redis:
+    image: redis:5-alpine
+    ports:
+      - "16379:6379/tcp"
+    networks:
+      sbc-inbound:
+        ipv4_address: 172.38.0.13
+
+  rtpengine:
+    image: drachtio/rtpengine:latest
+    ports:
+      - "12222:22222/udp"
+    networks:
+      sbc-inbound:
+        ipv4_address: 172.38.0.14
+

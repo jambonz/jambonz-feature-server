@@ -1,0 +1,5 @@
+{
+  "sip:decline": {
+    "status": "hello"
+  }
+}

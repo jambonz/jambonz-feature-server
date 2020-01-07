@@ -1,0 +1,12 @@
+{
+  "dial": {
+    "action": "http://example.com",
+    "callerId": "+1312888899",
+    "target": [
+      {
+        "type": "phone",
+        "number": "+15083084809"
+      }
+    ]
+  }
+}

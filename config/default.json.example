@@ -1,0 +1,15 @@
+{
+  "drachtio": {
+    "port": 3010,
+    "secret": "cymru"
+  },
+  "logging": {
+    "level": "info"
+  },
+  "mysql": {
+    "host": "localhost",
+    "user": "jambones",
+    "password": "jambones",
+    "database": "jambones"
+  }
+}

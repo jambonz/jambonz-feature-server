@@ -1,0 +1,48 @@
+{
+  "name": "jambones-feature-server",
+  "version": "0.0.1",
+  "main": "app.js",
+  "engines": {
+    "node": ">= 10.16.0"
+  },
+  "keywords": [
+    "sip",
+    "drachtio"
+  ],
+  "author": "Dave Horton",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jambonz/jambones-feature-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jambonz/jambones-feature-server/issues"
+  },
+  "scripts": {
+    "start": "node app",
+    "test": "NODE_ENV=test node test/ | ./node_modules/.bin/tap-spec",
+    "coverage": "./node_modules/.bin/nyc --reporter html --report-dir ./coverage npm run test",
+    "jslint": "eslint app.js lib"
+  },
+  "dependencies": {
+    "config": "^3.2.4",
+    "debug": "^4.1.1",
+    "drachtio-fn-b2b-sugar": "0.0.12",
+    "drachtio-srf": "^4.4.27",
+    "jambonz-db-helpers": "^0.1.6",
+    "pino": "^5.14.0",
+    "request": "^2.88.0",
+    "request-debug": "^0.2.0"
+  },
+  "devDependencies": {
+    "blue-tape": "^1.0.0",
+    "clear-module": "^4.0.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "nyc": "^14.1.1",
+    "tap": "^14.10.2",
+    "tap-dot": "^2.0.0",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.11.0"
+  }
+}

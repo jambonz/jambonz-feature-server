@@ -1,0 +1,20 @@
+{
+  "dial": {
+    "action": "http://example.com",
+    "callerId": "+1312888899",
+    "target": [
+      {
+        "type": "phone",
+        "number": "+15083084809"
+      }
+    ],
+    "transcribe": {
+      "action": "http://example.com/transcribe",
+      "language" : "en-US",
+      "source" : "both",
+      "interim": true,
+      "vendor": "google",
+      "jsonKey": "--json service key--" 
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "sip:decline": {
+    "properties": {
+      "status": "number",
+      "reason": "string",
+      "headers": "object"
+    },
+    "required": [
+      "status"
+    ]
+  },
+  "dial": {
+    "properties": {
+      "action": "string",
+      "answerOnBridge": "boolean",
+      "callerId": "string",
+      "dialMusic": "string",
+      "method": {
+        "type": "string",
+        "enum": ["GET", "POST"]
+      },
+      "target": ["#target"],
+      "timeLimit": "number",
+      "timeout": "number",
+      "headers": "object",
+      "strategy": {
+        "type": "string",
+        "enum": ["hunt", "simring"]
+      },
+      "transcribe": "#transcribe",
+      "listen": "#listen"
+    },
+    "required": [
+      "target"
+    ]
+  },
+  "listen": {
+    "properties": {
+      "metadata": "object",
+      "mixType": {
+        "type": "string",
+        "enum": ["mono", "stereo", "mixed"]
+      },
+      "passDtmf": "boolean",
+      "sampleRate": "number",
+      "source": {
+        "type": "string",
+        "enum": ["parent", "child", "both"]
+      },
+      "wsUrl": "string"
+    },
+    "required": [
+      "wsUrl",
+      "sampleRate"
+    ]
+  },
+  "transcribe": {
+    "properties": {
+      "action": "string",
+      "interim": "boolean",
+      "jsonKey": "string",
+      "language": "string",
+      "source": "string",
+      "vendor": "string"
+    },
+    "required": [
+      "action",
+      "jsonKey",
+      "language"
+    ]
+  },
+  "target": {
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": ["phone", "sip", "user"]
+      },
+      "number": "string",
+      "uri": "string",
+      "auth": "#auth",
+      "name": "string"
+    },
+    "required": [
+      "type"
+    ]
+  },
+  "auth": {
+    "properties": {
+      "user": "string",
+      "password": "string"
+    },
+    "required": [
+      "user",
+      "password"
+    ]
+  }
+}

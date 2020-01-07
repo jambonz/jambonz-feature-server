@@ -1,0 +1,9 @@
+{
+  "sip:decline": {
+    "status": 480,
+    "reason": "Gone Fishin",
+    "headers": {
+      "Retry-After": 300
+    }  
+  }
+}

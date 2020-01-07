@@ -1,0 +1,16 @@
+{
+  "drachtio": {
+    "host": "127.0.0.1",
+    "port": 9060,
+    "secret": "cymru"
+  },
+  "logging": {
+    "level": "debug"
+  },
+  "mysql": {
+    "host": "localhost",
+    "user": "jambones_test",
+    "password": "jambones_test",
+    "database": "jambones_test"
+  }
+}

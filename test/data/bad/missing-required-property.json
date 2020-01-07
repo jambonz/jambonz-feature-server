@@ -1,0 +1,15 @@
+{
+  "dial": {
+    "action": "http://example.com",
+    "callerId": "+1312888899",
+    "target": [
+      {
+        "type": "sip",
+        "number": "sip:1617333456@sip.trunk1.com",
+        "auth": {
+          "password": "bar"
+        }
+      }
+    ]
+  }
+}

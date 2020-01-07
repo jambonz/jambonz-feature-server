@@ -1,0 +1,6 @@
+{
+  "sip:decline": {
+    "status": 480,
+    "foo": "bar"
+  }
+}

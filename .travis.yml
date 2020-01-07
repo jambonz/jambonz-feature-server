@@ -1,0 +1,9 @@
+sudo: required
+language: node_js
+node_js:
+  - "lts/*"
+services:
+  - docker
+  - mysql
+script:
+  - npm test
