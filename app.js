@@ -1,5 +1,7 @@
 const Srf = require('drachtio-srf');
 const srf = new Srf();
+const Mrf = require('drachtio-fsmrf');
+srf.locals.mrf = new Mrf(srf);
 const config = require('config');
 const logger = require('pino')(config.get('logging'));
 const {lookupAppByPhoneNumber} = require('jambonz-db-helpers')(config.get('mysql'), logger);
@@ -10,6 +12,7 @@ const {
   retrieveApplication,
   invokeWebCallback
 } = require('./lib/middleware')(srf, logger);
+
 const CallSession = require('./lib/call-session');
 
 // disable logging in test mode
