@@ -9,26 +9,63 @@
       "status"
     ]
   },
+  "hangup": {
+    "properties": {
+      "headers": "object"
+    },
+    "required": [
+    ]
+  },
+  "say": {
+    "properties": {
+      "text": "string",
+      "loop": "number",
+      "synthesizer": "#synthesizer"
+    },
+    "required": [
+      "text",
+      "synthesizer"
+    ]
+  },
+  "gather": {
+    "properties": {
+      "action": "string",
+      "finishOnKey": "string",
+      "hints": "array",
+      "input": "array",
+      "language": "string",
+      "numDigits": "number",
+      "partialResultCallback": "string",
+      "profanityFilter": "boolean",
+      "speechTimeout": "number",
+      "timeout": "number",
+      "say": "#say"
+    },
+    "required": [
+      "action"
+    ]
+  },
   "dial": {
     "properties": {
       "action": "string",
       "answerOnBridge": "boolean",
       "callerId": "string",
       "dialMusic": "string",
+      "headers": "object",
+      "listen": "#listen",
       "method": {
+        "type": "string",
+        "enum": ["GET", "POST"]
+      },
+      "statusCallback": "string",
+      "statusCallbackMethod": {
         "type": "string",
         "enum": ["GET", "POST"]
       },
       "target": ["#target"],
       "timeLimit": "number",
       "timeout": "number",
-      "headers": "object",
-      "strategy": {
-        "type": "string",
-        "enum": ["hunt", "simring"]
-      },
-      "transcribe": "#transcribe",
-      "listen": "#listen"
+      "transcribe": "#transcribe"
     },
     "required": [
       "target"
@@ -75,8 +112,13 @@
         "type": "string",
         "enum": ["phone", "sip", "user"]
       },
+      "url": "string",
+      "method": {
+        "type": "string",
+        "enum": ["GET", "POST"]
+      },
       "number": "string",
-      "uri": "string",
+      "sipUri": "string",
       "auth": "#auth",
       "name": "string"
     },
@@ -93,5 +135,14 @@
       "user",
       "password"
     ]
+  },
+  "synthesizer": {
+    "properties": {
+      "vendor": {
+        "type": "string",
+        "enum": ["google"]
+      },
+      "voice": "string"
+    }
   }
 }

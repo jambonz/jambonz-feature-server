@@ -1,0 +1,36 @@
+{
+  "TaskName": {
+    "Dial": "dial",
+    "Gather": "gather",
+    "Hangup": "hangup",
+    "Listen": "listen",
+    "Play": "play",
+    "redirect": "redirect",
+    "SipDecline": "sip:decline",
+    "SipNotify": "sip:notify",
+    "SipRedirect": "sip:redirect",
+    "Say": "say",
+    "Transcribe": "transcribe"
+  },
+  "CallStatus": {
+    "Trying": "trying",
+    "Ringing": "ringing",
+    "EarlyMedia": "early-media",
+    "InProgress": "in-progress",
+    "Queued": "queued",
+    "Failed": "failed",
+    "Busy": "busy",
+    "NoAnswer": "no-answer",
+    "Completed": "completed"
+  },
+  "CallDirection": {
+    "Inbound": "inbound",
+    "Outbound": "outbound"
+  },
+  "TaskPreconditions": {
+    "None": "none",
+    "Endpoint": "endpoint",
+    "StableCall": "stable-call",
+    "UnansweredCall": "unanswered-call"
+  }
+}

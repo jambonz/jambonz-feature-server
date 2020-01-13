@@ -31,6 +31,7 @@
     "drachtio-fsmrf": "1.5.10",
     "drachtio-srf": "^4.4.27",
     "jambonz-db-helpers": "^0.1.6",
+    "moment": "^2.24.0",
     "pino": "^5.14.0",
     "request": "^2.88.0",
     "request-debug": "^0.2.0"
