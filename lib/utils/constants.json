@@ -32,5 +32,23 @@
     "Endpoint": "endpoint",
     "StableCall": "stable-call",
     "UnansweredCall": "unanswered-call"
+  },
+  "TranscriptionEvents": {
+    "Transcription": "google_transcribe::transcription",
+    "EndOfUtterance": "google_transcribe::end_of_utterance",
+    "NoAudioDetected": "google_transcribe::no_audio_detected",
+    "MaxDurationExceeded": "google_transcribe::max_duration_exceeded"
+  },
+  "ListenEvents": {
+    "Connect": "mod_audio_fork::connect",
+    "ConnectFailure": "mod_audio_fork::connect_failed",
+    "Transcription": "mod_audio_fork::transcription",
+    "Transfer": "mod_audio_fork::transcription",
+    "PlayAudio": "mod_audio_fork::play_audio",
+    "KillAudio": "mod_audio_fork::kill_audio",
+    "Disconnect": "mod_audio_fork::disconnect",
+    "Error": "mod_audio_fork::error",
+    "BufferOverrun": "mod_audio_fork::buffer_overrun",
+    "JsonMessage": "mod_audio_fork::json"
   }
 }

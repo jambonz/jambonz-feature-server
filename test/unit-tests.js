@@ -36,6 +36,13 @@ test('app payload parsing tests', (t) => {
   task = makeTask(logger, require('./data/good/dial-listen'));
   t.ok(task.name === 'dial', 'parsed dial w/ listen');
 
+  const alt = require('./data/good/alternate-syntax');
+  const normalize = require('../lib/utils/normalize-jamones');
+  normalize(logger, alt).forEach((t) => {
+    const task = makeTask(logger, t);
+  });
+  t.pass('alternate syntax works');
+
   t.end();
 });
 

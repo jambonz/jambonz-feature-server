@@ -16,11 +16,22 @@
     "required": [
     ]
   },
+  "play": {
+    "properties": {
+      "url": "string",
+      "loop": "number",
+      "earlyMedia": "boolean"
+    },
+    "required": [
+      "url"
+    ]
+  },
   "say": {
     "properties": {
       "text": "string",
       "loop": "number",
-      "synthesizer": "#synthesizer"
+      "synthesizer": "#synthesizer",
+      "earlyMedia": "boolean"
     },
     "required": [
       "text",
@@ -31,14 +42,12 @@
     "properties": {
       "action": "string",
       "finishOnKey": "string",
-      "hints": "array",
       "input": "array",
-      "language": "string",
       "numDigits": "number",
       "partialResultCallback": "string",
-      "profanityFilter": "boolean",
       "speechTimeout": "number",
       "timeout": "number",
+      "recognizer": "#recognizer",
       "say": "#say"
     },
     "required": [
@@ -73,37 +82,34 @@
   },
   "listen": {
     "properties": {
+      "finishOnKey": "string",
+      "maxLength": "number",
       "metadata": "object",
       "mixType": {
         "type": "string",
         "enum": ["mono", "stereo", "mixed"]
       },
       "passDtmf": "boolean",
+      "playBeep": "boolean",
       "sampleRate": "number",
-      "source": {
-        "type": "string",
-        "enum": ["parent", "child", "both"]
-      },
-      "wsUrl": "string"
+      "timeout": "number",
+      "transcribe": "#transcribe",
+      "url": "string",
+      "earlyMedia": "boolean"
     },
     "required": [
-      "wsUrl",
-      "sampleRate"
+      "url"
     ]
   },
   "transcribe": {
     "properties": {
       "action": "string",
-      "interim": "boolean",
-      "jsonKey": "string",
-      "language": "string",
-      "source": "string",
-      "vendor": "string"
+      "recognizer": "#recognizer",
+      "earlyMedia": "boolean"
     },
     "required": [
       "action",
-      "jsonKey",
-      "language"
+      "recognizer"
     ]
   },
   "target": {
@@ -143,6 +149,28 @@
         "enum": ["google"]
       },
       "voice": "string"
-    }
+    },
+    "required": [
+      "vendor"
+    ]
+  },
+  "recognizer": {
+    "properties": {
+      "vendor": {
+        "type": "string",
+        "enum": ["google"]
+      },
+      "language": "string",
+      "hints": "array",
+      "profanityFilter": "boolean",
+      "interim": "boolean",
+      "mixType": {
+        "type": "string",
+        "enum": ["mono", "stereo", "mixed"]
+      }
+    },
+    "required": [
+      "vendor"
+    ]
   }
 }

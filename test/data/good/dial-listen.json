@@ -9,11 +9,10 @@
       }
     ],
     "listen": {
-      "wsUrl": "wss://myrecorder.example.com:4433",
+      "url": "wss://myrecorder.example.com:4433",
       "mixType" : "stereo",
       "sampleRate": 8000,
       "passDtmf": true,
-      "source": "parent",
       "metadata": {
         "clientId": "12udih"
       }

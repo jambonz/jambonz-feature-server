@@ -10,11 +10,12 @@
     ],
     "transcribe": {
       "action": "http://example.com/transcribe",
-      "language" : "en-US",
-      "source" : "both",
-      "interim": true,
-      "vendor": "google",
-      "jsonKey": "--json service key--" 
+      "recognizer": {
+        "vendor": "google",
+        "language" : "en-US",
+        "mixType" : "stereo",
+        "interim": true
+      }
     }
   }
 }
