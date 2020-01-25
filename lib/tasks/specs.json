@@ -47,6 +47,7 @@
       "speechTimeout": "number",
       "timeout": "number",
       "recognizer": "#recognizer",
+      "play": "#play",
       "say": "#say"
     },
     "required": [
@@ -58,6 +59,11 @@
       "action": "string",
       "answerOnBridge": "boolean",
       "callerId": "string",
+      "confirmUrl": "string",
+      "confirmMethod": {
+        "type": "string",
+        "enum": ["GET", "POST"]
+      },
       "dialMusic": "string",
       "headers": "object",
       "listen": "#listen",
@@ -65,13 +71,7 @@
         "type": "string",
         "enum": ["GET", "POST"]
       },
-      "statusCallback": "string",
-      "statusCallbackMethod": {
-        "type": "string",
-        "enum": ["GET", "POST"]
-      },
       "target": ["#target"],
-      "url": "string",
       "timeLimit": "number",
       "timeout": "number",
       "transcribe": "#transcribe"
