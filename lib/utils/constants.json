@@ -50,5 +50,6 @@
     "Error": "mod_audio_fork::error",
     "BufferOverrun": "mod_audio_fork::buffer_overrun",
     "JsonMessage": "mod_audio_fork::json"
-  }
+  },
+  "MAX_SIMRINGS": 10
 }
