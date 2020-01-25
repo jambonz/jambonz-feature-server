@@ -9,11 +9,11 @@
       }
     ],
     "transcribe": {
-      "action": "http://example.com/transcribe",
+      "transcriptionCallback": "http://example.com/transcribe",
       "recognizer": {
         "vendor": "google",
         "language" : "en-US",
-        "mixType" : "stereo",
+        "dualChannel" : true,
         "interim": true
       }
     }

@@ -46,6 +46,8 @@ test('app payload parsing tests', (t) => {
   t.end();
 });
 
+console.log('exiting');
+
 
 const errInvalidInstruction = () => makeTask(logger, require('./data/bad/unknown-instruction'));
 const errUnknownProperty = () => makeTask(logger, require('./data/bad/unknown-property'));

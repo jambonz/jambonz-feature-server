@@ -3,7 +3,7 @@ const srf = new Srf();
 const Mrf = require('drachtio-fsmrf');
 srf.locals.mrf = new Mrf(srf);
 const config = require('config');
-const logger = require('pino')(config.get('logging'));
+const logger = srf.locals.parentLogger = require('pino')(config.get('logging'));
 const {lookupAppByPhoneNumber} = require('jambonz-db-helpers')(config.get('mysql'), logger);
 srf.locals.dbHelpers = {lookupAppByPhoneNumber};
 const {
@@ -13,7 +13,7 @@ const {
   invokeWebCallback
 } = require('./lib/middleware')(srf, logger);
 
-const CallSession = require('./lib/call-session');
+const InboundCallSession = require('./lib/session/inbound-call-session');
 
 // disable logging in test mode
 if (process.env.NODE_ENV === 'test') {
@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === 'test') {
 srf.use('invite', [initLocals, normalizeNumbers, retrieveApplication, invokeWebCallback]);
 
 srf.invite((req, res) => {
-  const session = new CallSession(req, res);
+  const session = new InboundCallSession(req, res);
   session.exec();
 });
 

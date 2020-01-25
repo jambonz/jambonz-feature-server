@@ -1,5 +1,5 @@
 {
-  "name": "jambones-feature-server",
+  "name": "jambonz-feature-server",
   "version": "0.0.1",
   "main": "app.js",
   "engines": {
@@ -7,16 +7,17 @@
   },
   "keywords": [
     "sip",
-    "drachtio"
+    "drachtio",
+    "jambonz"
   ],
   "author": "Dave Horton",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jambonz/jambones-feature-server.git"
+    "url": "https://github.com/jambonz/jambonz-feature-server.git"
   },
   "bugs": {
-    "url": "https://github.com/jambonz/jambones-feature-server/issues"
+    "url": "https://github.com/jambonz/jambonz-feature-server/issues"
   },
   "scripts": {
     "start": "node app",
@@ -28,9 +29,9 @@
     "config": "^3.2.4",
     "debug": "^4.1.1",
     "drachtio-fn-b2b-sugar": "0.0.12",
-    "drachtio-fsmrf": "^1.5.11",
+    "drachtio-fsmrf": "^1.5.12",
     "drachtio-srf": "^4.4.27",
-    "jambonz-db-helpers": "^0.1.7",
+    "jambonz-db-helpers": "^0.1.8",
     "moment": "^2.24.0",
     "pino": "^5.14.0",
     "request": "^2.88.0",

@@ -34,8 +34,7 @@
       "earlyMedia": "boolean"
     },
     "required": [
-      "text",
-      "synthesizer"
+      "text"
     ]
   },
   "gather": {
@@ -72,6 +71,7 @@
         "enum": ["GET", "POST"]
       },
       "target": ["#target"],
+      "url": "string",
       "timeLimit": "number",
       "timeout": "number",
       "transcribe": "#transcribe"
@@ -82,6 +82,7 @@
   },
   "listen": {
     "properties": {
+      "action": "string",
       "finishOnKey": "string",
       "maxLength": "number",
       "metadata": "object",
@@ -103,13 +104,12 @@
   },
   "transcribe": {
     "properties": {
-      "action": "string",
+      "transcriptionCallback": "string",
       "recognizer": "#recognizer",
       "earlyMedia": "boolean"
     },
     "required": [
-      "action",
-      "recognizer"
+      "transcriptionCallback"
     ]
   },
   "target": {
@@ -164,10 +164,7 @@
       "hints": "array",
       "profanityFilter": "boolean",
       "interim": "boolean",
-      "mixType": {
-        "type": "string",
-        "enum": ["mono", "stereo", "mixed"]
-      }
+      "dualChannel": "boolean"
     },
     "required": [
       "vendor"
