@@ -5,7 +5,7 @@
     "Hangup": "hangup",
     "Listen": "listen",
     "Play": "play",
-    "redirect": "redirect",
+    "Redirect": "redirect",
     "SipDecline": "sip:decline",
     "SipNotify": "sip:notify",
     "SipRedirect": "sip:redirect",

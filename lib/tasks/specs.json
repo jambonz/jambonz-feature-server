@@ -102,6 +102,19 @@
       "url"
     ]
   },
+  "redirect": {
+    "properties": {
+      "action": "string",
+      "method": {
+        "type": "string",
+        "enum": ["GET", "POST"]
+      },
+      "auth": "#auth"
+    },
+    "required": [
+      "action"
+    ]
+  },
   "transcribe": {
     "properties": {
       "transcriptionCallback": "string",
