@@ -10,6 +10,7 @@
     "SipNotify": "sip:notify",
     "SipRedirect": "sip:redirect",
     "Say": "say",
+    "Tag": "tag",
     "Transcribe": "transcribe"
   },
   "CallStatus": {

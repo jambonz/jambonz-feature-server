@@ -115,6 +115,14 @@
       "action"
     ]
   },
+  "tag": {
+    "properties": {
+      "data": "object"
+    },
+    "required": [
+      "data"
+    ]
+  },
   "transcribe": {
     "properties": {
       "transcriptionCallback": "string",
