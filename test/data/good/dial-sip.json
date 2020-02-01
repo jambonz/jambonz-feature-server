@@ -7,7 +7,7 @@
         "type": "sip",
         "number": "sip:1617333456@sip.trunk1.com",
         "auth": {
-          "user": "foo",
+          "username": "foo",
           "password": "bar"
         }
       }
