@@ -3,7 +3,7 @@
     "port": 3010,
     "secret": "cymru"
   },
-  "freeswitch: {
+  "freeswitch": {
     "address": "127.0.0.1",
     "port": 8021,
     "secret": "ClueCon"
@@ -16,5 +16,15 @@
     "user": "jambones",
     "password": "jambones",
     "database": "jambones"
+  },
+  "outdials": {
+    "drachtio": [
+      {
+        "host": "127.0.0.1",
+        "port": 9022,
+        "secret": "cymru"
+      }
+    ],
+    "sbc": ["127.0.0.1:5060"]
   }
 }

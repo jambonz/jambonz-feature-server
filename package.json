@@ -31,6 +31,7 @@
     "drachtio-fn-b2b-sugar": "0.0.12",
     "drachtio-fsmrf": "^1.5.12",
     "drachtio-srf": "^4.4.27",
+    "express": "^4.17.1",
     "jambonz-db-helpers": "^0.2.0",
     "moment": "^2.24.0",
     "parse-url": "^5.0.1",

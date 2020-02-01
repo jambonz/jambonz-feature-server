@@ -83,9 +83,14 @@
   "listen": {
     "properties": {
       "action": "string",
+      "auth": "#auth",
       "finishOnKey": "string",
       "maxLength": "number",
       "metadata": "object",
+      "method": {
+        "type": "string",
+        "enum": ["GET", "POST"]
+      },
       "mixType": {
         "type": "string",
         "enum": ["mono", "stereo", "mixed"]
@@ -96,6 +101,7 @@
       "timeout": "number",
       "transcribe": "#transcribe",
       "url": "string",
+      "wsAuth": "#auth",
       "earlyMedia": "boolean"
     },
     "required": [
@@ -113,6 +119,19 @@
     },
     "required": [
       "action"
+    ]
+  },
+  "rest:dial": {
+    "properties": {
+      "call_hook": "object",
+      "from": "string",
+      "to": "#target",
+      "timeout": "number"
+    },
+    "required": [
+      "call_hook",
+      "from",
+      "to"
     ]
   },
   "tag": {
@@ -155,11 +174,11 @@
   },
   "auth": {
     "properties": {
-      "user": "string",
+      "username": "string",
       "password": "string"
     },
     "required": [
-      "user",
+      "username",
       "password"
     ]
   },

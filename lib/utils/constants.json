@@ -6,6 +6,7 @@
     "Listen": "listen",
     "Play": "play",
     "Redirect": "redirect",
+    "RestDial": "rest:dial",
     "SipDecline": "sip:decline",
     "SipNotify": "sip:notify",
     "SipRedirect": "sip:redirect",
