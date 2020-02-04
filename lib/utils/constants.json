@@ -4,6 +4,7 @@
     "Gather": "gather",
     "Hangup": "hangup",
     "Listen": "listen",
+    "Pause": "pause",
     "Play": "play",
     "Redirect": "redirect",
     "RestDial": "rest:dial",

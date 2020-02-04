@@ -108,6 +108,14 @@
       "url"
     ]
   },
+  "pause": {
+    "properties": {
+      "length": "number"
+    },
+    "required": [
+      "length"
+    ]
+  },
   "redirect": {
     "properties": {
       "action": "string",
