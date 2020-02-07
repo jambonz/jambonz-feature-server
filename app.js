@@ -3,9 +3,11 @@ const srf = new Srf();
 const Mrf = require('drachtio-fsmrf');
 srf.locals.mrf = new Mrf(srf);
 const config = require('config');
+const PORT = process.env.HTTP_PORT || config.get('defaultHttpPort');
 const logger = srf.locals.parentLogger = require('pino')(config.get('logging'));
-const {lookupAppByPhoneNumber} = require('jambonz-db-helpers')(config.get('mysql'), logger);
-srf.locals.dbHelpers = {lookupAppByPhoneNumber};
+const installSrfLocals = require('./lib/utils/install-srf-locals');
+installSrfLocals(srf, logger);
+
 const {
   initLocals,
   normalizeNumbers,
@@ -13,14 +15,15 @@ const {
   invokeWebCallback
 } = require('./lib/middleware')(srf, logger);
 
-// HTTP 
-const PORT = process.env.HTTP_PORT || 3000;
+
+// HTTP
 const express = require('express');
 const app = express();
 app.locals.logger = logger;
 const httpRoutes = require('./lib/http-routes');
 
 const InboundCallSession = require('./lib/session/inbound-call-session');
+
 
 // disable logging in test mode
 if (process.env.NODE_ENV === 'test') {
@@ -64,6 +67,6 @@ app.use((err, req, res, next) => {
 });
 app.listen(PORT);
 
-logger.info(`listening for HTTP requests on port ${PORT}`);
+logger.info(`listening for HTTP requests on port ${PORT}, serviceUrl is ${srf.locals.serviceUrl}`);
 
-module.exports = {srf};
+module.exports = {srf, logger};

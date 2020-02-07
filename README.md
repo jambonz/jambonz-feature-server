@@ -19,15 +19,13 @@ the `drachtio` object specifies the port to listen on for tcp connections from d
 
 ##### freeswitch location
 ```
-  "freeswitch: [
-    {
-      "address": "127.0.0.1",
-      "port": 8021,
-      "secret": "ClueCon"
-    }
-  ],
+  "freeswitch: {
+    "address": "127.0.0.1",
+    "port": 8021,
+    "secret": "ClueCon"
+  },
 ```
-the `freeswitch` property specifies an array of freeswitch servers to use to handle incoming calls.  
+the `freeswitch` property specifies the location of the freeswitch server to use for media handling.  
 
 ##### application log level
 ```
@@ -39,10 +37,41 @@ the `freeswitch` property specifies an array of freeswitch servers to use to han
 Login credentials for the mysql server databas.
 ```
   "mysql": {
-    "host": "localhost",
+    "host": "127.0.0.1",
     "user": "jambones",
     "password": "jambones",
     "database": "jambones"
+  }
+```
+##### redis server location
+Login credentials for the redis server databas.
+```
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379
+  }
+```
+
+##### port to listen on for HTTP API requests
+The HTTP listen port can be set by the `HTTP_PORT` environment variable, but it not set the default port will be taken from the configuration file.
+
+```
+  "defaultHttpPort": 3000,
+```
+
+##### REST-initiated outdials
+When an outdial is triggered via the REST API, the application needs to select a drachtio sip server to generate the INVITE, and it needs to know the IP addresses of the SBC(s) to send the outbound call through.  Both are provided as arrays in the configuration file, and if more than one is supplied they will be used in a round-robin fashion.
+
+```
+  "outdials": {
+    "drachtio": [
+      {
+        "host": "127.0.0.1",
+        "port": 9022,
+        "secret": "cymru"
+      }
+    ],
+    "sbc": ["127.0.0.1:5060"]
   }
 ```
 
