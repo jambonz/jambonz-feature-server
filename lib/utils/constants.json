@@ -30,6 +30,11 @@
     "Inbound": "inbound",
     "Outbound": "outbound"
   },
+  "ListenStatus": {
+    "Pause": "pause",
+    "Silence": "silence",
+    "Resume": "resume"
+  },
   "TaskPreconditions": {
     "None": "none",
     "Endpoint": "endpoint",

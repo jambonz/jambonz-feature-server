@@ -4,7 +4,10 @@ const Mrf = require('drachtio-fsmrf');
 srf.locals.mrf = new Mrf(srf);
 const config = require('config');
 const PORT = process.env.HTTP_PORT || config.get('defaultHttpPort');
-const logger = srf.locals.parentLogger = require('pino')(config.get('logging'));
+const opts = Object.assign({
+  timestamp: () => {return `, "time": "${new Date().toISOString()}"`;}
+}, config.get('logging'));
+const logger = srf.locals.parentLogger = require('pino')(opts);
 const installSrfLocals = require('./lib/utils/install-srf-locals');
 installSrfLocals(srf, logger);
 
