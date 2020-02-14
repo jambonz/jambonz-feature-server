@@ -30,7 +30,7 @@
     "config": "^3.2.4",
     "debug": "^4.1.1",
     "drachtio-fn-b2b-sugar": "0.0.12",
-    "drachtio-fsmrf": "^1.5.14xs",
+    "drachtio-fsmrf": "^1.5.14",
     "drachtio-srf": "^4.4.27",
     "express": "^4.17.1",
     "ip": "^1.1.5",
