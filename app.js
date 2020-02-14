@@ -59,7 +59,6 @@ srf.invite((req, res) => {
   session.exec();
 });
 
-
 // HTTP
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

@@ -1,7 +1,7 @@
 [
   {
     "verb": "gather",
-    "action": "https://00dd977a.ngrok.io/gather",
+    "actionHook": "https://00dd977a.ngrok.io/gather",
     "input": ["speech"],
     "timeout": 12,
     "recognizer": {

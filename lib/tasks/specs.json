@@ -39,11 +39,11 @@
   },
   "gather": {
     "properties": {
-      "action": "string",
+      "actionHook": "object|string",
       "finishOnKey": "string",
       "input": "array",
       "numDigits": "number",
-      "partialResultCallback": "string",
+      "partialResultHook": "object|string",
       "speechTimeout": "number",
       "timeout": "number",
       "recognizer": "#recognizer",
@@ -51,26 +51,20 @@
       "say": "#say"
     },
     "required": [
-      "action"
+      "actionHook"
     ]
   },
   "dial": {
     "properties": {
-      "action": "string",
+      "actionHook": "object|string",
       "answerOnBridge": "boolean",
       "callerId": "string",
-      "confirmUrl": "string",
-      "confirmMethod": {
-        "type": "string",
-        "enum": ["GET", "POST"]
-      },
+      "confirmHook": "object|string",
       "dialMusic": "string",
+      "dtmfCapture": "object",
+      "dtmfHook": "object|string",
       "headers": "object",
       "listen": "#listen",
-      "method": {
-        "type": "string",
-        "enum": ["GET", "POST"]
-      },
       "target": ["#target"],
       "timeLimit": "number",
       "timeout": "number",
@@ -82,15 +76,11 @@
   },
   "listen": {
     "properties": {
-      "action": "string",
+      "actionHook": "object|string",
       "auth": "#auth",
       "finishOnKey": "string",
       "maxLength": "number",
       "metadata": "object",
-      "method": {
-        "type": "string",
-        "enum": ["GET", "POST"]
-      },
       "mixType": {
         "type": "string",
         "enum": ["mono", "stereo", "mixed"]
@@ -118,21 +108,17 @@
   },
   "redirect": {
     "properties": {
-      "action": "string",
-      "method": {
-        "type": "string",
-        "enum": ["GET", "POST"]
-      },
-      "auth": "#auth"
+      "actionHook": "object|string"
     },
     "required": [
-      "action"
+      "actionHook"
     ]
   },
   "rest:dial": {
     "properties": {
-      "call_hook": "object",
+      "call_hook": "object|string",
       "from": "string",
+      "tag": "object",
       "to": "#target",
       "timeout": "number"
     },
@@ -152,12 +138,12 @@
   },
   "transcribe": {
     "properties": {
-      "transcriptionCallback": "string",
+      "transcriptionHook": "string",
       "recognizer": "#recognizer",
       "earlyMedia": "boolean"
     },
     "required": [
-      "transcriptionCallback"
+      "transcriptionHook"
     ]
   },
   "target": {

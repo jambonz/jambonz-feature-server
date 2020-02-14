@@ -1,6 +1,6 @@
 {
   "dial": {
-    "action": "http://example.com",
+    "actionHook": "http://example.com",
     "callerId": "+1312888899",
     "target": [
       {
