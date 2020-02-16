@@ -116,8 +116,15 @@
   },
   "rest:dial": {
     "properties": {
+      "account_sid": "string",
+      "application_sid": "string",
       "call_hook": "object|string",
+      "call_status_hook": "object|string",
       "from": "string",
+      "speech_synthesis_vendor": "string",
+      "speech_synthesis_voice": "string",
+      "speech_recognizer_vendor": "string",
+      "speech_recognizer_language": "string",
       "tag": "object",
       "to": "#target",
       "timeout": "number"

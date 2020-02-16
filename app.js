@@ -1,13 +1,23 @@
+const assert = require('assert');
+assert.ok(process.env.JAMBONES_MYSQL_HOST &&
+  process.env.JAMBONES_MYSQL_USER &&
+  process.env.JAMBONES_MYSQL_PASSWORD &&
+  process.env.JAMBONES_MYSQL_DATABASE, 'missing JAMBONES_MYSQL_XXX env vars');
+assert.ok(process.env.DRACHTIO_PORT || process.env.DRACHTIO_HOST, 'missing DRACHTIO_PORT env var');
+assert.ok(process.env.DRACHTIO_SECRET, 'missing DRACHTIO_SECRET env var');
+assert.ok(process.env.JAMBONES_SBCS, 'missing JAMBONES_SBCS env var');
+assert.ok(process.env.JAMBONES_FREESWITCH, 'missing JAMBONES_FREESWITCH env var');
+assert.ok(process.env.JAMBONES_FEATURE_SERVERS, 'missing JAMBONES_FEATURE_SERVERS env var');
+
 const Srf = require('drachtio-srf');
 const srf = new Srf();
 const Mrf = require('drachtio-fsmrf');
 srf.locals.mrf = new Mrf(srf);
-const config = require('config');
-const PORT = process.env.HTTP_PORT || config.get('defaultHttpPort');
+const PORT = process.env.HTTP_PORT || 3000;
 const opts = Object.assign({
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;}
-}, config.get('logging'));
-const logger = srf.locals.parentLogger = require('pino')(opts);
+}, {level: process.env.JAMBONES_LOGLEVEL || 'info'});
+const logger = require('pino')(opts);
 const installSrfLocals = require('./lib/utils/install-srf-locals');
 installSrfLocals(srf, logger);
 
@@ -18,7 +28,6 @@ const {
   invokeWebCallback
 } = require('./lib/middleware')(srf, logger);
 
-
 // HTTP
 const express = require('express');
 const app = express();
@@ -27,24 +36,15 @@ const httpRoutes = require('./lib/http-routes');
 
 const InboundCallSession = require('./lib/session/inbound-call-session');
 
-
-// disable logging in test mode
-if (process.env.NODE_ENV === 'test') {
-  const noop = () => {};
-  logger.info = logger.debug = noop;
-  logger.child = () => {return {info: noop, error: noop, debug: noop};};
-}
-
-// config dictates whether to use outbound or inbound connections
-if (config.has('drachtio.host')) {
-  srf.connect(config.get('drachtio'));
+if (process.env.DRACHTIO_HOST) {
+  srf.connect({host: process.env.DRACHTIO_HOST, port: process.env.DRACHTIO_PORT, secret: process.env.DRACHTIO_SECRET });
   srf.on('connect', (err, hp) => {
     logger.info(`connected to drachtio listening on ${hp}`);
   });
 }
 else {
-  logger.info(`listening for drachtio server traffic on ${JSON.stringify(config.get('drachtio'))}`);
-  srf.listen(config.get('drachtio'));
+  logger.info(`listening for drachtio requests on port ${process.env.DRACHTIO_PORT}`);
+  srf.listen({port: process.env.DRACHTIO_PORT, secret: process.env.DRACHTIO_SECRET});
 }
 if (process.env.NODE_ENV === 'test') {
   srf.on('error', (err) => {
