@@ -30,25 +30,26 @@
     "debug": "^4.1.1",
     "drachtio-fn-b2b-sugar": "0.0.12",
     "drachtio-fsmrf": "^1.5.14",
-    "drachtio-srf": "^4.4.27",
+    "drachtio-srf": "^4.4.28",
     "express": "^4.17.1",
     "ip": "^1.1.5",
     "jambonz-db-helpers": "^0.3.2",
-    "jambonz-realtimedb-helpers": "0.1.7",
+    "jambonz-realtimedb-helpers": "^0.1.7",
+    "jambonz-stats-collector": "^0.0.3",
     "moment": "^2.24.0",
     "parse-url": "^5.0.1",
-    "pino": "^5.14.0"
+    "pino": "^5.16.0"
   },
   "devDependencies": {
     "blue-tape": "^1.0.0",
     "clear-module": "^4.0.0",
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "eslint-plugin-promise": "^4.2.1",
     "jsdoc": "^3.6.3",
     "nyc": "^14.1.1",
-    "tap": "^14.10.2",
+    "tap": "^14.10.6",
     "tap-dot": "^2.0.0",
     "tap-spec": "^5.0.0",
-    "tape": "^4.11.0"
+    "tape": "^4.13.0"
   }
 }
