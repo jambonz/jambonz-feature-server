@@ -47,9 +47,8 @@ test('app payload parsing tests', (t) => {
   t.pass('alternate syntax works');
 
   t.end();
+  process.exit(0);
 });
-
-console.log('exiting');
 
 
 const errInvalidInstruction = () => makeTask(logger, require('./data/bad/unknown-instruction'));

@@ -21,18 +21,20 @@
   },
   "scripts": {
     "start": "node app",
-    "test": "NODE_ENV=test node test/ | ./node_modules/.bin/tap-spec",
+    "test": "NODE_ENV=test JAMBONES_NETWORK_CIDR=127.0.0.1/32 node test/ | ./node_modules/.bin/tap-spec",
     "coverage": "./node_modules/.bin/nyc --reporter html --report-dir ./coverage npm run test",
     "jslint": "eslint app.js lib"
   },
   "dependencies": {
     "bent": "^7.0.6",
+    "jambonz-mw-registrar": "^0.1.3",
     "debug": "^4.1.1",
     "drachtio-fn-b2b-sugar": "0.0.12",
     "drachtio-fsmrf": "^1.5.14",
     "drachtio-srf": "^4.4.28",
     "express": "^4.17.1",
     "ip": "^1.1.5",
+    "cidr-matcher": "^2.1.1",
     "jambonz-db-helpers": "^0.3.2",
     "jambonz-realtimedb-helpers": "^0.1.7",
     "jambonz-stats-collector": "^0.0.3",
