@@ -11,8 +11,6 @@ assert.ok(process.env.JAMBONES_NETWORK_CIDR, 'missing JAMBONES_SUBNET env var');
 
 const Srf = require('drachtio-srf');
 const srf = new Srf();
-const Mrf = require('drachtio-fsmrf');
-srf.locals.mrf = new Mrf(srf);
 const PORT = process.env.HTTP_PORT || 3000;
 const opts = Object.assign({
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;}
@@ -75,28 +73,5 @@ const sessionTracker = require('./lib/session/session-tracker');
 setInterval(() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
 }, 5000);
-
-// report freeswitch stats periodically
-const fsOpts = srf.locals.getFreeswitch();
-const mrf = srf.locals.mrf;
-
-async function pollFreeswitch(mrf) {
-  const stats = srf.locals.stats;
-  const ms = await mrf.connect(fsOpts);
-  logger.info({freeswitch: fsOpts}, 'connected to freeswitch for metrics monitoring');
-  setInterval(() => {
-    try {
-      stats.gauge('fs.media.channels.in_use', ms.currentSessions);
-      stats.gauge('fs.media.channels.free', ms.maxSessions - ms.currentSessions);
-      stats.gauge('fs.media.calls_per_second', ms.cps);
-      stats.gauge('fs.media.cpu_idle', ms.cpuIdle);
-    }
-    catch (err) {
-      logger.info(err, 'Error sending media server metrics');
-    }
-  }, 30000);
-}
-
-pollFreeswitch(mrf).catch((err) => logger.error(err, 'Error polling freeswitch'));
 
 module.exports = {srf, logger};
