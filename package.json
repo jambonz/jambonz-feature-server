@@ -36,7 +36,7 @@
     "ip": "^1.1.5",
     "cidr-matcher": "^2.1.1",
     "jambonz-db-helpers": "^0.3.2",
-    "jambonz-realtimedb-helpers": "^0.1.7",
+    "jambonz-realtimedb-helpers": "^0.1.8",
     "jambonz-stats-collector": "^0.0.3",
     "moment": "^2.24.0",
     "parse-url": "^5.0.1",
