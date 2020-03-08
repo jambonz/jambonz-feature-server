@@ -12,6 +12,7 @@
     "SipNotify": "sip:notify",
     "SipRedirect": "sip:redirect",
     "Say": "say",
+    "SayLegacy": "say:legacy",
     "Tag": "tag",
     "Transcribe": "transcribe"
   },

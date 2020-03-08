@@ -187,12 +187,14 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google"]
+        "enum": ["google", "aws", "polly"]
       },
+      "language": "string",
       "voice": "string"
     },
     "required": [
-      "vendor"
+      "vendor",
+      "language"
     ]
   },
   "recognizer": {

@@ -13,7 +13,7 @@
       "text": "Please say the name of the department that you would like to speak with.  To speak to an operator, just say operator.",
       "synthesizer": {
         "vendor": "google",
-        "voice": "en-US-Wavenet-C"
+        "language": "en-US"
       }
     }
   },
@@ -22,7 +22,7 @@
     "text": "I'm sorry, I did not hear a response.  Goodbye.",
     "synthesizer": {
       "vendor": "google",
-      "voice": "en-US-Wavenet-C"
+      "language": "en-US"
     }
   },
   {
