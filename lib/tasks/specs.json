@@ -190,11 +190,14 @@
         "enum": ["google", "aws", "polly"]
       },
       "language": "string",
-      "voice": "string"
+      "voice": "string",
+      "gender": {
+        "type": "string",
+        "enum": ["MALE", "FEMALE", "NEUTRAL"]
+      }
     },
     "required": [
-      "vendor",
-      "language"
+      "vendor"
     ]
   },
   "recognizer": {
