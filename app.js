@@ -29,7 +29,11 @@ const {
 // HTTP
 const express = require('express');
 const app = express();
-app.locals.logger = logger;
+Object.assign(app.locals, {
+  logger,
+  srf
+});
+
 const httpRoutes = require('./lib/http-routes');
 
 const InboundCallSession = require('./lib/session/inbound-call-session');
