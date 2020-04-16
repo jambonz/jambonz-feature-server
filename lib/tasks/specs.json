@@ -127,6 +127,7 @@
       "speech_recognizer_language": "string",
       "tag": "object",
       "to": "#target",
+      "headers": "object",
       "timeout": "number"
     },
     "required": [
