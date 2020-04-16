@@ -43,13 +43,11 @@
     "pino": "^5.16.0"
   },
   "devDependencies": {
-    "clear-module": "^4.0.0",
+    "blue-tape": "^1.0.0",
+    "clear-module": "^4.1.1",
     "eslint": "^6.8.0",
     "eslint-plugin-promise": "^4.2.1",
-    "jsdoc": "^3.6.3",
-    "nyc": "^15.0.0",
-    "tap-dot": "^2.0.0",
-    "tap-spec": "^5.0.0",
-    "tape": "^4.13.2"
+    "nyc": "^15.0.1",
+    "tap-spec": "^5.0.0"
   }
 }
