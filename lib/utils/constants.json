@@ -60,5 +60,10 @@
     "BufferOverrun": "mod_audio_fork::buffer_overrun",
     "JsonMessage": "mod_audio_fork::json"
   },
+  "LifeCycleEvents" : {
+    "ScaleIn": "scale-in",
+    "StandbyEnter": "standby-enter",
+    "StandbyExit": "standby-exit"
+  },
   "MAX_SIMRINGS": 10
 }

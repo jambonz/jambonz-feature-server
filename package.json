@@ -40,7 +40,9 @@
     "jambonz-stats-collector": "^0.0.3",
     "moment": "^2.24.0",
     "parse-url": "^5.0.1",
-    "pino": "^5.16.0"
+    "pino": "^5.16.0",
+    "verify-aws-sns-signature": "0.0.5",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "blue-tape": "^1.0.0",
