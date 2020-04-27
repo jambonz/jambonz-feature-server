@@ -42,7 +42,9 @@ const InboundCallSession = require('./lib/session/inbound-call-session');
 if (process.env.DRACHTIO_HOST) {
   srf.connect({host: process.env.DRACHTIO_HOST, port: process.env.DRACHTIO_PORT, secret: process.env.DRACHTIO_SECRET });
   srf.on('connect', (err, hp) => {
-    logger.info(`connected to drachtio listening on ${hp}`);
+    const arr = /^(.*)\/(.*)$/.exec(hp.split(',').pop());
+    srf.locals.localSipAddress = `${arr[2]}`;
+    logger.info(`connected to drachtio listening on ${hp}, local sip address is ${srf.locals.localSipAddress}`);
   });
 }
 else {

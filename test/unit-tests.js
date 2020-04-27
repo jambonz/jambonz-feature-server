@@ -40,7 +40,7 @@ test('app payload parsing tests', (t) => {
   t.ok(task.name === 'pause', 'parsed pause');
 
   const alt = require('./data/good/alternate-syntax');
-  const normalize = require('../lib/utils/normalize-jamones');
+  const normalize = require('../lib/utils/normalize-jambones');
   normalize(logger, alt).forEach((t) => {
     const task = makeTask(logger, t);
   });

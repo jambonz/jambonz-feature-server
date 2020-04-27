@@ -54,6 +54,23 @@
       "actionHook"
     ]
   },
+  "conference": {
+    "properties": {
+      "name": "string",
+      "beep": "boolean",
+      "startConferenceOnEnter": "boolean",
+      "endConferenceOnExit": "boolean",
+      "maxParticipants": "number",
+      "actionHook": "object|string",
+      "waitHook": "object|string",
+      "statusEvents": "array",
+      "statusHook": "object|string",
+      "enterHook": "object|string"
+    },
+    "required": [
+      "name"
+    ]
+  },
   "dial": {
     "properties": {
       "actionHook": "object|string",
@@ -165,10 +182,10 @@
         "type": "string",
         "enum": ["GET", "POST"]
       },
+      "name": "string",
       "number": "string",
       "sipUri": "string",
-      "auth": "#auth",
-      "name": "string"
+      "auth": "#auth"
     },
     "required": [
       "type"

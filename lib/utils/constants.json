@@ -1,5 +1,6 @@
 {
   "TaskName": {
+    "Conference": "conference",
     "Dial": "dial",
     "Gather": "gather",
     "Hangup": "hangup",
