@@ -39,6 +39,12 @@ test('app payload parsing tests', (t) => {
   task = makeTask(logger, require('./data/good/pause'));
   t.ok(task.name === 'pause', 'parsed pause');
 
+  task = makeTask(logger, require('./data/good/say'));
+  t.ok(task.name === 'say', 'parsed say');
+
+  task = makeTask(logger, require('./data/good/say-text-array'));
+  t.ok(task.name === 'say', 'parsed say with multiple segments');
+
   const alt = require('./data/good/alternate-syntax');
   const normalize = require('../lib/utils/normalize-jambones');
   normalize(logger, alt).forEach((t) => {

@@ -1,0 +1,9 @@
+{
+  "say": {
+    "text": "hi there",
+    "synthesizer": {
+      "vendor": "google",
+      "language": "en-US"
+    }
+  }
+}

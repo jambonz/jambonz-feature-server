@@ -28,7 +28,7 @@
   },
   "say": {
     "properties": {
-      "text": "string",
+      "text": "string|array",
       "loop": "number",
       "synthesizer": "#synthesizer",
       "earlyMedia": "boolean"
