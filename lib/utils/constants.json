@@ -1,9 +1,12 @@
 {
   "TaskName": {
     "Conference": "conference",
+    "Dequeue": "dequeue",
     "Dial": "dial",
+    "Enqueue": "enqueue",
     "Gather": "gather",
     "Hangup": "hangup",
+    "Leave": "leave",
     "Listen": "listen",
     "Pause": "pause",
     "Play": "play",
@@ -65,6 +68,18 @@
     "ScaleIn": "scale-in",
     "StandbyEnter": "standby-enter",
     "StandbyExit": "standby-exit"
+  },
+  "QueueResults": {
+    "Bridged": "bridged",
+    "Error": "error",
+    "Wait": "hangup",
+    "Leave": "leave"
+  },
+  "DequeueResults": {
+    "Bridged": "bridged",
+    "Error": "error",
+    "Hangup": "hangup",
+    "Timeout": "timeout"
   },
   "MAX_SIMRINGS": 10
 }

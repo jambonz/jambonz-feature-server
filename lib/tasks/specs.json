@@ -9,6 +9,32 @@
       "status"
     ]
   },
+  "dequeue": {
+    "properties": {
+      "name": "string",
+      "actionHook": "object|string",
+      "timeout": "number"
+    },
+    "required": [
+      "name"
+    ]
+  },
+  "enqueue": {
+    "properties": {
+      "name": "string",
+      "actionHook": "object|string",
+      "waitHook": "object|string",
+      "_": "object"
+    },
+    "required": [
+      "name"
+    ]
+  },
+  "leave": {
+    "properties": {
+      
+    }
+  },
   "hangup": {
     "properties": {
       "headers": "object"
