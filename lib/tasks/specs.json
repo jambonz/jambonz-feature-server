@@ -13,7 +13,8 @@
     "properties": {
       "name": "string",
       "actionHook": "object|string",
-      "timeout": "number"
+      "timeout": "number",
+      "beep": "boolean"
     },
     "required": [
       "name"
