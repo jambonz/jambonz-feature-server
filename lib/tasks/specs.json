@@ -202,7 +202,7 @@
     "properties": {
       "type": {
         "type": "string",
-        "enum": ["phone", "sip", "user"]
+        "enum": ["phone", "sip", "user", "teams"]
       },
       "url": "string",
       "method": {
@@ -212,7 +212,8 @@
       "name": "string",
       "number": "string",
       "sipUri": "string",
-      "auth": "#auth"
+      "auth": "#auth",
+      "vmail": "boolean"
     },
     "required": [
       "type"
