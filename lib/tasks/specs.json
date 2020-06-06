@@ -204,7 +204,7 @@
         "type": "string",
         "enum": ["phone", "sip", "user", "teams"]
       },
-      "url": "string",
+      "confirmHook": "object|string",
       "method": {
         "type": "string",
         "enum": ["GET", "POST"]
@@ -213,7 +213,8 @@
       "number": "string",
       "sipUri": "string",
       "auth": "#auth",
-      "vmail": "boolean"
+      "vmail": "boolean",
+      "tenant": "string"
     },
     "required": [
       "type"
