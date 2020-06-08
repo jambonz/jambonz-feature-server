@@ -38,3 +38,4 @@ node_modules
 examples/*
 
 ecosystem.config.js
+.vscode
