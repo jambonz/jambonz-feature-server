@@ -3,6 +3,7 @@
     "Conference": "conference",
     "Dequeue": "dequeue",
     "Dial": "dial",
+    "Dialogflow": "dialogflow",
     "Enqueue": "enqueue",
     "Gather": "gather",
     "Hangup": "hangup",

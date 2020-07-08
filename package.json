@@ -30,7 +30,7 @@
     "cidr-matcher": "^2.1.1",
     "debug": "^4.1.1",
     "drachtio-fsmrf": "^2.0.1",
-    "drachtio-srf": "^4.4.34",
+    "drachtio-srf": "^4.4.36",
     "express": "^4.17.1",
     "ip": "^1.1.5",
     "@jambonz/db-helpers": "^0.3.7",

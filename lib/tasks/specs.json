@@ -118,6 +118,26 @@
       "target"
     ]
   },
+  "dialogflow": {
+    "properties": {
+      "credentials": "string",
+      "project": "string",
+      "lang": "string",
+      "actionHook": "object|string",
+      "eventHook": "object|string",
+      "events": "[string]",
+      "welcomeEvent": "string",
+      "welcomeEventParams": "object",
+      "noInputTimeout": "number",
+      "passDtmfAsTextInput": "boolean",
+      "thinkingMusic": "string"
+    },
+    "required": [
+      "project",
+      "credentials",
+      "lang"
+    ]
+  },
   "listen": {
     "properties": {
       "actionHook": "object|string",
