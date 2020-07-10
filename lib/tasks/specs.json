@@ -129,6 +129,7 @@
       "welcomeEvent": "string",
       "welcomeEventParams": "object",
       "noInputTimeout": "number",
+      "noInputEvent": "string",
       "passDtmfAsTextInput": "boolean",
       "thinkingMusic": "string"
     },
