@@ -112,6 +112,7 @@
       "target": ["#target"],
       "timeLimit": "number",
       "timeout": "number",
+      "proxy": "string",
       "transcribe": "#transcribe"
     },
     "required": [
@@ -120,7 +121,7 @@
   },
   "dialogflow": {
     "properties": {
-      "credentials": "string",
+      "credentials": "object|string",
       "project": "string",
       "lang": "string",
       "actionHook": "object|string",
@@ -188,6 +189,7 @@
       "from": "string",
       "speech_synthesis_vendor": "string",
       "speech_synthesis_voice": "string",
+      "speech_synthesis_language": "string",
       "speech_recognizer_vendor": "string",
       "speech_recognizer_language": "string",
       "tag": "object",
