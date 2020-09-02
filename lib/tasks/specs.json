@@ -132,12 +132,37 @@
       "noInputTimeout": "number",
       "noInputEvent": "string",
       "passDtmfAsTextInput": "boolean",
-      "thinkingMusic": "string"
+      "thinkingMusic": "string",
+      "tts": "#synthesizer"
     },
     "required": [
       "project",
       "credentials",
       "lang"
+    ]
+  },
+  "lex": {
+    "properties": {
+      "bot": "string",
+      "alias": "string",
+      "region": "string",
+      "bargein": "boolean",
+      "passDtmf": "boolean",
+      "actionHook": "object|string",
+      "eventHook": "object|string",
+      "events": "[string]",
+      "prompt": {
+        "type": "string",
+        "enum": ["lex", "tts"]
+      },
+      "noInputTimeout": "number",
+      "tts": "#synthesizer"
+    },
+    "required": [
+      "bot",
+      "alias",
+      "region",
+      "prompt"
     ]
   },
   "listen": {
@@ -257,7 +282,7 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google", "aws", "polly"]
+        "enum": ["google", "aws", "polly", "default"]
       },
       "language": "string",
       "voice": "string",

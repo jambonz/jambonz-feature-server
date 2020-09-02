@@ -8,6 +8,7 @@
     "Gather": "gather",
     "Hangup": "hangup",
     "Leave": "leave",
+    "Lex": "lex",
     "Listen": "listen",
     "Pause": "pause",
     "Play": "play",
