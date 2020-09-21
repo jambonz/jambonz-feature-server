@@ -32,6 +32,7 @@
     "bent": "^7.3.9",
     "cidr-matcher": "^2.1.1",
     "debug": "^4.1.1",
+    "deepcopy": "^2.1.0",
     "drachtio-fsmrf": "^2.0.1",
     "drachtio-srf": "^4.4.37",
     "express": "^4.17.1",
