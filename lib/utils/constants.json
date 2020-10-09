@@ -9,6 +9,7 @@
     "Hangup": "hangup",
     "Leave": "leave",
     "Listen": "listen",
+    "Message": "message",
     "Pause": "pause",
     "Play": "play",
     "Redirect": "redirect",
@@ -34,7 +35,8 @@
   },
   "CallDirection": {
     "Inbound": "inbound",
-    "Outbound": "outbound"
+    "Outbound": "outbound",
+    "None": "none"
   },
   "ListenStatus": {
     "Pause": "pause",

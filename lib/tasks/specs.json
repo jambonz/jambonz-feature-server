@@ -164,6 +164,20 @@
       "url"
     ]
   },
+  "message": {
+    "properties": {
+      "provider": "string",
+      "to": "string",
+      "from": "string",
+      "text": "string",
+      "media": "string|array",
+      "actionHook": "object|string"
+    },
+    "required": [
+      "to",
+      "from"
+    ]
+  },
   "pause": {
     "properties": {
       "length": "number"
