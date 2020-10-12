@@ -4,6 +4,7 @@
     "Dequeue": "dequeue",
     "Dial": "dial",
     "Dialogflow": "dialogflow",
+    "Dtmf": "dtmf",
     "Enqueue": "enqueue",
     "Gather": "gather",
     "Hangup": "hangup",

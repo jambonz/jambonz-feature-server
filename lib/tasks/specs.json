@@ -141,6 +141,15 @@
       "lang"
     ]
   },
+  "dtmf": {
+    "properties": {
+      "dtmf": "string",
+      "duration": "number"
+    },
+    "required": [
+      "dtmf"
+    ]
+  },
   "lex": {
     "properties": {
       "bot": "string",
