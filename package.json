@@ -45,6 +45,7 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
+    "lodash": "4.17.20",
     "blue-tape": "^1.0.0",
     "clear-module": "^4.1.1",
     "eslint": "^7.11.0",
