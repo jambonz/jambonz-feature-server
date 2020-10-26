@@ -152,14 +152,17 @@
   },
   "lex": {
     "properties": {
-      "bot": "string",
-      "alias": "string",
+      "botId": "string",
+      "botAlias": "string",
+      "credentials": "object",
       "region": "string",
+      "locale": "string",
+      "intent": "string",
+      "welcomeMessage": "string",
       "bargein": "boolean",
       "passDtmf": "boolean",
       "actionHook": "object|string",
       "eventHook": "object|string",
-      "events": "[string]",
       "prompt": {
         "type": "string",
         "enum": ["lex", "tts"]
@@ -168,8 +171,8 @@
       "tts": "#synthesizer"
     },
     "required": [
-      "bot",
-      "alias",
+      "botId",
+      "botAlias",
       "region",
       "prompt"
     ]
