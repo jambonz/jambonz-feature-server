@@ -157,8 +157,9 @@
       "credentials": "object",
       "region": "string",
       "locale": "string",
-      "intent": "string",
+      "intent": "#lexIntent",
       "welcomeMessage": "string",
+      "metadata": "object",
       "bargein": "boolean",
       "passDtmf": "boolean",
       "actionHook": "object|string",
@@ -335,6 +336,15 @@
     },
     "required": [
       "vendor"
+    ]
+  },
+  "lexIntent": {
+    "properties": {
+      "name": "string",
+      "slots": "object"
+    },
+    "required": [
+      "name"
     ]
   }
 }
