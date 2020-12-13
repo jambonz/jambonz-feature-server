@@ -1,4 +1,4 @@
-# jambones-feature-server [![Build Status](https://github.com/jambonz/jambonz-feature-server/workflows/ci-test/badge.svg)
+# jambones-feature-server ![Build Status](https://github.com/jambonz/jambonz-feature-server/workflows/ci-test/badge.svg)
 
 This application implements the core feature server of the jambones platform.
 
