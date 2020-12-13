@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@jambonz/db-helpers": "^0.5.3",
-    "@jambonz/realtimedb-helpers": "^0.2.19",
+    "@jambonz/realtimedb-helpers": "^0.2.20",
     "@jambonz/stats-collector": "^0.1.4",
     "bent": "^7.3.12",
     "cidr-matcher": "^2.1.1",
