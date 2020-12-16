@@ -1,78 +1,86 @@
-# jambones-feature-server ![Build Status](https://github.com/jambonz/jambonz-feature-server/workflows/ci-test/badge.svg)
+# jambones-feature-server ![Build Status](https://github.com/jambonz/jambonz-feature-server/workflows/CI/badge.svg)
 
 This application implements the core feature server of the jambones platform.
 
 ## Configuration
 
-Configuration is provided via the [npmjs config](https://www.npmjs.com/package/config) package.  The following elements make up the configuration for the application:
-##### drachtio server location
-```
-{
-  "drachtio": {
-    "port": 3001,
-    "secret": "cymru"
-  },
-```
-the `drachtio` object specifies the port to listen on for tcp connections from drachtio servers as well as the shared secret that is used to authenticate to the server.
+Configuration is provided via environment variables:
 
-> Note: either inbound or [outbound connections](https://drachtio.org/docs#outbound-connections) may be used, depending on the configuration supplied.  In production, it is the intent to use outbound connections for easier centralization and clustering of application logic.
+| variable | meaning | required?|
+|----------|----------|---------|
+|AWS_ACCESS_KEY_ID| aws access key id, used for TTS/STT as well SNS notifications|no|
+|AWS_REGION| aws region| no|
+|AWS_SECRET_ACCESS_KEY| aws secret access key, used per above|no|
+|AWS_SNS_TOPIC_ARM| aws sns topic arn that scale-in lifecycle notifications will be published to|no|
+|DRACHTIO_HOST| ip address of drachtio server (typically '127.0.0.1')|yes|
+|DRACHTIO_PORT| listening port of drachtio server for control connections (typically 9022)|yes|
+|DRACHTIO_SECRET| shared secret|yes|
+|ENABLE_METRICS| if 1, metrics will be generated|no|
+|GOOGLE_APPLICATION_CREDENTIALS| path to gcp service key file|yes|
+|HTTP_PORT| tcp port to listen on for API requests from jambonz-api-server|yes|
+|JAMBONES_FREESWITCH| IP:port:secret for Freeswitch server (e.g. '127.0.0.1:8021:JambonzR0ck$'|yes|
+|JAMBONES_LOGLEVEL| log level for application, 'info' or 'debug'|no|
+|JAMBONES_MYSQL_HOST| mysql host|yes|
+|JAMBONES_MYSQL_USER| mysql username|yes|
+|JAMBONES_MYSQL_PASSWORD|  mysql password|yes|
+|JAMBONES_MYSQL_DATABASE| mysql data|yes|
+|JAMBONES_MYSQL_CONNECTION_LIMIT| mysql connection limit |no|
+|JAMBONES_NETWORK_CIDR| CIDR of private network that feature server is running in (e.g. '172.31.0.0/16')|yes|
+|JAMBONES_REDIS_HOST| redis host|yes|
+|JAMBONES_REDIS_PORT|redis port|yes|
+|JAMBONES_SBCS| list of IP addresses (on the internal network) of SBCs, comma-separated|yes|
+|STATS_HOST| ip address of metrics host (usually '127.0.0.1' since telegraf is installed locally|no|
+|STATS_PORT| listening port for metrics host|no|
+|STATS_PROTOCOL| 'tcp' or 'udp'|no|
+|STATS_TELEGRAF| if 1, metrics will be generated in telegraf format|no|
 
-##### freeswitch location
-```
-  "freeswitch: {
-    "address": "127.0.0.1",
-    "port": 8021,
-    "secret": "ClueCon"
-  },
-```
-the `freeswitch` property specifies the location of the freeswitch server to use for media handling.  
-
-##### application log level
-```
-  "logging": {
-    "level": "info"
-  }
-```
-##### mysql server location
-Login credentials for the mysql server databas.
-```
-  "mysql": {
-    "host": "127.0.0.1",
-    "user": "jambones",
-    "password": "jambones",
-    "database": "jambones"
-  }
-```
-##### redis server location
-Login credentials for the redis server databas.
-```
-  "redis": {
-    "host": "127.0.0.1",
-    "port": 6379
-  }
-```
-
-##### port to listen on for HTTP API requests
-The HTTP listen port can be set by the `HTTP_PORT` environment variable, but it not set the default port will be taken from the configuration file.
-
-```
-  "defaultHttpPort": 3000,
-```
-
-##### REST-initiated outdials
-When an outdial is triggered via the REST API, the application needs to select a drachtio sip server to generate the INVITE, and it needs to know the IP addresses of the SBC(s) to send the outbound call through.  Both are provided as arrays in the configuration file, and if more than one is supplied they will be used in a round-robin fashion.
-
-```
-  "outdials": {
-    "drachtio": [
-      {
-        "host": "127.0.0.1",
-        "port": 9022,
-        "secret": "cymru"
-      }
-    ],
-    "sbc": ["127.0.0.1:5060"]
-  }
+### running under pm2
+Typically, this application runs under [https://pm2.io] using an ecosystem.config.js file similar to this:
+```js
+module.exports = {
+  apps : [
+  {
+    name: 'jambonz-feature-server',
+    cwd: '/home/admin/apps/jambonz-feature-server',
+    script: 'app.js',
+    instance_var: 'INSTANCE_ID',
+    out_file: '/home/admin/.pm2/logs/jambonz-feature-server.log',
+    err_file: '/home/admin/.pm2/logs/jambonz-feature-server.log',
+    exec_mode: 'fork',
+    instances: 1,
+    autorestart: true,
+    watch: false,
+    max_memory_restart: '1G',
+    env: {
+      NODE_ENV: 'production',
+      GOOGLE_APPLICATION_CREDENTIALS: '/home/admin/credentials/gcp.json',
+      AWS_ACCESS_KEY_ID: 'AKIAXXXXXXXXXXXXX',
+      AWS_SECRET_ACCESS_KEY: 'spuvbTcYYYYYYYYYYYYYYYYYYYYY',
+      AWS_REGION: 'us-west-1',
+      ENABLE_METRICS: 1,
+      STATS_HOST: '127.0.0.1',
+      STATS_PORT: 8125,
+      STATS_PROTOCOL: 'tcp',
+      STATS_TELEGRAF: 1,
+      AWS_SNS_TOPIC_ARM: 'arn:aws:sns:us-west-1:316029039784:terraform-20201107200347128600000002',
+      JAMBONES_NETWORK_CIDR: '172.31.0.0/16',
+      JAMBONES_MYSQL_HOST: 'aurora-cluster-jambonz.cluster-c8hzpr8ulflh.us-west-1.rds.amazonaws.com',
+      JAMBONES_MYSQL_USER: 'admin',
+      JAMBONES_MYSQL_PASSWORD: 'JambonzR0ck$',
+      JAMBONES_MYSQL_DATABASE: 'jambones',
+      JAMBONES_MYSQL_CONNECTION_LIMIT: 10,
+      JAMBONES_REDIS_HOST: 'jambonz.lpypr4.0001.usw1.cache.amazonaws.com',
+      JAMBONES_REDIS_PORT: 6379,
+      JAMBONES_LOGLEVEL: 'debug',
+      HTTP_PORT: 3000,
+      DRACHTIO_HOST: '127.0.0.1',
+      DRACHTIO_PORT: 9022,
+      DRACHTIO_SECRET: 'cymru',
+      JAMBONES_SBCS: '172.31.32.10',
+      JAMBONES_FREESWITCH: '127.0.0.1:8021:JambonzR0ck$'
+    }
+  }]
+};
 ```
 
 #### Running the test suite
