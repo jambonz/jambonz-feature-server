@@ -35,7 +35,7 @@ Configuration is provided via environment variables:
 |STATS_TELEGRAF| if 1, metrics will be generated in telegraf format|no|
 
 ### running under pm2
-Typically, this application runs under [https://pm2.io] using an ecosystem.config.js file similar to this:
+Typically, this application runs under [pm2](https://pm2.io) using an [ecosystem.config.js](https://pm2.keymetrics.io/docs/usage/application-declaration/) file similar to this:
 ```js
 module.exports = {
   apps : [
@@ -54,30 +54,30 @@ module.exports = {
     env: {
       NODE_ENV: 'production',
       GOOGLE_APPLICATION_CREDENTIALS: '/home/admin/credentials/gcp.json',
-      AWS_ACCESS_KEY_ID: 'AKIAXXXXXXXXXXXXX',
-      AWS_SECRET_ACCESS_KEY: 'spuvbTcYYYYYYYYYYYYYYYYYYYYY',
+      AWS_ACCESS_KEY_ID: 'XXXXXXXXXXXX',
+      AWS_SECRET_ACCESS_KEY: 'YYYYYYYYYYYYYYYYYYYYY',
       AWS_REGION: 'us-west-1',
       ENABLE_METRICS: 1,
       STATS_HOST: '127.0.0.1',
       STATS_PORT: 8125,
       STATS_PROTOCOL: 'tcp',
       STATS_TELEGRAF: 1,
-      AWS_SNS_TOPIC_ARM: 'arn:aws:sns:us-west-1:316029039784:terraform-20201107200347128600000002',
+      AWS_SNS_TOPIC_ARM: 'arn:aws:sns:us-west-1:xxxxxxxxxxx:terraform-20201107200347128600000002',
       JAMBONES_NETWORK_CIDR: '172.31.0.0/16',
-      JAMBONES_MYSQL_HOST: 'aurora-cluster-jambonz.cluster-c8hzpr8ulflh.us-west-1.rds.amazonaws.com',
+      JAMBONES_MYSQL_HOST: 'aurora-cluster-jambonz.cluster-yyyyyyyyyyy.us-west-1.rds.amazonaws.com',
       JAMBONES_MYSQL_USER: 'admin',
-      JAMBONES_MYSQL_PASSWORD: 'JambonzR0ck$',
+      JAMBONES_MYSQL_PASSWORD: 'foobarbz',
       JAMBONES_MYSQL_DATABASE: 'jambones',
       JAMBONES_MYSQL_CONNECTION_LIMIT: 10,
-      JAMBONES_REDIS_HOST: 'jambonz.lpypr4.0001.usw1.cache.amazonaws.com',
+      JAMBONES_REDIS_HOST: 'jambonz.zzzzzzz.0001.usw1.cache.amazonaws.com',
       JAMBONES_REDIS_PORT: 6379,
       JAMBONES_LOGLEVEL: 'debug',
       HTTP_PORT: 3000,
       DRACHTIO_HOST: '127.0.0.1',
       DRACHTIO_PORT: 9022,
-      DRACHTIO_SECRET: 'cymru',
+      DRACHTIO_SECRET: 'sharedsecret',
       JAMBONES_SBCS: '172.31.32.10',
-      JAMBONES_FREESWITCH: '127.0.0.1:8021:JambonzR0ck$'
+      JAMBONES_FREESWITCH: '127.0.0.1:8021:sharedsecret'
     }
   }]
 };
