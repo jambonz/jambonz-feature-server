@@ -41,6 +41,7 @@
     "moment": "^2.29.1",
     "parse-url": "^5.0.2",
     "pino": "^6.8.0",
+    "uuid": "^8.3.2",
     "verify-aws-sns-signature": "^0.0.6",
     "xml2js": "^0.4.23"
   },
