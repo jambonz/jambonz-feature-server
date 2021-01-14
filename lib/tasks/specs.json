@@ -123,6 +123,7 @@
     "properties": {
       "credentials": "object|string",
       "project": "string",
+      "environment": "string",
       "lang": "string",
       "actionHook": "object|string",
       "eventHook": "object|string",
