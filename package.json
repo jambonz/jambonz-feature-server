@@ -1,6 +1,6 @@
 {
   "name": "jambonz-feature-server",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "main": "app.js",
   "engines": {
     "node": ">= 10.16.0"
@@ -26,21 +26,21 @@
     "jslint": "eslint app.js lib"
   },
   "dependencies": {
-    "@jambonz/db-helpers": "^0.5.3",
-    "@jambonz/realtimedb-helpers": "^0.2.20",
-    "@jambonz/stats-collector": "^0.1.4",
+    "@jambonz/db-helpers": "^0.5.10",
+    "@jambonz/realtimedb-helpers": "^0.3.0",
+    "@jambonz/stats-collector": "^0.1.5",
     "bent": "^7.3.12",
     "cidr-matcher": "^2.1.1",
     "debug": "^4.3.1",
     "deepcopy": "^2.1.0",
     "drachtio-fsmrf": "^2.0.2",
-    "drachtio-srf": "^4.4.44",
+    "drachtio-srf": "^4.4.46",
     "express": "^4.17.1",
     "ip": "^1.1.5",
     "jambonz-mw-registrar": "^0.1.3",
     "moment": "^2.29.1",
     "parse-url": "^5.0.2",
-    "pino": "^6.8.0",
+    "pino": "^6.11.0",
     "uuid": "^8.3.2",
     "verify-aws-sns-signature": "^0.0.6",
     "xml2js": "^0.4.23"
@@ -48,7 +48,7 @@
   "devDependencies": {
     "blue-tape": "^1.0.0",
     "clear-module": "^4.1.1",
-    "eslint": "^7.15.0",
+    "eslint": "^7.18.0",
     "eslint-plugin-promise": "^4.2.1",
     "lodash": "4.17.20",
     "nyc": "^15.1.0",
