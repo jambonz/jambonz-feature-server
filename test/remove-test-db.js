@@ -1,4 +1,4 @@
-const test = require('tape').test ;
+const test = require('blue-tape') ;
 const exec = require('child_process').exec ;
 const pwd = process.env.TRAVIS ? '' : '-p$MYSQL_ROOT_PASSWORD';
 

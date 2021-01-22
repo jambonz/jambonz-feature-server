@@ -1,4 +1,4 @@
-const test = require('tape');
+const test = require('blue-tape');
 const debug = require('debug')('drachtio:jambonz:test');
 const makeTask = require('../lib/tasks/make_task');
 const noop = () => {};
