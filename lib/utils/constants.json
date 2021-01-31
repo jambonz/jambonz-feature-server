@@ -51,11 +51,17 @@
     "StableCall": "stable-call",
     "UnansweredCall": "unanswered-call"
   },
-  "TranscriptionEvents": {
+  "GoogleTranscriptionEvents": {
     "Transcription": "google_transcribe::transcription",
     "EndOfUtterance": "google_transcribe::end_of_utterance",
     "NoAudioDetected": "google_transcribe::no_audio_detected",
     "MaxDurationExceeded": "google_transcribe::max_duration_exceeded"
+  },
+  "AwsTranscriptionEvents": {
+    "Transcription": "aws_transcribe::transcription",
+    "EndOfTranscript": "aws_transcribe::end_of_transcript",
+    "NoAudioDetected": "aws_transcribe::no_audio_detected",
+    "MaxDurationExceeded": "aws_transcribe::max_duration_exceeded"
   },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",

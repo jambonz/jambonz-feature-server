@@ -134,7 +134,8 @@
       "noInputEvent": "string",
       "passDtmfAsTextInput": "boolean",
       "thinkingMusic": "string",
-      "tts": "#synthesizer"
+      "tts": "#synthesizer",
+      "bargein": "boolean"
     },
     "required": [
       "project",
@@ -271,7 +272,8 @@
       "earlyMedia": "boolean"
     },
     "required": [
-      "transcriptionHook"
+      "transcriptionHook",
+      "recognizer"
     ]
   },
   "target": {
@@ -327,13 +329,47 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google"]
+        "enum": ["google", "aws"]
       },
       "language": "string",
       "hints": "array",
+      "altLanguages": "array",
       "profanityFilter": "boolean",
       "interim": "boolean",
-      "dualChannel": "boolean"
+      "singleUtterance": "boolean",
+      "dualChannel": "boolean",
+      "separateRecognitionPerChannel": "boolean",
+      "punctuation": "boolean",
+      "enhancedModel": "boolean",
+      "words": "boolean",
+      "diarization": "boolean",
+      "diarizationMinSpeakers": "number",
+      "diarizationMaxSpeakers": "number",
+      "interactionType": {
+        "type": "string",
+        "enum": [
+          "unspecified",
+          "discussion",
+          "presentation",
+          "phone_call",
+          "voicemail",
+          "voice_search",
+          "voice_command",
+          "dictation"
+        ]
+      },
+      "naicsCode": "number",
+      "identifyChannels": "boolean",
+      "vocabularyName": "string",
+      "vocabularyFilterName": "string",
+      "filterMethod": {
+        "type": "string",
+        "enum": [
+          "remove",
+          "mask",
+          "tag"
+        ]
+      }
     },
     "required": [
       "vendor"
