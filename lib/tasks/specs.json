@@ -329,7 +329,7 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google", "aws"]
+        "enum": ["google", "aws", "default"]
       },
       "language": "string",
       "hints": "array",
