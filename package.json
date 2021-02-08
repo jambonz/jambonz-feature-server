@@ -29,6 +29,7 @@
     "@jambonz/db-helpers": "^0.5.10",
     "@jambonz/realtimedb-helpers": "^0.4.0",
     "@jambonz/stats-collector": "^0.1.5",
+    "aws-sdk": "^2.840.0",
     "bent": "^7.3.12",
     "cidr-matcher": "^2.1.1",
     "debug": "^4.3.1",
@@ -46,13 +47,13 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
+    "async": "^3.2.0",
     "blue-tape": "^1.0.0",
     "clear-module": "^4.1.1",
     "eslint": "^7.19.0",
     "eslint-plugin-promise": "^4.2.1",
-    "lodash": "4.17.20",
     "nyc": "^15.1.0",
-    "tap-dot": "^2.0.0",
-    "tap-spec": "^5.0.0"
+    "tap-spec": "^5.0.0",
+    "tape": "^5.1.1"
   }
 }
