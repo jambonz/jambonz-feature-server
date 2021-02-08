@@ -1,6 +1,6 @@
 {
   "name": "jambonz-feature-server",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "main": "app.js",
   "engines": {
     "node": ">= 10.16.0"
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@jambonz/db-helpers": "^0.5.10",
-    "@jambonz/realtimedb-helpers": "^0.3.0",
+    "@jambonz/realtimedb-helpers": "^0.4.0",
     "@jambonz/stats-collector": "^0.1.5",
     "bent": "^7.3.12",
     "cidr-matcher": "^2.1.1",
