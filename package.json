@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@jambonz/db-helpers": "^0.5.10",
+    "@jambonz/mw-registrar": "^0.1.9",
     "@jambonz/realtimedb-helpers": "^0.4.0",
     "@jambonz/stats-collector": "^0.1.5",
     "aws-sdk": "^2.840.0",
@@ -38,7 +39,6 @@
     "drachtio-srf": "^4.4.47",
     "express": "^4.17.1",
     "ip": "^1.1.5",
-    "jambonz-mw-registrar": "^0.1.3",
     "moment": "^2.29.1",
     "parse-url": "^5.0.2",
     "pino": "^6.11.0",
