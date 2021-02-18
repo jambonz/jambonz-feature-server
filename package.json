@@ -30,7 +30,7 @@
     "@jambonz/mw-registrar": "^0.1.9",
     "@jambonz/realtimedb-helpers": "^0.4.0",
     "@jambonz/stats-collector": "^0.1.5",
-    "aws-sdk": "^2.840.0",
+    "aws-sdk": "^2.846.0",
     "bent": "^7.3.12",
     "cidr-matcher": "^2.1.1",
     "debug": "^4.3.1",
@@ -41,7 +41,7 @@
     "ip": "^1.1.5",
     "moment": "^2.29.1",
     "parse-url": "^5.0.2",
-    "pino": "^6.11.0",
+    "pino": "^6.11.1",
     "uuid": "^8.3.2",
     "verify-aws-sns-signature": "^0.0.6",
     "xml2js": "^0.4.23"
@@ -50,8 +50,8 @@
     "async": "^3.2.0",
     "blue-tape": "^1.0.0",
     "clear-module": "^4.1.1",
-    "eslint": "^7.19.0",
-    "eslint-plugin-promise": "^4.2.1",
+    "eslint": "^7.20.0",
+    "eslint-plugin-promise": "^4.3.1",
     "nyc": "^15.1.0",
     "tap-spec": "^5.0.0",
     "tape": "^5.1.1"
