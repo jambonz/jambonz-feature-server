@@ -30,6 +30,7 @@
     "@jambonz/mw-registrar": "^0.1.9",
     "@jambonz/realtimedb-helpers": "^0.4.1",
     "@jambonz/stats-collector": "^0.1.5",
+    "@jambonz/time-series": "^0.1.5",
     "aws-sdk": "^2.848.0",
     "bent": "^7.3.12",
     "cidr-matcher": "^2.1.1",
