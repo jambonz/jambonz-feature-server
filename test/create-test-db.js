@@ -18,6 +18,9 @@ test('creating schema', (t) => {
     if (err) return t.end(err);
     t.pass('schema and test data successfully created');
 
+    console.log(`GCP_JSON_KEY: ${process.env.GCP_JSON_KEY}`);
+    console.log(`AWS_ACCESS_KEY_ID: ${process.env.AWS_ACCESS_KEY_ID}`);
+    console.log(`AWS_SECRET_ACCESS_KEY: ${process.env.AWS_SECRET_ACCESS_KEY}`);
     if (process.env.GCP_JSON_KEY && process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
       const google_credential = encrypt(process.env.GCP_JSON_KEY);
       const aws_credential = encrypt(JSON.stringify({
