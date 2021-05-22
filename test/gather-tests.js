@@ -1,6 +1,5 @@
 const test = require('tape');
 const { sippUac } = require('./sipp')('test_fs');
-const exec = require('child_process').exec ;
 const bent = require('bent');
 const getJSON = bent('json')
 const clearModule = require('clear-module');
