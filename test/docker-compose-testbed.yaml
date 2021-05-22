@@ -1,55 +1,131 @@
-version: '3'
-
+version: '3.9'
 networks:
-  sbc-inbound:
+  fs:
     driver: bridge
     ipam:
       config:
         - subnet: 172.38.0.0/16
 
 services:
-  sbc:
-    image: drachtio/drachtio-server:latest
-    command: drachtio --contact "sip:*;transport=udp" --loglevel debug --sofia-loglevel 9
+  mysql:
+    image: mysql:5.7
     ports:
-      - "9060:9022/tcp"
+      - "3360:3306"
+    environment: 
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "127.0.0.1", "--protocol", "tcp"]
+      timeout: 5s
+      retries: 10
     networks:
-      sbc-inbound:
-        ipv4_address: 172.38.0.10
-
-  appserver:
-    image: drachtio/sipp:latest
-    command: sipp -sf /tmp/uas.xml
-    volumes:
-      - ./scenarios:/tmp
-    tty: true
-    networks:
-      sbc-inbound:
-        ipv4_address: 172.38.0.11
-
-  auth-server:
-    image: jambonz/customer-auth-server:latest
-    command: npm start
-    ports:
-      - "4000:4000/tcp"
-    env_file: docker.env
-    networks:
-      sbc-inbound:
-        ipv4_address: 172.38.0.12
+      fs:
+        ipv4_address: 172.38.0.5
 
   redis:
     image: redis:5-alpine
     ports:
       - "16379:6379/tcp"
+    depends_on:
+      - mysql
     networks:
-      sbc-inbound:
-        ipv4_address: 172.38.0.13
+      fs:
+        ipv4_address: 172.38.0.6
 
-  rtpengine:
-    image: drachtio/rtpengine:latest
+  docker-host:
+    image: qoomon/docker-host
+    cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
+    mem_limit: 8M
+    restart: on-failure
+    networks:
+      fs:
+        ipv4_address: 172.38.0.7
+
+  drachtio:
+    image: drachtio/drachtio-server:latest
+    restart: always
+    command: drachtio --contact "sip:*;transport=udp,tcp" --address 0.0.0.0 --port 9022
     ports:
-      - "12222:22222/udp"
+      - "9060:9022/tcp"
     networks:
-      sbc-inbound:
-        ipv4_address: 172.38.0.14
+      fs:
+        ipv4_address: 172.38.0.50
+    depends_on:
+      mysql:
+        condition: service_healthy
+      freeswitch:
+        condition: service_healthy
 
+  freeswitch:
+    image: drachtio/drachtio-freeswitch-mrf:v1.10.1-full
+    restart: always
+    command: freeswitch --rtp-range-start 20000 --rtp-range-end 20100
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /opt/credentials/gcp.json
+    ports:
+      - "8022:8021/tcp"
+    volumes:
+      - /tmp:/tmp
+      - ./credentials:/opt/credentials
+    healthcheck:
+      test: ['CMD', 'fs_cli' ,'-x', '"sofia status"']
+      timeout: 5s
+      retries: 15
+    networks:
+      fs:
+        ipv4_address: 172.38.0.51
+
+  webhook-decline:
+    image: jambonz/webhook-test-scaffold:latest
+    environment:
+      APP_PATH: /tmp/decline.json
+    ports:
+      - "3100:3000/tcp"
+    volumes:
+      - ./test-apps:/tmp
+    networks:
+      fs:
+        ipv4_address: 172.38.0.60
+
+  webhook-say:
+    image: jambonz/webhook-test-scaffold:latest
+    environment:
+      APP_PATH: /tmp/say.json
+    ports:
+      - "3101:3000/tcp"
+    volumes:
+      - ./test-apps:/tmp
+    networks:
+      fs:
+        ipv4_address: 172.38.0.61
+
+  webhook-gather:
+    image: jambonz/webhook-test-scaffold:latest
+    environment:
+      APP_PATH: /tmp/gather.json
+    ports:
+      - "3102:3000/tcp"
+    volumes:
+      - ./test-apps:/tmp
+    networks:
+      fs:
+        ipv4_address: 172.38.0.62
+
+  webhook-transcribe:
+    image: jambonz/webhook-test-scaffold:latest
+    environment:
+      APP_PATH: /tmp/transcribe.json
+    ports:
+      - "3103:3000/tcp"
+    volumes:
+      - ./test-apps:/tmp
+    networks:
+      fs:
+        ipv4_address: 172.38.0.63
+
+  influxdb:
+    image: influxdb:1.8-alpine
+    ports:
+      - "8086:8086"
+    networks:
+      fs:
+        ipv4_address: 172.38.0.90

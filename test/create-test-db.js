@@ -1,9 +1,12 @@
-const test = require('tape').test ;
+const test = require('tape') ;
 const exec = require('child_process').exec ;
-const pwd = process.env.TRAVIS ? '' : '-p$MYSQL_ROOT_PASSWORD';
+const fs = require('fs');
+const {encrypt} = require('../lib/utils/encrypt-decrypt');
 
 test('creating jambones_test database', (t) => {
-  exec(`mysql -h localhost -u root ${pwd} < ${__dirname}/db/create_test_db.sql`, (err, stdout, stderr) => {
+  exec(`mysql -h 127.0.0.1 -u root --protocol=tcp --port=3360 < ${__dirname}/db/create_test_db.sql`, (err, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr)
     if (err) return t.end(err);
     t.pass('database successfully created');
     t.end();
@@ -11,17 +14,35 @@ test('creating jambones_test database', (t) => {
 });
 
 test('creating schema', (t) => {
-  exec(`mysql -h localhost -u root ${pwd} -D jambones_test < ${__dirname}/db/jambones-sql.sql`, (err, stdout, stderr) => {
+  exec(`mysql -h 127.0.0.1 -u root --protocol=tcp --port=3360  -D jambones_test < ${__dirname}/db/create-and-populate-schema.sql`, (err, stdout, stderr) => {
     if (err) return t.end(err);
-    t.pass('schema successfully created');
-    t.end();
+    t.pass('schema and test data successfully created');
+
+    if (process.env.GCP_JSON_KEY && process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+      const google_credential = encrypt(process.env.GCP_JSON_KEY);
+      const aws_credential = encrypt(JSON.stringify({
+        access_key_id: process.env.AWS_ACCESS_KEY_ID,
+        secret_access_key: process.env.AWS_SECRET_ACCESS_KEY
+      }));
+      const cmd = `
+UPDATE speech_credentials SET credential='${google_credential}' WHERE vendor='google';
+UPDATE speech_credentials SET credential='${aws_credential}' WHERE vendor='aws';
+`;
+      const path = `${__dirname}/.creds.sql`;
+      fs.writeFileSync(path, cmd);
+      exec(`mysql -h 127.0.0.1 -u root --protocol=tcp --port=3360  -D jambones_test < ${path}`, (err, stdout, stderr) => {
+        console.log(stdout);
+        console.log(stderr);
+        if (err) return t.end(err);
+        fs.unlinkSync(path)
+        fs.writeFileSync(`${__dirname}/credentials/gcp.json`, process.env.GCP_JSON_KEY);
+        t.pass('set account-level speech credentials');
+        t.end();
+      });
+    }
+    else {
+      t.end();
+    }
   });
 });
 
-test('populating test case data', (t) => {
-  exec(`mysql -h localhost -u root ${pwd} -D jambones_test < ${__dirname}/db/populate-test-data.sql`, (err, stdout, stderr) => {
-    if (err) return t.end(err);
-    t.pass('test data set created');
-    t.end();
-  });
-});

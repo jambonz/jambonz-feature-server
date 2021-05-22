@@ -27,19 +27,19 @@ obj.output = () => {
 obj.sippUac = (file, bindAddress) => {
   const cmd = 'docker';
   const args = [
-    'run', '-ti', '--rm', '--net', `${network}`,
+    'run', '-t', '--rm', '--net', `${network}`,
     '-v', `${__dirname}/scenarios:/tmp/scenarios`,
     'drachtio/sipp', 'sipp', '-sf', `/tmp/scenarios/${file}`,
     '-m', '1',
     '-sleep', '250ms',
     '-nostdin',
     '-cid_str', `%u-%p@%s-${idx++}`,
-    'sbc'
+    '172.38.0.50'
   ];
 
   if (bindAddress) args.splice(5, 0, '--ip', bindAddress);
 
-  //console.log(args.join(' '));
+  console.log(args.join(' '));
   clearOutput();
 
   return new Promise((resolve, reject) => {
@@ -57,11 +57,11 @@ obj.sippUac = (file, bindAddress) => {
     });
 
     child_process.stdout.on('data', (data) => {
-      //debug(`stdout: ${data}`);
+      //console.log(`stdout: ${data}`);
       addOutput(data.toString());
     });
     child_process.stdout.on('data', (data) => {
-      //debug(`stdout: ${data}`);
+      //console.log(`stdout: ${data}`);
       addOutput(data.toString());
     });
   });
