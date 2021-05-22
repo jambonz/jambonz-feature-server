@@ -9,7 +9,7 @@ process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
 });
 
-test('app payload parsing tests', (t) => {
+test('unit tests', (t) => {
   let task = makeTask(logger, require('./data/good/sip-decline'));
   t.ok(task.name === 'sip:decline', 'parsed sip:decline');
 
@@ -53,7 +53,6 @@ test('app payload parsing tests', (t) => {
   t.pass('alternate syntax works');
 
   t.end();
-  process.exit(0);
 });
 
 

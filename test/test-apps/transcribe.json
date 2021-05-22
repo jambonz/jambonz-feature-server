@@ -1,0 +1,9 @@
+[
+  {
+  "verb": "transcribe",
+  "recognizer": {
+    "vendor": "google"
+  },
+  "transcriptionHook": "/actionHook"
+  }
+]
