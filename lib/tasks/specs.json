@@ -202,7 +202,9 @@
   },
   "message": {
     "properties": {
-      "provider": "string",
+      "carrier": "string",
+      "account_sid": "string",
+      "message_sid": "string",
       "to": "string",
       "from": "string",
       "text": "string",
