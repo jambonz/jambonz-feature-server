@@ -21,17 +21,17 @@
   },
   "scripts": {
     "start": "node app",
-    "test": "NODE_ENV=test JAMBONES_NETWORK_CIDR=127.0.0.1/32 node test/ | ./node_modules/.bin/tap-spec",
+    "test": "NODE_ENV=test JAMBONES_HOSTING=1 DRACHTIO_HOST=127.0.0.1 DRACHTIO_PORT=9060 DRACHTIO_SECRET=cymru JAMBONES_MYSQL_HOST=127.0.0.1 JAMBONES_MYSQL_PORT=3360 JAMBONES_MYSQL_USER=jambones_test JAMBONES_MYSQL_PASSWORD=jambones_test JAMBONES_MYSQL_DATABASE=jambones_test JAMBONES_REDIS_HOST=127.0.0.1 JAMBONES_REDIS_PORT=16379 JAMBONES_LOGLEVEL=debug ENABLE_METRICS=0 HTTP_PORT=3000 JAMBONES_SBCS=172.38.0.10 JAMBONES_FREESWITCH=127.0.0.1:8022:ClueCon:docker-host JAMBONES_TIME_SERIES_HOST=127.0.0.1 JAMBONES_NETWORK_CIDR=172.38.0.0/16 node test/ ",
     "coverage": "./node_modules/.bin/nyc --reporter html --report-dir ./coverage npm run test",
     "jslint": "eslint app.js lib"
   },
   "dependencies": {
-    "@jambonz/db-helpers": "^0.5.20",
-    "@jambonz/mw-registrar": "^0.1.9",
+    "@jambonz/db-helpers": "^0.6.4",
+    "@jambonz/mw-registrar": "^0.2.1",
     "@jambonz/realtimedb-helpers": "^0.4.1",
     "@jambonz/stats-collector": "^0.1.5",
     "@jambonz/time-series": "^0.1.5",
-    "aws-sdk": "^2.848.0",
+    "aws-sdk": "^2.846.0",
     "bent": "^7.3.12",
     "cidr-matcher": "^2.1.1",
     "debug": "^4.3.1",
@@ -42,7 +42,7 @@
     "ip": "^1.1.5",
     "moment": "^2.29.1",
     "parse-url": "^5.0.2",
-    "pino": "^6.11.1",
+    "pino": "^6.11.2",
     "to-snake-case": "^1.0.0",
     "uuid": "^8.3.2",
     "verify-aws-sns-signature": "^0.0.6",
@@ -50,12 +50,10 @@
   },
   "devDependencies": {
     "async": "^3.2.0",
-    "blue-tape": "^1.0.0",
     "clear-module": "^4.1.1",
     "eslint": "^7.20.0",
     "eslint-plugin-promise": "^4.3.1",
     "nyc": "^15.1.0",
-    "tap-spec": "^5.0.0",
-    "tape": "^5.2.0"
+    "tape": "^5.2.2"
   }
 }

@@ -1,8 +1,9 @@
 require('./unit-tests');
-/*
 require('./docker_start');
 require('./create-test-db');
-require('./sip-tests');
+require('./account-validation-tests');
+require('./webhooks-tests');
+require('./say-tests');
+require('./gather-tests');
 require('./remove-test-db');
 require('./docker_stop');
-*/

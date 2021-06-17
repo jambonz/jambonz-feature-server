@@ -1,0 +1,12 @@
+[
+  {
+  "verb": "gather",
+  "input": ["speech"],
+  "recognizer": {
+    "vendor": "google",
+    "hints": ["customer support", "sales", "human resources", "HR"]
+  },
+  "timeout": 10,
+  "actionHook": "/actionHook"
+  }
+]

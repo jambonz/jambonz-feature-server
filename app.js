@@ -12,9 +12,10 @@ assert.ok(process.env.JAMBONES_NETWORK_CIDR, 'missing JAMBONES_SUBNET env var');
 const Srf = require('drachtio-srf');
 const srf = new Srf();
 const PORT = process.env.HTTP_PORT || 3000;
-const opts = Object.assign({
-  timestamp: () => {return `, "time": "${new Date().toISOString()}"`;}
-}, {level: process.env.JAMBONES_LOGLEVEL || 'info'});
+const opts = {
+  timestamp: () => {return `, "time": "${new Date().toISOString()}"`;},
+  level: process.env.JAMBONES_LOGLEVEL || 'info'
+};
 const logger = require('pino')(opts);
 const {LifeCycleEvents} = require('./lib/utils/constants');
 const installSrfLocals = require('./lib/utils/install-srf-locals');
@@ -22,6 +23,7 @@ installSrfLocals(srf, logger);
 
 const {
   initLocals,
+  getAccountDetails,
   normalizeNumbers,
   retrieveApplication,
   invokeWebCallback
@@ -57,7 +59,13 @@ if (process.env.NODE_ENV === 'test') {
   });
 }
 
-srf.use('invite', [initLocals, normalizeNumbers, retrieveApplication, invokeWebCallback]);
+srf.use('invite', [
+  initLocals,
+  getAccountDetails,
+  normalizeNumbers,
+  retrieveApplication,
+  invokeWebCallback
+]);
 
 srf.invite((req, res) => {
   const session = new InboundCallSession(req, res);
@@ -72,7 +80,7 @@ app.use((err, req, res, next) => {
   logger.error(err, 'burped error');
   res.status(err.status || 500).json({msg: err.message});
 });
-app.listen(PORT);
+const httpServer = app.listen(PORT);
 
 logger.info(`listening for HTTP requests on port ${PORT}, serviceUrl is ${srf.locals.serviceUrl}`);
 
@@ -88,4 +96,13 @@ setInterval(() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
 }, 5000);
 
-module.exports = {srf, logger};
+const disconnect = () => {
+  return new Promise ((resolve) => {
+    httpServer.on('close', resolve);
+    httpServer.close();
+    srf.disconnect();
+    srf.locals.mediaservers.forEach((ms) => ms.disconnect());
+  });
+};
+
+module.exports = {srf, logger, disconnect};

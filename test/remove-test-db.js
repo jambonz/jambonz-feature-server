@@ -1,11 +1,11 @@
-const test = require('tape').test ;
+const test = require('tape') ;
 const exec = require('child_process').exec ;
-const pwd = process.env.TRAVIS ? '' : '-p$MYSQL_ROOT_PASSWORD';
-
+const fs = require('fs');
 test('dropping jambones_test database', (t) => {
-  exec(`mysql -h localhost -u root ${pwd} < ${__dirname}/db/remove_test_db.sql`, (err, stdout, stderr) => {
+  exec(`mysql -h 127.0.0.1 -u root --protocol=tcp --port=3360 < ${__dirname}/db/remove_test_db.sql`, (err, stdout, stderr) => {
     if (err) return t.end(err);
     t.pass('database successfully dropped');
+    fs.unlinkSync(`${__dirname}/credentials/gcp.json`);
     t.end();
   });
 });

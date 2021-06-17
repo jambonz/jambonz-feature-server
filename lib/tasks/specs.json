@@ -166,10 +166,6 @@
       "passDtmf": "boolean",
       "actionHook": "object|string",
       "eventHook": "object|string",
-      "prompt": {
-        "type": "string",
-        "enum": ["lex", "tts"]
-      },
       "noInputTimeout": "number",
       "tts": "#synthesizer"
     },
@@ -177,7 +173,7 @@
       "botId",
       "botAlias",
       "region",
-      "prompt"
+      "credentials"
     ]
   },
   "listen": {
@@ -206,7 +202,9 @@
   },
   "message": {
     "properties": {
-      "provider": "string",
+      "carrier": "string",
+      "account_sid": "string",
+      "message_sid": "string",
       "to": "string",
       "from": "string",
       "text": "string",
@@ -292,8 +290,7 @@
       "sipUri": "string",
       "auth": "#auth",
       "vmail": "boolean",
-      "tenant": "string",
-      "overrideTo": "string"
+      "tenant": "string"
     },
     "required": [
       "type"
