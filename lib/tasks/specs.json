@@ -92,7 +92,8 @@
       "waitHook": "object|string",
       "statusEvents": "array",
       "statusHook": "object|string",
-      "enterHook": "object|string"
+      "enterHook": "object|string",
+      "_": "object"
     },
     "required": [
       "name"
