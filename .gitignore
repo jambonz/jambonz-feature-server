@@ -39,3 +39,4 @@ examples/*
 
 ecosystem.config.js
 .vscode
+run-tests.sh
