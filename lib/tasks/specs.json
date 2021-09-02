@@ -78,7 +78,6 @@
       "say": "#say"
     },
     "required": [
-      "actionHook"
     ]
   },
   "conference": {
@@ -226,6 +225,19 @@
     },
     "required": [
       "length"
+    ]
+  },
+  "rasa": {
+    "properties": {
+      "url": "string",
+      "recognizer": "#recognizer",
+      "tts": "#synthesizer",
+      "prompt": "string",
+      "actionHook": "object|string",
+      "eventHook": "object|string"
+    },
+    "required": [
+      "url"
     ]
   },
   "redirect": {

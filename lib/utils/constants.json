@@ -14,6 +14,7 @@
     "Message": "message",
     "Pause": "pause",
     "Play": "play",
+    "Rasa": "rasa",
     "Redirect": "redirect",
     "RestDial": "rest:dial",
     "SipDecline": "sip:decline",
