@@ -46,7 +46,7 @@
   "play": {
     "properties": {
       "url": "string",
-      "loop": "number",
+      "loop": "number|string",
       "earlyMedia": "boolean"
     },
     "required": [
