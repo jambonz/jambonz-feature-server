@@ -56,7 +56,7 @@
   "say": {
     "properties": {
       "text": "string|array",
-      "loop": "number",
+      "loop": "number|string",
       "synthesizer": "#synthesizer",
       "earlyMedia": "boolean"
     },
