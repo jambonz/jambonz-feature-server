@@ -87,6 +87,7 @@
       "startConferenceOnEnter": "boolean",
       "endConferenceOnExit": "boolean",
       "maxParticipants": "number",
+      "joinMuted": "boolean",
       "actionHook": "object|string",
       "waitHook": "object|string",
       "statusEvents": "array",
