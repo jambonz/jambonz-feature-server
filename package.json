@@ -28,7 +28,7 @@
   "dependencies": {
     "@jambonz/db-helpers": "^0.6.13",
     "@jambonz/mw-registrar": "^0.2.1",
-    "@jambonz/realtimedb-helpers": "^0.4.7",
+    "@jambonz/realtimedb-helpers": "^0.4.8",
     "@jambonz/stats-collector": "^0.1.5",
     "@jambonz/time-series": "^0.1.5",
     "aws-sdk": "^2.846.0",
