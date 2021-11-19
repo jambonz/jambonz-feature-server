@@ -92,7 +92,8 @@
       "waitHook": "object|string",
       "statusEvents": "array",
       "statusHook": "object|string",
-      "enterHook": "object|string"
+      "enterHook": "object|string",
+      "record": "#record"
     },
     "required": [
       "name"
@@ -239,6 +240,14 @@
     },
     "required": [
       "url"
+    ]
+  },
+  "record": {
+    "properties": {
+      "path": "string"
+    },
+    "required": [
+      "path"
     ]
   },
   "redirect": {
