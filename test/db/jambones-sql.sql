@@ -20,11 +20,15 @@ DROP TABLE IF EXISTS lcr_routes;
 
 DROP TABLE IF EXISTS predefined_sip_gateways;
 
+DROP TABLE IF EXISTS predefined_smpp_gateways;
+
 DROP TABLE IF EXISTS predefined_carriers;
 
 DROP TABLE IF EXISTS account_offers;
 
 DROP TABLE IF EXISTS products;
+
+DROP TABLE IF EXISTS schema_version;
 
 DROP TABLE IF EXISTS api_keys;
 
@@ -148,6 +152,20 @@ predefined_carrier_sid CHAR(36) NOT NULL,
 PRIMARY KEY (predefined_sip_gateway_sid)
 );
 
+CREATE TABLE predefined_smpp_gateways
+(
+predefined_smpp_gateway_sid CHAR(36) NOT NULL UNIQUE ,
+ipv4 VARCHAR(128) NOT NULL COMMENT 'ip address or DNS name of the gateway. ',
+port INTEGER NOT NULL DEFAULT 2775 COMMENT 'smpp signaling port',
+inbound BOOLEAN NOT NULL COMMENT 'if true, whitelist this IP to allow inbound SMS from the gateway',
+outbound BOOLEAN NOT NULL COMMENT 'i',
+netmask INTEGER NOT NULL DEFAULT 32,
+is_primary BOOLEAN NOT NULL DEFAULT 1,
+use_tls BOOLEAN DEFAULT 0,
+predefined_carrier_sid CHAR(36) NOT NULL,
+PRIMARY KEY (predefined_smpp_gateway_sid)
+);
+
 CREATE TABLE products
 (
 product_sid CHAR(36) NOT NULL UNIQUE ,
@@ -172,6 +190,11 @@ account_sid CHAR(36) NOT NULL,
 product_sid CHAR(36) NOT NULL,
 stripe_product_id VARCHAR(56) NOT NULL,
 PRIMARY KEY (account_offer_sid)
+);
+
+CREATE TABLE schema_version
+(
+version VARCHAR(16)
 );
 
 CREATE TABLE api_keys
@@ -420,6 +443,10 @@ CREATE INDEX predefined_sip_gateway_sid_idx ON predefined_sip_gateways (predefin
 CREATE INDEX predefined_carrier_sid_idx ON predefined_sip_gateways (predefined_carrier_sid);
 ALTER TABLE predefined_sip_gateways ADD FOREIGN KEY predefined_carrier_sid_idxfk (predefined_carrier_sid) REFERENCES predefined_carriers (predefined_carrier_sid);
 
+CREATE INDEX predefined_smpp_gateway_sid_idx ON predefined_smpp_gateways (predefined_smpp_gateway_sid);
+CREATE INDEX predefined_carrier_sid_idx ON predefined_smpp_gateways (predefined_carrier_sid);
+ALTER TABLE predefined_smpp_gateways ADD FOREIGN KEY predefined_carrier_sid_idxfk_1 (predefined_carrier_sid) REFERENCES predefined_carriers (predefined_carrier_sid);
+
 CREATE INDEX product_sid_idx ON products (product_sid);
 CREATE INDEX account_product_sid_idx ON account_products (account_product_sid);
 CREATE INDEX account_subscription_sid_idx ON account_products (account_subscription_sid);
@@ -545,4 +572,4 @@ ALTER TABLE accounts ADD FOREIGN KEY queue_event_hook_sid_idxfk (queue_event_hoo
 
 ALTER TABLE accounts ADD FOREIGN KEY device_calling_application_sid_idxfk (device_calling_application_sid) REFERENCES applications (application_sid);
 
-SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS=0;

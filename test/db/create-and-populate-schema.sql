@@ -587,7 +587,8 @@ DROP TABLE IF EXISTS `speech_credentials`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `speech_credentials` (
   `speech_credential_sid` char(36) NOT NULL,
-  `account_sid` char(36) NOT NULL,
+ `service_provider_sid` CHAR(36),
+ `account_sid` char(36) NOT NULL,
   `vendor` varchar(255) NOT NULL,
   `credential` VARCHAR(8192) NOT NULL,
   `use_for_tts` tinyint(1) DEFAULT '1',
@@ -611,7 +612,7 @@ CREATE TABLE `speech_credentials` (
 
 LOCK TABLES `speech_credentials` WRITE;
 /*!40000 ALTER TABLE `speech_credentials` DISABLE KEYS */;
-INSERT INTO `speech_credentials` VALUES ('2add163c-34f2-45c6-a016-f955d218ffb6','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','google','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1),('84154212-5c99-4c94-8993-bc2a46288daa','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','aws','credential-goes-here',0,0,NULL,NULL,NULL,NULL);
+INSERT INTO `speech_credentials` VALUES ('2add163c-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','google','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1),('84154212-5c99-4c94-8993-bc2a46288daa',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','aws','credential-goes-here',0,0,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `speech_credentials` ENABLE KEYS */;
 UNLOCK TABLES;
 
