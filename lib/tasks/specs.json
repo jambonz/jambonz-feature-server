@@ -9,6 +9,18 @@
       "status"
     ]
   },
+  "sip:refer": {
+    "properties": {
+      "referTo": "string",
+      "referredBy": "string",
+      "headers": "object",
+      "actionHook": "object|string",
+      "eventHook": "object|string"
+    },
+    "required": [
+      "referTo"
+    ]
+  },
   "dequeue": {
     "properties": {
       "name": "string",
