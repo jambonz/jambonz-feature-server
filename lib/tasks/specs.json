@@ -348,7 +348,7 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google", "aws", "polly", "default"]
+        "enum": ["google", "aws", "polly", "microsoft", "default"]
       },
       "language": "string",
       "voice": "string",
@@ -365,7 +365,7 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google", "aws", "default"]
+        "enum": ["google", "aws", "microsoft", "default"]
       },
       "language": "string",
       "hints": "array",
