@@ -65,6 +65,12 @@
     "NoAudioDetected": "aws_transcribe::no_audio_detected",
     "MaxDurationExceeded": "aws_transcribe::max_duration_exceeded"
   },
+  "AzureTranscriptionEvents": {
+    "Transcription": "azure_transcribe::transcription",
+    "StartOfUtterance": "azure_transcribe::start_of_utterance",
+    "EndOfUtterance": "azure_transcribe::end_of_utterance",
+    "NoSpeechDetected": "azure_transcribe::no_speech_detected"
+  },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",
     "ConnectFailure": "mod_audio_fork::connect_failed",

@@ -348,7 +348,7 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google", "aws", "polly", "default"]
+        "enum": ["google", "aws", "polly", "microsoft", "default"]
       },
       "language": "string",
       "voice": "string",
@@ -365,7 +365,7 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google", "aws", "default"]
+        "enum": ["google", "aws", "microsoft", "default"]
       },
       "language": "string",
       "hints": "array",
@@ -405,7 +405,24 @@
           "mask",
           "tag"
         ]
-      }
+      },
+      "outputFormat": {
+        "type": "string",
+        "enum": [
+          "simple",
+          "detailed"
+        ]
+      },
+      "profanityOption": {
+        "type": "string",
+        "enum": [
+          "masked",
+          "removed",
+          "raw"
+        ]
+      },
+      "requestSnr": "boolean",
+      "initialSpeechTimeoutMs": "number"
     },
     "required": [
       "vendor"
