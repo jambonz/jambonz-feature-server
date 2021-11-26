@@ -405,7 +405,24 @@
           "mask",
           "tag"
         ]
-      }
+      },
+      "outputFormat": {
+        "type": "string",
+        "enum": [
+          "simple",
+          "detailed"
+        ]
+      },
+      "profanityOption": {
+        "type": "string",
+        "enum": [
+          "masked",
+          "removed",
+          "raw"
+        ]
+      },
+      "requestSnr": "boolean",
+      "initialSpeechTimeoutMs": "number"
     },
     "required": [
       "vendor"
