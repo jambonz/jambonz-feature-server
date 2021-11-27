@@ -328,7 +328,8 @@
       "sipUri": "string",
       "auth": "#auth",
       "vmail": "boolean",
-      "tenant": "string"
+      "tenant": "string",
+      "trunk": "string"
     },
     "required": [
       "type"
