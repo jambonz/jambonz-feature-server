@@ -1,6 +1,6 @@
 {
   "name": "jambonz-feature-server",
-  "version": "0.6.7-rc5",
+  "version": "v0.6.7-rc8",
   "main": "app.js",
   "engines": {
     "node": ">= 10.16.0"
@@ -28,7 +28,7 @@
   "dependencies": {
     "@jambonz/db-helpers": "^0.6.14",
     "@jambonz/mw-registrar": "^0.2.1",
-    "@jambonz/realtimedb-helpers": "^0.4.9",
+    "@jambonz/realtimedb-helpers": "^0.4.10",
     "@jambonz/stats-collector": "^0.1.5",
     "@jambonz/time-series": "^0.1.5",
     "aws-sdk": "^2.846.0",
