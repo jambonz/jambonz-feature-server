@@ -106,6 +106,7 @@ const disconnect = () => {
 };
 
 process.on('SIGUSR2', handle);
+process.on('SIGTERM', handle);
 
 function handle(signal) {
   const {removeFromSet} = srf.locals.dbHelpers;
