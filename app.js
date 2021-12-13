@@ -105,4 +105,14 @@ const disconnect = () => {
   });
 };
 
+process.on('SIGUSR2', handle);
+
+function handle(signal) {
+  const {removeFromSet} = srf.locals.dbHelpers;
+  const setName = `${(process.env.JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
+  logger.info(`got signal ${signal}, removing ${srf.locals.localSipAddress} from set ${setName}`);
+  removeFromSet(setName, srf.locals.localSipAddress);
+  srf.locals.disabled = true;
+}
+
 module.exports = {srf, logger, disconnect};
