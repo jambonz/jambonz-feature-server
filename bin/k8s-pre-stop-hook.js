@@ -44,7 +44,7 @@ const findNodePid = async() => {
         else {
           console.log(`waiting for ${calls} to exit..`);
         }
-        sleep(10000);
+        await sleep(10000);
       } while (1);
     } catch (err) {
       console.error(err, 'Error querying health endpoint');
