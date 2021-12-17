@@ -31,7 +31,7 @@
     "@jambonz/realtimedb-helpers": "^0.4.10",
     "@jambonz/stats-collector": "^0.1.5",
     "@jambonz/time-series": "^0.1.5",
-    "aws-sdk": "^2.846.0",
+    "aws-sdk": "^2.1036.0",
     "bent": "^7.3.12",
     "cidr-matcher": "^2.1.1",
     "debug": "^4.3.1",
