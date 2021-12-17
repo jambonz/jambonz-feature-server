@@ -24,27 +24,29 @@ const findNodePid = async() => {
   process.exit(-1);
 };
 
-const pid = findNodePid();
-console.log(`k8s-pre-stop-hook: sending SIGUSR2 signal to PID ${pid}`);
-exec(`kill -SIGUSR2 ${pid}`, async(err, stdout, stderr) => {
-  if (err) {
-    console.log(err, 'Error sending SIGUSR');
-    process.exit(-1);
-  }
-  console.log(`pkill output: ${stdout}`);
-  if (stderr) console.log(`pkill stderr: ${stderr}`);
+(async function() {
+  const pid = await findNodePid();
+  console.log(`k8s-pre-stop-hook: sending SIGUSR2 signal to PID ${pid}`);
+  exec(`kill -SIGUSR2 ${pid}`, async(err, stdout, stderr) => {
+    if (err) {
+      console.log(err, 'Error sending SIGUSR');
+      process.exit(-1);
+    }
+    console.log(`pkill output: ${stdout}`);
+    if (stderr) console.log(`pkill stderr: ${stderr}`);
 
-  try {
-    do {
-      const obj = await getCalls('http://127.0.0.1:3000/');
-      console.log(obj, 'query output');
-      const {calls} = obj;
-      console.log(`call count: ${calls}`);
-      if (calls === 0) process.exit(0);
-      sleep(5000);
-    } while (1);
-  } catch (err) {
-    console.error(err, 'Error querying health endpoint');
-    process.exit(-1);
-  }
-});
+    try {
+      do {
+        const obj = await getCalls('http://127.0.0.1:3000/');
+        console.log(obj, 'query output');
+        const {calls} = obj;
+        console.log(`call count: ${calls}`);
+        if (calls === 0) process.exit(0);
+        sleep(5000);
+      } while (1);
+    } catch (err) {
+      console.error(err, 'Error querying health endpoint');
+      process.exit(-1);
+    }
+  });
+})();
