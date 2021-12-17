@@ -29,7 +29,7 @@
     "@jambonz/db-helpers": "^0.6.14",
     "@jambonz/mw-registrar": "^0.2.1",
     "@jambonz/realtimedb-helpers": "^0.4.10",
-    "@jambonz/stats-collector": "^0.1.5",
+    "@jambonz/stats-collector": "^0.1.6",
     "@jambonz/time-series": "^0.1.5",
     "aws-sdk": "^2.846.0",
     "bent": "^7.3.12",
