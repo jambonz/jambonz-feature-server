@@ -32,8 +32,6 @@ const findNodePid = async() => {
       console.log(err, 'Error sending SIGUSR');
       process.exit(-1);
     }
-    console.log(`pkill output: ${stdout}`);
-    if (stderr) console.log(`pkill stderr: ${stderr}`);
 
     try {
       do {
