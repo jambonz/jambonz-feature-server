@@ -36,11 +36,15 @@ const findNodePid = async() => {
     try {
       do {
         const obj = await getCalls('http://127.0.0.1:3000/');
-        console.log(obj, 'query output');
         const {calls} = obj;
-        console.log(`call count: ${calls}`);
-        if (calls === 0) process.exit(0);
-        sleep(5000);
+        if (calls === 0) {
+          console.log('no calls on the system, we can exit');
+          process.exit(0);
+        }
+        else {
+          console.log(`waiting for ${calls} to exit..`);
+        }
+        sleep(10000);
       } while (1);
     } catch (err) {
       console.error(err, 'Error querying health endpoint');
