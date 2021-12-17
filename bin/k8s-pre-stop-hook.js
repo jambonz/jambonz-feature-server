@@ -3,12 +3,30 @@ const bent = require('bent');
 const getCalls = bent('json');
 const { exec } = require('child_process');
 
-function sleep(ms) {
+const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
+};
 
-console.log('k8s-pre-stop-hook: sending SIGUSR signal to node process');
-exec('pkill -SIGUSR2 node', async(err, stdout, stderr) => {
+const { readdir, readFile } = require('fs/promises');
+const findNodePid = async() => {
+  try {
+    const files = await (await readdir('/proc')).filter((f) => /^\d+$/.test(f));
+    for (const f of files) {
+      const contents = await readFile(`/proc/${f}/cmdline`, {encoding: 'utf8'});
+      if (contents.replace('\0', ' ').startsWith('node ')) {
+        return parseInt(f);
+      }
+    }
+    console.log('pid not found');
+  } catch (err) {
+    console.log(err, 'Error finding PID');
+  }
+  process.exit(-1);
+};
+
+const pid = findNodePid();
+console.log(`k8s-pre-stop-hook: sending SIGUSR2 signal to PID ${pid}`);
+exec(`kill -SIGUSR2 ${pid}`, async(err, stdout, stderr) => {
   if (err) {
     console.log(err, 'Error sending SIGUSR');
     process.exit(-1);
