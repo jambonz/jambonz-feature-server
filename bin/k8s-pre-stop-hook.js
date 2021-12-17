@@ -52,3 +52,6 @@ const findNodePid = async() => {
     }
   });
 })();
+
+process.on('SIGTERM', () => console.log('got SIGTERM'));
+process.on('SIGINT', () => console.log('got SIGINT'));
