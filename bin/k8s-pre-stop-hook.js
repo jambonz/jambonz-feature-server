@@ -27,7 +27,7 @@ const findNodePid = async() => {
 (async function() {
   const pid = await findNodePid();
   console.log(`k8s-pre-stop-hook: sending SIGUSR2 signal to PID ${pid}`);
-  exec(`kill -SIGUSR2 ${pid}`, async(err, stdout, stderr) => {
+  exec(`kill -12 ${pid}`, async(err, stdout, stderr) => {
     if (err) {
       console.log(err, 'Error sending SIGUSR');
       process.exit(-1);
