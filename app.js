@@ -92,6 +92,10 @@ sessionTracker.on('idle', () => {
   }
 });
 
+const getCount = () => sessionTracker.count;
+const healthCheck = require('@jambonz/http-health-check');
+healthCheck({app, logger, path: '/', fn: getCount});
+
 setInterval(() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
 }, 5000);
