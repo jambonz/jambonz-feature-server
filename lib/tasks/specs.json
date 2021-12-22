@@ -329,7 +329,8 @@
       "auth": "#auth",
       "vmail": "boolean",
       "tenant": "string",
-      "trunk": "string"
+      "trunk": "string",
+      "overrideTo": "string"
     },
     "required": [
       "type"
