@@ -1,5 +1,6 @@
 {
   "TaskName": {
+    "Cognigy": "cognigy",
     "Conference": "conference",
     "Dequeue": "dequeue",
     "Dial": "dial",

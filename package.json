@@ -26,10 +26,11 @@
     "jslint": "eslint app.js lib"
   },
   "dependencies": {
+    "@cognigy/socket-client": "^4.5.5",
     "@jambonz/db-helpers": "^0.6.16",
+    "@jambonz/http-health-check": "^0.0.1",
     "@jambonz/mw-registrar": "^0.2.1",
     "@jambonz/realtimedb-helpers": "^0.4.14",
-    "@jambonz/http-health-check": "^0.0.1",
     "@jambonz/stats-collector": "^0.1.6",
     "@jambonz/time-series": "^0.1.5",
     "aws-sdk": "^2.1036.0",
