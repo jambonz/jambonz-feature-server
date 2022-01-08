@@ -17,7 +17,7 @@ const opts = {
   level: process.env.JAMBONES_LOGLEVEL || 'info'
 };
 const logger = require('pino')(opts);
-const {LifeCycleEvents} = require('./lib/utils/constants');
+const {LifeCycleEvents, FS_UUID_SET_NAME} = require('./lib/utils/constants');
 const installSrfLocals = require('./lib/utils/install-srf-locals');
 installSrfLocals(srf, logger);
 
@@ -117,6 +117,7 @@ function handle(signal) {
   const setName = `${(process.env.JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
   logger.info(`got signal ${signal}, removing ${srf.locals.localSipAddress} from set ${setName}`);
   removeFromSet(setName, srf.locals.localSipAddress);
+  removeFromSet(FS_UUID_SET_NAME, srf.locals.fsUUID);
   srf.locals.disabled = true;
 }
 
