@@ -9,6 +9,7 @@ networks:
 services:
   mysql:
     image: mysql:5.7
+    platform: linux/x86_64
     ports:
       - "3360:3306"
     environment: 
