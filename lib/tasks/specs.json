@@ -369,6 +369,10 @@
       },
       "language": "string",
       "voice": "string",
+      "platform": {
+        "type": "string",
+        "enum": ["standard", "neural"]
+      },
       "gender": {
         "type": "string",
         "enum": ["MALE", "FEMALE", "NEUTRAL"]
