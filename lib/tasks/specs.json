@@ -369,7 +369,7 @@
       },
       "language": "string",
       "voice": "string",
-      "platform": {
+      "engine": {
         "type": "string",
         "enum": ["standard", "neural"]
       },
