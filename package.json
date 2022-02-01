@@ -46,6 +46,7 @@
     "moment": "^2.29.1",
     "parse-url": "^5.0.7",
     "pino": "^6.13.2",
+    "queue": "^6.0.2",
     "to-snake-case": "^1.0.0",
     "uuid": "^8.3.2",
     "verify-aws-sns-signature": "^0.0.6",
