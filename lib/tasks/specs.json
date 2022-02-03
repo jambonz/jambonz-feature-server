@@ -108,6 +108,7 @@
       "maxDigits": "number",
       "interDigitTimeout": "number",
       "timeout": "number",
+      "listenAfterSpeech": "boolean",
       "recognizer": "#recognizer",
       "play": "#play",
       "say": "#say"
