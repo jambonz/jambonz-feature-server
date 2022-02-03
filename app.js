@@ -31,6 +31,7 @@ const {
 
 // HTTP
 const express = require('express');
+const helmet =require('helmet');
 const app = express();
 Object.assign(app.locals, {
   logger,
@@ -73,6 +74,8 @@ srf.invite((req, res) => {
 });
 
 // HTTP
+app.use(helmet());
+app.use(helmet.hidePoweredBy());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', httpRoutes);
