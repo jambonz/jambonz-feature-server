@@ -1,4 +1,4 @@
-FROM node:17-slim
+FROM node:17.4-slim
 WORKDIR /opt/app/
 COPY package.json ./
 RUN npm install
