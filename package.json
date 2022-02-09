@@ -30,7 +30,7 @@
     "@jambonz/db-helpers": "^0.6.16",
     "@jambonz/http-health-check": "^0.0.1",
     "@jambonz/mw-registrar": "^0.2.1",
-    "@jambonz/realtimedb-helpers": "^0.4.19",
+    "@jambonz/realtimedb-helpers": "^0.4.21",
     "@jambonz/stats-collector": "^0.1.6",
     "@jambonz/time-series": "^0.1.6",
     "aws-sdk": "^2.1060.0",
