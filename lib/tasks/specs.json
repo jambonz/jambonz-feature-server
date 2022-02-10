@@ -338,6 +338,7 @@
         "type": "string",
         "enum": ["GET", "POST"]
       },
+      "headers": "object",
       "name": "string",
       "number": "string",
       "sipUri": "string",
