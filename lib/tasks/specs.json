@@ -104,6 +104,7 @@
       "partialResultHook": "object|string",
       "speechTimeout": "number",
       "listenDuringPrompt": "boolean",
+      "listenAfterSpeech": "boolean",
       "dtmfBargein": "boolean",
       "bargein": "boolean",
       "minBargeinWordCount": "number",
