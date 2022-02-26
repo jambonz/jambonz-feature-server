@@ -93,14 +93,22 @@
     ]
   },
   "gather": {
-    "properties": {
+   "properties": {
       "actionHook": "object|string",
       "finishOnKey": "string",
       "input": "array",
       "numDigits": "number",
       "partialResultHook": "object|string",
       "speechTimeout": "number",
+      "listenDuringPrompt": "boolean",
+      "bargein": "boolean",
+      "minBargeinWordCount": "number",
+      "dtmfBargein": "boolean",
+      "minDigits": "number",
+      "maxDigits": "number",
+      "interDigitTimeout": "number",
       "timeout": "number",
+      "listenAfterSpeech": "boolean",
       "recognizer": "#recognizer",
       "play": "#play",
       "say": "#say"
