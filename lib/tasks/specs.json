@@ -21,6 +21,23 @@
       "referTo"
     ]
   },
+  "config": {
+    "properties": {
+      "synthesizer": "#synthesizer",
+      "recognizer": "#recognizer",
+      "botMode": "#botMode"
+    },
+    "required": []
+  },
+  "botMode": {
+    "properties": {
+      "enable": "boolean",
+      "gather": "#gather"  
+    },
+    "required": [
+      "enable"
+    ]
+  },
   "dequeue": {
     "properties": {
       "name": "string",
