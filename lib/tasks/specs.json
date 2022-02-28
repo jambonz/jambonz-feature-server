@@ -21,22 +21,6 @@
       "referTo"
     ]
   },
-  "cognigy": {
-    "properties": {
-      "url": "string",
-      "token": "string",
-      "recognizer": "#recognizer",
-      "tts": "#synthesizer",
-      "prompt": "string",
-      "actionHook": "object|string",
-      "eventHook": "object|string",
-      "data": "object"
-    },
-    "required": [
-      "url",
-      "token"
-    ]
-  },
   "dequeue": {
     "properties": {
       "name": "string",
