@@ -2,6 +2,7 @@
   "TaskName": {
     "Cognigy": "cognigy",
     "Conference": "conference",
+    "Config": "config",
     "Dequeue": "dequeue",
     "Dial": "dial",
     "Dialogflow": "dialogflow",
