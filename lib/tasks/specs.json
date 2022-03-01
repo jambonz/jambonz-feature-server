@@ -25,14 +25,22 @@
     "properties": {
       "synthesizer": "#synthesizer",
       "recognizer": "#recognizer",
-      "botMode": "#botMode"
+      "bargeIn": "#bargeIn"
     },
     "required": []
   },
-  "botMode": {
+  "bargeIn": {
     "properties": {
       "enable": "boolean",
-      "gather": "#gather"  
+      "actionHook": "object|string",
+      "input": "array",
+      "finishOnKey": "string",
+      "numDigits": "number",
+      "minDigits": "number",
+      "maxDigits": "number",
+      "interDigitTimeout": "number",
+      "dtmfBargein": "boolean",
+      "minBargeinWordCount": "number"
     },
     "required": [
       "enable"
