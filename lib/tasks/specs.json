@@ -409,6 +409,7 @@
       "language": "string",
       "vad": "#vad",
       "hints": "array",
+      "hintsBoost": "number",
       "altLanguages": "array",
       "profanityFilter": "boolean",
       "interim": "boolean",
@@ -462,7 +463,8 @@
         ]
       },
       "requestSnr": "boolean",
-      "initialSpeechTimeoutMs": "number"
+      "initialSpeechTimeoutMs": "number",
+      "azureServiceEndpoint": "string",
     },
     "required": [
       "vendor"
