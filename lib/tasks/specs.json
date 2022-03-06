@@ -21,20 +21,29 @@
       "referTo"
     ]
   },
-  "cognigy": {
+  "config": {
     "properties": {
-      "url": "string",
-      "token": "string",
+      "synthesizer": "#synthesizer",
       "recognizer": "#recognizer",
-      "tts": "#synthesizer",
-      "prompt": "string",
+      "bargeIn": "#bargeIn"
+    },
+    "required": []
+  },
+  "bargeIn": {
+    "properties": {
+      "enable": "boolean",
       "actionHook": "object|string",
-      "eventHook": "object|string",
-      "data": "object"
+      "input": "array",
+      "finishOnKey": "string",
+      "numDigits": "number",
+      "minDigits": "number",
+      "maxDigits": "number",
+      "interDigitTimeout": "number",
+      "dtmfBargein": "boolean",
+      "minBargeinWordCount": "number"
     },
     "required": [
-      "url",
-      "token"
+      "enable"
     ]
   },
   "dequeue": {
@@ -400,6 +409,7 @@
       "language": "string",
       "vad": "#vad",
       "hints": "array",
+      "hintsBoost": "number",
       "altLanguages": "array",
       "profanityFilter": "boolean",
       "interim": "boolean",
@@ -453,7 +463,8 @@
         ]
       },
       "requestSnr": "boolean",
-      "initialSpeechTimeoutMs": "number"
+      "initialSpeechTimeoutMs": "number",
+      "azureServiceEndpoint": "string"
     },
     "required": [
       "vendor"
