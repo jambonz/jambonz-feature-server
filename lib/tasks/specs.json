@@ -464,7 +464,7 @@
       },
       "requestSnr": "boolean",
       "initialSpeechTimeoutMs": "number",
-      "azureServiceEndpoint": "string",
+      "azureServiceEndpoint": "string"
     },
     "required": [
       "vendor"
