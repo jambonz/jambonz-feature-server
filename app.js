@@ -128,7 +128,7 @@ if (process.env.JAMBONZ_CLEANUP_INTERVAL_MINS) {
   const {clearFiles} = require('./lib/utils/cron-jobs');
 
   /* cleanup orphaned files or channels every so often */
-  setTimeout(async() => {
+  setInterval(async() => {
     try {
       await clearFiles();
     } catch (err) {
