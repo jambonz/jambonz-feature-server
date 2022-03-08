@@ -125,16 +125,14 @@ function handle(signal) {
 }
 
 if (process.env.JAMBONZ_CLEANUP_INTERVAL_MINS) {
-  const {clearFiles, clearChannels} = require('./lib/utils/cron-jobs');
+  const {clearFiles} = require('./lib/utils/cron-jobs');
 
   /* cleanup orphaned files or channels every so often */
   setTimeout(async() => {
     try {
       await clearFiles();
-      const count = await clearChannels();
-      if (count > 0) logger.info(`app.js: cleared ${count} orphaned channels`);
     } catch (err) {
-      this.logger.error({err}, 'app.js: error clearing files and channels');
+      logger.error({err}, 'app.js: error clearing files');
     }
   }, 1000 * 60 * (process.env.JAMBONZ_CLEANUP_INTERVAL_MINS || 60));
 }
