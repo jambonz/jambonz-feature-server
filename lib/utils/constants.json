@@ -59,19 +59,22 @@
     "Transcription": "google_transcribe::transcription",
     "EndOfUtterance": "google_transcribe::end_of_utterance",
     "NoAudioDetected": "google_transcribe::no_audio_detected",
-    "MaxDurationExceeded": "google_transcribe::max_duration_exceeded"
+    "MaxDurationExceeded": "google_transcribe::max_duration_exceeded",
+    "VadDetected": "google_transcribe::vad_detected"
   },
   "AwsTranscriptionEvents": {
     "Transcription": "aws_transcribe::transcription",
     "EndOfTranscript": "aws_transcribe::end_of_transcript",
     "NoAudioDetected": "aws_transcribe::no_audio_detected",
-    "MaxDurationExceeded": "aws_transcribe::max_duration_exceeded"
+    "MaxDurationExceeded": "aws_transcribe::max_duration_exceeded",
+    "VadDetected": "aws_transcribe::vad_detected"
   },
   "AzureTranscriptionEvents": {
     "Transcription": "azure_transcribe::transcription",
     "StartOfUtterance": "azure_transcribe::start_of_utterance",
     "EndOfUtterance": "azure_transcribe::end_of_utterance",
-    "NoSpeechDetected": "azure_transcribe::no_speech_detected"
+    "NoSpeechDetected": "azure_transcribe::no_speech_detected",
+    "VadDetected": "azure_transcribe::vad_detected"
   },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",
