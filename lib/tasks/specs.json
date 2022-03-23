@@ -31,7 +31,7 @@
   },
   "bargeIn": {
     "properties": {
-      "enable": "boolean",
+      "enable": "boolean|string",
       "actionHook": "object|string",
       "input": "array",
       "finishOnKey": "string",
