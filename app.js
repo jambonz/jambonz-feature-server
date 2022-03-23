@@ -11,7 +11,7 @@ assert.ok(process.env.JAMBONES_NETWORK_CIDR || process.env.K8S, 'missing JAMBONE
 
 const Srf = require('drachtio-srf');
 const srf = new Srf();
-const tracer = require('./tracer')('jambonz-feature-server');
+const tracer = require('./tracer')(process.env.JAMBONZ_OTEL_SERVICE_NAME || 'jambonz-feature-server');
 const api = require('@opentelemetry/api');
 srf.locals = {...srf.locals, otel: {tracer, api}};
 
