@@ -18,8 +18,10 @@ const opts = {
 };
 const logger = require('pino')(opts);
 const {LifeCycleEvents, FS_UUID_SET_NAME} = require('./lib/utils/constants');
-const installSrfLocals = require('./lib/utils/install-srf-locals');
+const { installSrfLocals, redisClient, sqlClient } = require('./lib/utils/install-srf-locals');
+const { systemHealth } = require('./lib/utils/system-health')
 installSrfLocals(srf, logger);
+
 
 const {
   initLocals,
@@ -39,7 +41,7 @@ Object.assign(app.locals, {
 });
 
 const httpRoutes = require('./lib/http-routes');
-
+let srfHealthy = true
 const InboundCallSession = require('./lib/session/inbound-call-session');
 
 if (process.env.DRACHTIO_HOST) {
@@ -54,11 +56,12 @@ else {
   logger.info(`listening for drachtio requests on port ${process.env.DRACHTIO_PORT}`);
   srf.listen({port: process.env.DRACHTIO_PORT, secret: process.env.DRACHTIO_SECRET});
 }
-if (process.env.NODE_ENV === 'test') {
+
   srf.on('error', (err) => {
+    srfHealthy = false
     logger.info(err, 'Error connecting to drachtio');
   });
-}
+
 
 srf.use('invite', [
   initLocals,
@@ -97,6 +100,8 @@ sessionTracker.on('idle', () => {
 
 const getCount = () => sessionTracker.count;
 const healthCheck = require('@jambonz/http-health-check');
+
+healthCheck({app, logger, path: '/system-health', fn: systemHealth(redisClient, sqlClient.promise(), sessionTracker.count, srfHealthy)});
 healthCheck({app, logger, path: '/', fn: getCount});
 
 setInterval(() => {
