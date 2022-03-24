@@ -1,4 +1,6 @@
 FROM node:17.7.1-slim
+RUN apt-get update && apt-get install -y \
+    netcat
 WORKDIR /opt/app/
 COPY package.json ./
 RUN npm install
