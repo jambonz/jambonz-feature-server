@@ -12,7 +12,7 @@ const { CollectorTraceExporter } =  require('@opentelemetry/exporter-collector')
 //const { PinoInstrumentation } = require('@opentelemetry/instrumentation-pino');
 
 module.exports = (serviceName) => {
-  if (process.env.JAMBONZ_OTEL_ENABLED) {
+  if (process.env.JAMBONES_OTEL_ENABLED) {
     const {version} = require('./package.json');
     const provider = new NodeTracerProvider({
       resource: new Resource({
