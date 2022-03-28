@@ -11,6 +11,10 @@ assert.ok(process.env.JAMBONES_NETWORK_CIDR || process.env.K8S, 'missing JAMBONE
 
 const Srf = require('drachtio-srf');
 const srf = new Srf();
+const tracer = require('./tracer')(process.env.JAMBONES_OTEL_SERVICE_NAME || 'jambonz-feature-server');
+const api = require('@opentelemetry/api');
+srf.locals = {...srf.locals, otel: {tracer, api}};
+
 const PORT = process.env.HTTP_PORT || 3000;
 const opts = {
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;},
@@ -23,6 +27,7 @@ installSrfLocals(srf, logger);
 
 const {
   initLocals,
+  createRootSpan,
   getAccountDetails,
   normalizeNumbers,
   retrieveApplication,
@@ -62,6 +67,7 @@ if (process.env.NODE_ENV === 'test') {
 
 srf.use('invite', [
   initLocals,
+  createRootSpan,
   getAccountDetails,
   normalizeNumbers,
   retrieveApplication,
