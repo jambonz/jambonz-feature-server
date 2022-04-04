@@ -115,6 +115,7 @@
     "session:redirect",
     "call:status",
     "queue:status",
+    "dial:confirm",
     "verb:hook",
     "jambonz:error"
   ],
