@@ -1,7 +1,7 @@
 FROM node:slim
 WORKDIR /opt/app/
-COPY package.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm ci
 RUN npm prune
 COPY . /opt/app
 ARG NODE_ENV
