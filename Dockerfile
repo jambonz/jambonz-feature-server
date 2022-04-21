@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:17.9-slim
 WORKDIR /opt/app/
 COPY package.json package-lock.json ./
 RUN npm ci
