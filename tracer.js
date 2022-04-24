@@ -6,7 +6,7 @@ const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventi
 const { BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { JaegerExporter } = require('@opentelemetry/exporter-jaeger');
 const { ZipkinExporter } = require('@opentelemetry/exporter-zipkin');
-const { CollectorTraceExporter } =  require('@opentelemetry/exporter-collector');
+const  { OTLPTraceExporter } = require ('@opentelemetry/exporter-trace-otlp-http');
 //const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 //const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 //const { PinoInstrumentation } = require('@opentelemetry/instrumentation-pino');
@@ -29,7 +29,7 @@ module.exports = (serviceName) => {
       exporter = new ZipkinExporter({url:process.env.OTEL_EXPORTER_ZIPKIN_URL});
     }
     else {
-      exporter = new CollectorTraceExporter({
+      exporter = new OTLPTraceExporter({
         url: process.OTEL_EXPORTER_COLLECTOR_URL
       });
     }
