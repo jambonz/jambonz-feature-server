@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:lts-slim
 WORKDIR /opt/app/
 COPY package.json package-lock.json ./
 RUN npm ci
