@@ -419,7 +419,6 @@
       "separateRecognitionPerChannel": "boolean",
       "punctuation": "boolean",
       "enhancedModel": "boolean",
-      "singleUtterance": "boolean",
       "words": "boolean",
       "diarization": "boolean",
       "diarizationMinSpeakers": "number",
