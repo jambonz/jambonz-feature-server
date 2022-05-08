@@ -419,6 +419,7 @@
       "separateRecognitionPerChannel": "boolean",
       "punctuation": "boolean",
       "enhancedModel": "boolean",
+      "singleUtterance": "boolean",
       "words": "boolean",
       "diarization": "boolean",
       "diarizationMinSpeakers": "number",
@@ -448,6 +449,7 @@
           "tag"
         ]
       },
+      "model": "string",
       "outputFormat": {
         "type": "string",
         "enum": [
