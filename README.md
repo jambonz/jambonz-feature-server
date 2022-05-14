@@ -2,6 +2,8 @@
 
 This application implements the core feature server of the jambones platform.
 
+> Note: If you are a developer looking to work on the code please read  our [how-to for that](./docs/contributing.md).
+
 ## Configuration
 
 Configuration is provided via environment variables:
