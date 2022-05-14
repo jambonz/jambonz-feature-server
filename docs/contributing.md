@@ -6,9 +6,9 @@ This brief document should get you started.  Here you will find instructions sho
 
 ## Getting oriented
 
-First of all, you are in the right place to begin hacking on jambonz. The jambonz-feature-server app is kinda the center of the universe for jambonz.  Most of the core logic in jambonz is implemented here: things like the [webhook verbs](../lib/tasks), [session management](../lib/session), and the [client webhook implementation](../lib/utils/http-requestor.js). A common thing you might want to do, for instance, is to add support for an all-new verb, and this code base is where would do that.
+First of all, you are in the right place to begin hacking on jambonz. The jambonz-feature-server app is kinda the center of the universe for jambonz.  Most of the core logic in jambonz is implemented here: things like the [webhook verbs](../lib/tasks), [session management](../lib/session), and the [client-side webhook implementation](../lib/utils/http-requestor.js). A common thing you might want to do, for instance, is to add support for an all-new verb, and this code base is where would do that.
 
-This jambonz-feature-server app works together quite closely with a [drachtio server](https://github.com/drachtio/drachtio-server) and a Freeswitch.  In fact, these three components are bundled together into a single VM/instance (or a Deployment, in Kubernetes) that we more generally refer to as "Feature Server".  The Feature Server is a horizontally-scalable unit that is deployed behind the public-facing SBC elements of a jambonz cluster.  The drachtio-server handles the SIP signaling, the Freeswitch handles media operations (including forwarding streams to Speech vendors and 3rd party code), and the jambonz-feature-server app orchestrates all of it via the use of [drachtio-srf](https://github.com/drachtio/drachtio-srf) and [drachtio-fsmrf](https://github.com/drachtio/drachtio-fsmrf).
+This jambonz-feature-server app works together quite closely with a [drachtio server](https://github.com/drachtio/drachtio-server) and a Freeswitch.  In fact, these three components are bundled together into a single VM/instance (or a Deployment, in Kubernetes) that we more generally refer to as "Feature Server".  The Feature Server is a horizontally-scalable unit that is deployed behind the public-facing SBC elements of a jambonz cluster (the SBC is itself a separately scalable unit).  The drachtio-server handles the SIP signaling, the Freeswitch handles media operations and speech vendor integration, and the jambonz-feature-server app orchestrates all of it via the use of [drachtio-srf](https://github.com/drachtio/drachtio-srf) and [drachtio-fsmrf](https://github.com/drachtio/drachtio-fsmrf).
 
 ## How to do things
 
@@ -28,7 +28,7 @@ npm run jslint
 
 #### Generate speech credentials and create run-tests.sh
 
-The test suite also requires you to provide speech credentials for both GCP and AWS.  These are needed to test the 'gather' and 'transcribe' verbs.  You will want to create a new file named `run-tests.sh` in the project folder. Make the file executable and then copy in the text below, substituting your speech credentials where indicated:
+The test suite also requires you to provide speech credentials for both GCP and AWS.  You will want to create a new file named `run-tests.sh` in the project folder. Make the file executable and then copy in the text below, substituting your speech credentials where indicated:
 
 ```bash
 #!/bin/bash
@@ -39,7 +39,7 @@ AWS_REGION='us-east-1' \
 JWT_SECRET='foobar' \
 npm test
 ```
->> Note: The project's .gitignore file prevents this file from being sent to Github, so you do not need to worry about exposing your credentials.
+>> Note: The project's .gitignore file prevents this file from being sent to Github, so you do not need to worry about exposing your credentials.  Just make sure you name if run-tests.sh and create it in the project folder
 
 The GCP credential is the JSON service key in stringified format.
 
@@ -111,7 +111,9 @@ The final output will indicate the number of tests run and passed:
 
 #### Adding your own tests
 
-Running a successful regression test means you haven't broken anything - Great!  It doesn't, of course, mean that your shiny new feature or bugfix works.  Adding a new test case to the suite is (unfortunately) non-trivial.  We will add more documentation in the future with a how-to guide on that, but be advised it does require knowledge of the SIP protocol and the [SIPp](http://sipp.sourceforge.net/doc/reference.html) tool.
+Running a successful regression test means you haven't broken anything - Great!  
+
+It doesn't, of course, mean that your shiny new feature or bugfix works.  Adding a new test case to the suite is (unfortunately) non-trivial.  We will add more documentation in the future with a how-to guide on that, but be advised it does require knowledge of the SIP protocol and the [SIPp](http://sipp.sourceforge.net/doc/reference.html) tool.
 
 For now, if you are unable to add tests to the regression suite, please do test your feature as thoroughly as you can on your own jambonz cluster before giving us a pull request.
 
