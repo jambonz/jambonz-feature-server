@@ -18,7 +18,7 @@ To prepare to make changes, please fork the repo to your own Github account, mak
 
 ### lint
 
-We have some opinionated conventions that you must follow - see [./.eslintrc.json]. Make sure your code passes by running:
+We have some opinionated conventions that you must follow - see our [eslintrc.json](../.eslintrc.json) for details. Make sure your code passes by running:
 
 ```bash
 npm run jslint
