@@ -51,7 +51,7 @@
     "debug": "^4.3.2",
     "deepcopy": "^2.1.0",
     "drachtio-fsmrf": "^2.0.13",
-    "drachtio-srf": "^4.4.61",
+    "drachtio-srf": "^4.5.0",
     "express": "^4.17.1",
     "helmet": "^5.0.2",
     "ip": "^1.1.5",
