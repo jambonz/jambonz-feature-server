@@ -1,4 +1,4 @@
-const test = require('blue-tape');
+const test = require('tape');
 const { output, sippUac } = require('./sipp')('test_sbc-inbound');
 const debug = require('debug')('drachtio:sbc-inbound');
 const clearModule = require('clear-module');
