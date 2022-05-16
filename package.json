@@ -50,7 +50,7 @@
     "cidr-matcher": "^2.1.1",
     "debug": "^4.3.2",
     "deepcopy": "^2.1.0",
-    "drachtio-fsmrf": "^2.0.13",
+    "drachtio-fsmrf": "^3.0.0",
     "drachtio-srf": "^4.4.61",
     "express": "^4.17.1",
     "helmet": "^5.0.2",
