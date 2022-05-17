@@ -89,7 +89,9 @@ f80adda48eb5   jambonz/webhook-test-scaffold:latest            "/entrypoint.sh" 
 
 #### Run the regression test suite
 
-At this point you should be able to run the tests:
+The test suite has a dependency that the mysql client is installed on your laptop/machine where the test will be run.  This is needed in order to seed the mysql database that is running in the docker network.
+
+Assuming you have installed the mysql client, and done the above steps, you should now be able to run the tests:
 
 ```bash
 ./run-tests.sh

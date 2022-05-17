@@ -86,7 +86,5 @@ module.exports = {
 ```
 
 #### Running the test suite
-The test suite currently only consists of JSON-parsing unit tests.  A full end-to-end sip test suite should be added.
-```
-npm test
-```
+
+Please [see this]](./docs/contributing.md#run-the-regression-test-suite).
