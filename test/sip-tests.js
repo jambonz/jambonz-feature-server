@@ -1,7 +1,5 @@
-const test = require('blue-tape');
-const { output, sippUac } = require('./sipp')('test_sbc-inbound');
-const debug = require('debug')('drachtio:sbc-inbound');
-const clearModule = require('clear-module');
+const test = require('tape');
+const { sippUac } = require('./sipp')('test_sbc-inbound');
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
