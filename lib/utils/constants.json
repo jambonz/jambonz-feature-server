@@ -20,6 +20,7 @@
     "Redirect": "redirect",
     "RestDial": "rest:dial",
     "SipDecline": "sip:decline",
+    "SipRequest": "sip:request",
     "SipRefer": "sip:refer",
     "SipNotify": "sip:notify",
     "SipRedirect": "sip:redirect",

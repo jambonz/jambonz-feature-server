@@ -5,5 +5,6 @@ require('./account-validation-tests');
 require('./webhooks-tests');
 require('./say-tests');
 require('./gather-tests');
+require('./sip-request-tests');
 require('./remove-test-db');
 require('./docker_stop');

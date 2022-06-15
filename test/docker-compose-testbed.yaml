@@ -123,6 +123,18 @@ services:
       fs:
         ipv4_address: 172.38.0.63
 
+  webhook-sip-info:
+    image: jambonz/webhook-test-scaffold:latest
+    environment:
+      APP_PATH: /tmp/info.json
+    ports:
+      - "3104:3000/tcp"
+    volumes:
+      - ./test-apps:/tmp
+    networks:
+      fs:
+        ipv4_address: 172.38.0.64
+
   influxdb:
     image: influxdb:1.8
     ports:
