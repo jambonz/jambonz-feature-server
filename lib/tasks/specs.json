@@ -117,6 +117,8 @@
     "properties": {
       "actionHook": "object|string",
       "finishOnKey": "string",
+      "asrDtmfTerminationDigit": "string",
+      "asrTimeout": "number",
       "input": "array",
       "numDigits": "number",
       "minDigits": "number",
