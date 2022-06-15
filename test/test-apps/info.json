@@ -1,0 +1,15 @@
+[
+  {
+    "verb": "say",
+    "text": "hello"
+  },  
+  {
+    "verb": "sip:request",
+    "method": "info",
+    "headers": {
+      "Content-Type": "application/text"
+    },
+    "body": "here I am ",
+    "actionHook": "/actionHook"
+  }
+]
