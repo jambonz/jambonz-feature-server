@@ -477,7 +477,9 @@
       },
       "requestSnr": "boolean",
       "initialSpeechTimeoutMs": "number",
-      "azureServiceEndpoint": "string"
+      "azureServiceEndpoint": "string",
+      "asrDtmfTerminationDigit": "string",
+      "asrTimeout": "number"
     },
     "required": [
       "vendor"
