@@ -36,7 +36,8 @@
     "properties": {
       "synthesizer": "#synthesizer",
       "recognizer": "#recognizer",
-      "bargeIn": "#bargeIn"
+      "bargeIn": "#bargeIn",
+      "record": "#recordOptions"
     },
     "required": []
   },
@@ -305,6 +306,19 @@
     },
     "required": [
       "path"
+    ]
+  },
+  "recordOptions": {
+    "properties": {
+      "action": {
+        "type": "string",
+        "enum": ["startCallRecording", "stopCallRecording", "pauseCallRecording", "resumeCallRecording"]
+      },
+      "recordingID": "string",
+      "siprecServerURL": "string"
+    },
+    "required": [
+      "action"
     ]
   },
   "redirect": {
