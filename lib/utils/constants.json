@@ -125,6 +125,16 @@
     "RecordingOff": "recording_off",
     "RecordingPaused": "recording_paused"
   },
+  "AmdEvents": {
+    "NoSpeechDetected": "amd_no_speech_detected",
+    "HumanDetected": "amd_human_detected",
+    "MachineDetected": "amd_machine_detected",
+    "Error": "amd_error",
+    "DecisionTimeout": "amd_decision_timeout",
+    "ToneDetected": "amd_tone_detected",
+    "ToneTimeout": "amd_tone_timeout",
+    "Stopped": "amd_stopped"
+  },
   "MAX_SIMRINGS": 10,
   "BONG_TONE": "tone_stream://v=-7;%(100,0,941.0,1477.0);v=-7;>=2;+=.1;%(1400,0,350,440)",
   "FS_UUID_SET_NAME": "fsUUIDs"
