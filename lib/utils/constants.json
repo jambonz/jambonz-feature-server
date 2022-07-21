@@ -56,6 +56,9 @@
     "StableCall": "stable-call",
     "UnansweredCall": "unanswered-call"
   },
+  "AvmdEvents": {
+    "Beep": "avmd::beep"
+  },
   "GoogleTranscriptionEvents": {
     "Transcription": "google_transcribe::transcription",
     "EndOfUtterance": "google_transcribe::end_of_utterance",
@@ -129,6 +132,7 @@
     "NoSpeechDetected": "amd_no_speech_detected",
     "HumanDetected": "amd_human_detected",
     "MachineDetected": "amd_machine_detected",
+    "MachineStoppedSpeaking": "amd_machine_stopped_speaking",
     "Error": "amd_error",
     "DecisionTimeout": "amd_decision_timeout",
     "ToneDetected": "amd_tone_detected",

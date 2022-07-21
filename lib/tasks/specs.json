@@ -534,6 +534,7 @@
   "amdTimers": {
     "noSpeechTimeoutMs": "number",
     "decisionTimeoutMs": "number",
-    "toneTimeoutMs": "number"
+    "toneTimeoutMs": "number",
+    "greetingCompletionTimeoutMs": "number"
   }
 }
