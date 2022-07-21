@@ -24,7 +24,6 @@ test('\'gather\' and \'transcribe\' tests', async(t) => {
     await connect(srf);
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10');
     let obj = await getJSON('http://127.0.0.1:3102/actionHook');
-    console.log(obj);
     t.ok(obj.speech.alternatives[0].transcript = 'I\'d like to speak to customer support',
       'gather: succeeds when using account credentials');
 
