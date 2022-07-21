@@ -55,7 +55,7 @@
     "sdp-transform": "^2.14.1",
     "short-uuid": "^4.2.0",
     "to-snake-case": "^1.0.0",
-    "undici": "^5.7.0",
+    "undici": "^5.8.0",
     "uuid": "^8.3.2",
     "verify-aws-sns-signature": "^0.0.7",
     "ws": "^8.8.0",
