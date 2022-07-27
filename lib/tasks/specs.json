@@ -37,7 +37,8 @@
       "synthesizer": "#synthesizer",
       "recognizer": "#recognizer",
       "bargeIn": "#bargeIn",
-      "record": "#recordOptions"
+      "record": "#recordOptions",
+      "amd": "#amd"
     },
     "required": []
   },
@@ -172,7 +173,8 @@
       "timeLimit": "number",
       "timeout": "number",
       "proxy": "string",
-      "transcribe": "#transcribe"
+      "transcribe": "#transcribe",
+      "amd": "#amd"
     },
     "required": [
       "target"
@@ -517,5 +519,22 @@
     "required": [
       "enable"
     ]
+  },
+  "amd": {
+    "properties": {
+      "actionHook": "object|string",
+      "thresholdWordCount": "number",
+      "timers": "#amdTimers",
+      "recognizer": "#recognizer"
+    },
+    "required": [
+      "actionHook"
+    ]
+  },
+  "amdTimers": {
+    "noSpeechTimeoutMs": "number",
+    "decisionTimeoutMs": "number",
+    "toneTimeoutMs": "number",
+    "greetingCompletionTimeoutMs": "number"
   }
 }
