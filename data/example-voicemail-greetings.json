@@ -13,5 +13,40 @@
     "we will get back to you",
     "we are unable",
     "we are not available"
-  ]
+  ],
+  "es-ES": [
+    "le pasamos la llamada",
+    "después del bip",
+    "después del tono",
+    "deja un mensaje",
+    "déjame un mensaje",
+    "no estamos disponibles",
+    "no estoy disponible",
+    "ahora no puedo",
+    "no puedo contestar",
+    "no le puedo contestar"
+    "me pondré en contacto",
+    "nos pondremos en contacto",
+    "ahora no estamos disponibles",
+    "no estamos disponibles"
+  ],
+  "ca-ES": [
+    "passem la seva trucada",
+    "després del bip",
+    "després del to",
+    "deixi un missatge",
+    "deixa un missatge",
+    "deixim un missatge",
+    "no estem disponibles",
+    "no estem a l'oficina",
+    "no estic disponible",
+    "ara no puc",
+    "no puc contestar",
+    "no puc respondre",
+    "no li puc respondre"
+    "em posaré en contacte",
+    "ens posarem en contacto",
+    "ara no estem disponibles",
+    "no hi som"
+  ],
 }
