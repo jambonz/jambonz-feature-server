@@ -13,5 +13,21 @@
     "we will get back to you",
     "we are unable",
     "we are not available"
-  ]
+  ],
+  "es-ES": [
+    "le pasamos la llamada",
+    "después del bip",
+    "después del tono",
+    "deja un mensaje",
+    "déjame un mensaje",
+    "no estamos disponibles",
+    "no estoy disponible",
+    "ahora no puedo",
+    "no puedo contestar",
+    "no le puedo contestar"
+    "me pondré en contacto",
+    "nos pondremos en contacto",
+    "ahora no estamos disponibles",
+    "no estamos disponibles"
+  ],
 }
