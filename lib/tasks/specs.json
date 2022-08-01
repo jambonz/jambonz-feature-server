@@ -532,9 +532,11 @@
     ]
   },
   "amdTimers": {
-    "noSpeechTimeoutMs": "number",
-    "decisionTimeoutMs": "number",
-    "toneTimeoutMs": "number",
-    "greetingCompletionTimeoutMs": "number"
+    "properties": {
+      "noSpeechTimeoutMs": "number",
+      "decisionTimeoutMs": "number",
+      "toneTimeoutMs": "number",
+      "greetingCompletionTimeoutMs": "number"  
+    }
   }
 }
