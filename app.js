@@ -28,6 +28,7 @@ installSrfLocals(srf, logger);
 const {
   initLocals,
   createRootSpan,
+  handleSipRec,
   getAccountDetails,
   normalizeNumbers,
   retrieveApplication,
@@ -69,6 +70,7 @@ if (process.env.NODE_ENV === 'test') {
 srf.use('invite', [
   initLocals,
   createRootSpan,
+  handleSipRec,
   getAccountDetails,
   normalizeNumbers,
   retrieveApplication,
