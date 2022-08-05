@@ -28,6 +28,7 @@ installSrfLocals(srf, logger);
 const {
   initLocals,
   createRootSpan,
+  handleSipRec,
   getAccountDetails,
   normalizeNumbers,
   retrieveApplication,
@@ -46,6 +47,7 @@ Object.assign(app.locals, {
 const httpRoutes = require('./lib/http-routes');
 
 const InboundCallSession = require('./lib/session/inbound-call-session');
+const SipRecCallSession = require('./lib/session/siprec-call-session');
 
 if (process.env.DRACHTIO_HOST) {
   srf.connect({host: process.env.DRACHTIO_HOST, port: process.env.DRACHTIO_PORT, secret: process.env.DRACHTIO_SECRET });
@@ -68,6 +70,7 @@ if (process.env.NODE_ENV === 'test') {
 srf.use('invite', [
   initLocals,
   createRootSpan,
+  handleSipRec,
   getAccountDetails,
   normalizeNumbers,
   retrieveApplication,
@@ -75,7 +78,8 @@ srf.use('invite', [
 ]);
 
 srf.invite((req, res) => {
-  const session = new InboundCallSession(req, res);
+  const isSipRec = !!req.locals.siprec;
+  const session = isSipRec ? new SipRecCallSession(req, res) : new InboundCallSession(req, res);
   session.exec();
 });
 
