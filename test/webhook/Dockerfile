@@ -1,15 +1,23 @@
-FROM node:alpine as builder
-RUN apk update && apk add --no-cache python make g++
-WORKDIR /opt/app/
-COPY package.json ./
-RUN npm install
-RUN npm prune
+FROM --platform=linux/amd64 node:18.6.0-alpine as base
 
-FROM node:alpine as webapp
-RUN apk add curl
-WORKDIR /opt/app
-COPY . /opt/app
-COPY --from=builder /opt/app/node_modules ./node_modules
-COPY ./entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+RUN apk --update --no-cache add --virtual .builds-deps build-base python3
+
+WORKDIR /opt/app/
+
+FROM base as build
+
+COPY package.json package-lock.json ./
+
+RUN npm ci
+
+COPY . .
+
+FROM base
+
+COPY --from=build /opt/app /opt/app/
+
+ARG NODE_ENV
+
+ENV NODE_ENV $NODE_ENV
+
+CMD [ "node", "app.js" ]
