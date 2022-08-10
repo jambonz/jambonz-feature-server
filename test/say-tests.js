@@ -1,6 +1,7 @@
 const test = require('tape');
 const { sippUac } = require('./sipp')('test_fs');
 const clearModule = require('clear-module');
+const provisionCallHook = require('./utils')
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
@@ -20,9 +21,21 @@ test('\'say\' tests', async(t) => {
 
   try {
     await connect(srf);
-    await sippUac('uac-say-account-creds-success.xml', '172.38.0.10');
+
+    // GIVEN
+    let verbs = [
+      {
+        "verb": "say",
+        "text": "hello"
+      }
+    ];
+
+    let from = "say_test_success";
+    provisionCallHook(from, verbs)
+
+    // THEN
+    await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
     t.pass('say: succeeds when using using account credentials');
-  
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);

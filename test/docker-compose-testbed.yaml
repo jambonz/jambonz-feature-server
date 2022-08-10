@@ -12,7 +12,7 @@ services:
     platform: linux/x86_64
     ports:
       - "3360:3306"
-    environment: 
+    environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "127.0.0.1", "--protocol", "tcp"]
@@ -86,54 +86,6 @@ services:
     networks:
       fs:
         ipv4_address: 172.38.0.60
-
-  webhook-say:
-    image: jambonz/webhook-test-scaffold:latest
-    environment:
-      APP_PATH: /tmp/say.json
-    ports:
-      - "3101:3000/tcp"
-    volumes:
-      - ./test-apps:/tmp
-    networks:
-      fs:
-        ipv4_address: 172.38.0.61
-
-  webhook-gather:
-    image: jambonz/webhook-test-scaffold:latest
-    environment:
-      APP_PATH: /tmp/gather.json
-    ports:
-      - "3102:3000/tcp"
-    volumes:
-      - ./test-apps:/tmp
-    networks:
-      fs:
-        ipv4_address: 172.38.0.62
-
-  webhook-transcribe:
-    image: jambonz/webhook-test-scaffold:latest
-    environment:
-      APP_PATH: /tmp/transcribe.json
-    ports:
-      - "3103:3000/tcp"
-    volumes:
-      - ./test-apps:/tmp
-    networks:
-      fs:
-        ipv4_address: 172.38.0.63
-
-  webhook-sip-info:
-    image: jambonz/webhook-test-scaffold:latest
-    environment:
-      APP_PATH: /tmp/info.json
-    ports:
-      - "3104:3000/tcp"
-    volumes:
-      - ./test-apps:/tmp
-    networks:
-      fs:
-        ipv4_address: 172.38.0.64
 
   influxdb:
     image: influxdb:1.8

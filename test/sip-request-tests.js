@@ -3,6 +3,7 @@ const { sippUac } = require('./sipp')('test_fs');
 const bent = require('bent');
 const getJSON = bent('json')
 const clearModule = require('clear-module');
+const provisionCallHook = require('./utils');
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
@@ -22,9 +23,28 @@ test('sending SIP in-dialog requests tests', async(t) => {
 
   try {
     await connect(srf);
-    await sippUac('uac-send-info-during-dialog.xml', '172.38.0.10');
-    const obj = await getJSON('http://127.0.0.1:3104/actionHook');
-    t.ok(obj.result === 'success' && obj.sip_status === 200, 'successfully sent SIP INFO');
+    //GIVEN
+    let verbs = [
+      {
+        "verb": "say",
+        "text": "hello"
+      },
+      {
+        "verb": "sip:request",
+        "method": "info",
+        "headers": {
+          "Content-Type": "application/text"
+        },
+        "body": "here I am ",
+        "actionHook": "/actionHook"
+      }
+    ];
+    let from = "sip_indialog_test";
+    provisionCallHook(from, verbs);
+    // THEN
+    await sippUac('uac-send-info-during-dialog.xml', '172.38.0.10', from);
+    const obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    t.ok(obj.body.sip_status === 200, 'successfully sent SIP INFO');
 
     disconnect();
   } catch (err) {
