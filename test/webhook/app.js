@@ -6,13 +6,10 @@ const listenPort = process.env.HTTP_PORT || 3000;
 let json_mapping = new Map();
 let hook_mapping = new Map();
 
-assert.ok(process.env.APP_PATH, 'env var APP_PATH is required');
-
 app.listen(listenPort, () => {
   console.log(`sample jambones app server listening on ${listenPort}`);
 });
 
-const applicationData = JSON.parse(fs.readFileSync(process.env.APP_PATH));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -21,8 +18,10 @@ app.use(express.json());
  */
 
 app.all('/', (req, res) => {
-  let key = req.body.from
-  let retData = json_mapping.has(key) ? JSON.parse(json_mapping.get(key)) : applicationData;
+  console.log(req.body, 'POST /');
+  const key = req.body.from
+  if (!json_mapping.has(key)) return res.sendStatus(404);
+  const retData = JSON.parse(json_mapping.get(key));
   console.log(retData, `${req.method} /`);
   addRequestToMap(key, req, hook_mapping);
   return res.json(retData);

@@ -7,9 +7,9 @@ const bent = require('bent');
 * When a call has From number match the registered hook event, the desired jambonz json will be responded.
 */
 const provisionCallHook = (from, verbs) => {
-  let mapping = {
-    "from": from,
-    "data": JSON.stringify(verbs)
+  const mapping = {
+    from,
+    data: JSON.stringify(verbs)
   };
   const post = bent('http://127.0.0.1:3100', 'POST', 'string', 200);
   post('/appMapping', mapping);

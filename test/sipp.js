@@ -24,7 +24,7 @@ obj.output = () => {
   return output;
 };
 
-obj.sippUac = (file, bindAddress, from="sipp", to="16174000000") => {
+obj.sippUac = (file, bindAddress, from='sipp', to='16174000000') => {
   const cmd = 'docker';
   const args = [
     'run', '-t', '--rm', '--net', `${network}`,
@@ -63,7 +63,7 @@ obj.sippUac = (file, bindAddress, from="sipp", to="16174000000") => {
       addOutput(data.toString());
     });
     child_process.stdout.on('data', (data) => {
-      // console.log(`stdout: ${data}`);
+      //console.log(`stdout: ${data}`);
       addOutput(data.toString());
     });
   });

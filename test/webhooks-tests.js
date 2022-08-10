@@ -17,10 +17,25 @@ function connect(connectable) {
 test('basic webhook tests', async(t) => {
   clearModule.all();
   const {srf, disconnect} = require('../app');
+  const provisionCallHook = require('./utils')
 
   try {
     await connect(srf);
-    await sippUac('uac-expect-603.xml', '172.38.0.10');
+    const verbs = [
+      {
+        verb: 'sip:decline',
+        status: 603,
+        reason: 'Gone Fishin',
+        headers: {
+          'Retry-After': 300
+        }  
+      }
+    ];
+
+    const from = 'sip_decline_test_success';
+    provisionCallHook(from, verbs)
+
+    await sippUac('uac-expect-603.xml', '172.38.0.10', from);
     t.pass('webhook successfully declines call');
 
     disconnect();

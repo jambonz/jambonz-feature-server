@@ -75,10 +75,8 @@ services:
       fs:
         ipv4_address: 172.38.0.51
 
-  webhook-decline:
+  webhook-scaffold:
     image: jambonz/webhook-test-scaffold:latest
-    environment:
-      APP_PATH: /tmp/decline.json
     ports:
       - "3100:3000/tcp"
     volumes:

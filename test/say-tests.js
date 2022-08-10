@@ -23,14 +23,14 @@ test('\'say\' tests', async(t) => {
     await connect(srf);
 
     // GIVEN
-    let verbs = [
+    const verbs = [
       {
-        "verb": "say",
-        "text": "hello"
+        verb: 'say',
+        text: 'hello'
       }
     ];
 
-    let from = "say_test_success";
+    const from = 'say_test_success';
     provisionCallHook(from, verbs)
 
     // THEN
