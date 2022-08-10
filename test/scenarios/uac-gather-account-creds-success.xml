@@ -8,13 +8,13 @@
   <send retrans="500">
     <![CDATA[
 
-      INVITE sip:16174000003@[remote_ip]:[remote_port] SIP/2.0
+      INVITE sip:[to]@[remote_ip]:[remote_port] SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
-      From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
-      To: <sip:16174000003@[remote_ip]:[remote_port]>
+      From: [from] <sip:[from]@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
+      To: <sip:[to]@[remote_ip]:[remote_port]>
       Call-ID: [call_id]
       CSeq: 1 INVITE
-      Contact: sip:sipp@[local_ip]:[local_port]
+      Contact: sip:[from]@[local_ip]:[local_port]
       Max-Forwards: 70
       X-Account-Sid: bb845d4b-83a9-4cde-a6e9-50f3743bab3f
       Subject: uac-gather-account-creds-success
@@ -53,13 +53,13 @@
   <send>
     <![CDATA[
 
-      ACK sip:16174000003@[remote_ip]:[remote_port] SIP/2.0
+      ACK sip:[to]@[remote_ip]:[remote_port] SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
-      From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
-      To: 16174000003 <sip:16174000003@[remote_ip]:[remote_port]>[peer_tag_param]
+      From: [from] <sip:[from]@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
+      To: [to] <sip:[to]@[remote_ip]:[remote_port]>[peer_tag_param]
       Call-ID: [call_id]
       CSeq: 1 ACK
-      Contact: sip:sipp@[local_ip]:[local_port]
+      Contact: sip:[from]@[local_ip]:[local_port]
       Max-Forwards: 70
       Subject: uac-gather-account-creds-success
       Content-Length: 0

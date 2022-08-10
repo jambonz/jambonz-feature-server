@@ -24,7 +24,7 @@ obj.output = () => {
   return output;
 };
 
-obj.sippUac = (file, bindAddress) => {
+obj.sippUac = (file, bindAddress, from='sipp', to='16174000000') => {
   const cmd = 'docker';
   const args = [
     'run', '-t', '--rm', '--net', `${network}`,
@@ -34,7 +34,9 @@ obj.sippUac = (file, bindAddress) => {
     '-sleep', '250ms',
     '-nostdin',
     '-cid_str', `%u-%p@%s-${idx++}`,
-    '172.38.0.50'
+    '172.38.0.50',
+    '-key','from', from,
+    '-key','to', to, '-trace_msg'
   ];
 
   if (bindAddress) args.splice(5, 0, '--ip', bindAddress);

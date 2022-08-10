@@ -7,7 +7,7 @@
 
       INVITE sip:16174000000@[remote_ip]:[remote_port] SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
-      From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
+      From: [from] <sip:[from]@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
       To: <sip:16174000000@[remote_ip]:[remote_port]>
       Call-ID: [call_id]
       CSeq: 1 INVITE
@@ -41,7 +41,7 @@
 
       ACK sip:16174000000@[remote_ip]:[remote_port] SIP/2.0
       [last_Via]
-      From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
+      From: [from] <sip:[from]@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
       To: <sip:16174000000@[remote_ip]:[remote_port]>[peer_tag_param]
       Call-ID: [call_id]
       CSeq: 1 ACK
@@ -53,4 +53,3 @@
   </send>
 
 </scenario>
-
