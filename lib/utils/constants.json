@@ -29,6 +29,7 @@
     "Tag": "tag",
     "Transcribe": "transcribe"
   },
+  "AllowedSipRecVerbs": ["config", "gather", "transcribe", "listen"],
   "CallStatus": {
     "Trying": "trying",
     "Ringing": "ringing",

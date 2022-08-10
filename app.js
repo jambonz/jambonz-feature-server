@@ -77,9 +77,10 @@ srf.use('invite', [
   invokeWebCallback
 ]);
 
-srf.invite((req, res) => {
+srf.invite(async(req, res) => {
   const isSipRec = !!req.locals.siprec;
   const session = isSipRec ? new SipRecCallSession(req, res) : new InboundCallSession(req, res);
+  if (isSipRec) await session.answerSipRecCall();
   session.exec();
 });
 
