@@ -16,11 +16,9 @@ const api = require('@opentelemetry/api');
 srf.locals = {...srf.locals, otel: {tracer, api}};
 
 const PORT = process.env.HTTP_PORT || 3000;
-const opts = {
-  timestamp: () => {return `, "time": "${new Date().toISOString()}"`;},
-  level: process.env.JAMBONES_LOGLEVEL || 'info'
-};
-const logger = require('pino')(opts);
+const opts = {level: process.env.JAMBONES_LOGLEVEL || 'info'};
+const pino = require('pino');
+const logger = pino(opts, pino.destination({sync: false}));
 const {LifeCycleEvents, FS_UUID_SET_NAME} = require('./lib/utils/constants');
 const installSrfLocals = require('./lib/utils/install-srf-locals');
 installSrfLocals(srf, logger);
