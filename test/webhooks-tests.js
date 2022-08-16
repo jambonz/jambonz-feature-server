@@ -78,11 +78,9 @@ test('invalid jambonz json create alert tests', async(t) => {
     await sleep(8000);
     const data = await queryAlerts(
       {account_sid: 'bb845d4b-83a9-4cde-a6e9-50f3743bab3f', page: 1, page_size: 25, days: 7});
-    // 'CallSid: eff9b0dd-253b-442e-92e8-906b47403bf2 error retrieving or parsing application: http://127.0.0.1:3100/,
-    // status: undefined, reason: malformed jambonz payload: must be array'
     let checked = false;
     for (let i = 0; i < data.total; i++) {
-      checked = data.data[i].message.includes('reason: malformed jambonz payload: must be array');
+      checked = data.data[i].message === 'malformed jambonz payload: must be array'
     }
     t.ok(checked, 'alert is raised as expected');
     disconnect();
