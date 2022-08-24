@@ -1,7 +1,7 @@
 const test = require('tape');
 const { sippUac } = require('./sipp')('test_fs');
 const clearModule = require('clear-module');
-const provisionCallHook = require('./utils');
+const {provisionCallHook} = require('./utils')
 const opts = {
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;},
   level: process.env.JAMBONES_LOGLEVEL || 'info'
@@ -26,7 +26,6 @@ function connect(connectable) {
 test('basic webhook tests', async(t) => {
   clearModule.all();
   const {srf, disconnect} = require('../app');
-  const provisionCallHook = require('./utils')
 
   try {
     await connect(srf);

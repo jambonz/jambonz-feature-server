@@ -2,7 +2,7 @@ const test = require('tape');
 const { sippUac } = require('./sipp')('test_fs');
 const bent = require('bent');
 const clearModule = require('clear-module');
-const provisionCallHook = require('./utils')
+const {provisionCallHook} = require('./utils')
 const getJSON = bent('json')
 
 process.on('unhandledRejection', (reason, p) => {

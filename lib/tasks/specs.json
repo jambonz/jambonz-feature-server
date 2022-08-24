@@ -84,7 +84,7 @@
   },
   "leave": {
     "properties": {
-      
+
     }
   },
   "hangup": {
@@ -96,7 +96,7 @@
   },
   "play": {
     "properties": {
-      "url": "string",
+      "url": "string|array",
       "loop": "number|string",
       "earlyMedia": "boolean"
     },
@@ -514,7 +514,7 @@
     "properties": {
       "enable": "boolean",
       "voiceMs": "number",
-      "mode": "number"  
+      "mode": "number"
     },
     "required": [
       "enable"
@@ -536,7 +536,7 @@
       "noSpeechTimeoutMs": "number",
       "decisionTimeoutMs": "number",
       "toneTimeoutMs": "number",
-      "greetingCompletionTimeoutMs": "number"  
+      "greetingCompletionTimeoutMs": "number"
     }
   }
 }

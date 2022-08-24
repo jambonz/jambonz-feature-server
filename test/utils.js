@@ -15,4 +15,13 @@ const provisionCallHook = (from, verbs) => {
   post('/appMapping', mapping);
 }
 
-module.exports = provisionCallHook
+const provisionCustomHook = (from, verbs) => {
+  const mapping = {
+    from,
+    data: JSON.stringify(verbs)
+  };
+  const post = bent('http://127.0.0.1:3100', 'POST', 'string', 200);
+  post(`/customHookMapping`, mapping);
+}
+
+module.exports = { provisionCallHook, provisionCustomHook}
