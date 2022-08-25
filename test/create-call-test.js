@@ -5,6 +5,8 @@ const clearModule = require('clear-module');
 const {provisionCallHook} = require('./utils')
 const getJSON = bent('json')
 
+const waitFor = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
 });
@@ -23,6 +25,11 @@ test('test create-call timeout', async(t) => {
 
   try {
     await connect(srf);
+
+    // give UAS app time to come up
+    const p = sippUac('uas-timeout-cancel.xml', '172.38.0.10');
+    await waitFor(1000);
+
     // GIVEN
     let account_sid = '622f62e4-303a-49f2-bbe0-eb1e1714e37a';
     const post = bent('http://127.0.0.1:3000/', 'POST', 'json', 201);
@@ -39,7 +46,7 @@ test('test create-call timeout', async(t) => {
         "number": "15583084809"
       }});
     //THEN
-    await sippUac('uas-timeout-cancel.xml', '172.38.0.10');
+    await p;
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
@@ -54,9 +61,15 @@ test('test create-call call-hook basic authentication', async(t) => {
 
   try {
     await connect(srf);
+
+
     // GIVEN
     let from = 'call_hook_basic_authentication';
     let account_sid = '622f62e4-303a-49f2-bbe0-eb1e1714e37a';
+
+    // Give UAS app time to come up
+    const p = sippUac('uas.xml', '172.38.0.10', from);
+    await waitFor(1000);
 
     const post = bent('http://127.0.0.1:3000/', 'POST', 'json', 201);
     post('v1/createCall', {
@@ -81,7 +94,7 @@ test('test create-call call-hook basic authentication', async(t) => {
     ];
     provisionCallHook(from, verbs);
     //THEN
-    await sippUac('uas.xml', '172.38.0.10', from);
+    await p;
 
     let obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}`)
     t.ok(obj.headers.Authorization = 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=',
