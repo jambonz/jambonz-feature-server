@@ -63,7 +63,7 @@ obj.sippUac = (file, bindAddress, from='sipp', to='16174000000') => {
       addOutput(data.toString());
     });
     child_process.stdout.on('data', (data) => {
-      //console.log(`stdout: ${data}`);
+      // console.log(`stdout: ${data}`);
       addOutput(data.toString());
     });
   });

@@ -20,11 +20,7 @@ app.use(express.json());
 app.all('/', (req, res) => {
   console.log(req.body, 'POST /');
   const key = req.body.from
-  if (!json_mapping.has(key)) return res.sendStatus(404);
-  const retData = JSON.parse(json_mapping.get(key));
-  console.log(retData, `${req.method} /`);
-  addRequestToMap(key, req, hook_mapping);
-  return res.json(retData);
+  return getJsonFromMap(key, req, res);
 });
 
 app.post('/appMapping', (req, res) => {
@@ -52,6 +48,24 @@ app.post('/actionHook', (req, res) => {
   return res.sendStatus(200);
 });
 
+/*
+* customHook
+* For the hook to return
+ */
+
+app.all('/customHook', (req, res) => {
+  let key = `${req.body.from}_customHook`;;
+  console.log(req.body, `POST /customHook`);
+  return getJsonFromMap(key, req, res);
+});
+
+app.post('/customHookMapping', (req, res) => {
+  let key = `${req.body.from}_customHook`;
+  console.log(req.body, `POST /customHookMapping`);
+  json_mapping.set(key, req.body.data);
+  return res.sendStatus(200);
+});
+
 // Fetch Requests
 app.get('/requests/:key', (req, res) => {
   let key = req.params.key;
@@ -76,6 +90,14 @@ app.get('/lastRequest/:key', (req, res) => {
 /*
  * private function
  */
+
+function getJsonFromMap(key, req, res) {
+  if (!json_mapping.has(key)) return res.sendStatus(404);
+  const retData = JSON.parse(json_mapping.get(key));
+  console.log(retData, ` Response to ${req.method} ${req.url}`);
+  addRequestToMap(key, req, hook_mapping);
+  return res.json(retData);
+}
 
 function addRequestToMap(key, req, map) {
   let headers = new Map()

@@ -1,7 +1,7 @@
 const test = require('tape');
 const { sippUac } = require('./sipp')('test_fs');
 const clearModule = require('clear-module');
-const provisionCallHook = require('./utils')
+const {provisionCallHook} = require('./utils')
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
