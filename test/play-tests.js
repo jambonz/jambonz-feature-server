@@ -168,11 +168,9 @@ test('\'play\' tests with seekOffset and actionHook', async(t) => {
     const verbs = [
       {
         verb: 'play',
-        url: {
-          url: 'https://example.com/example.mp3',
-          seekOffset: 1,
-          timeoutSecs: 2
-        },
+        url: 'silence_stream://5000',
+        seekOffset: 8000,
+        timeoutSecs: 2,
         actionHook: '/customHook'
       }
     ];
@@ -188,6 +186,9 @@ test('\'play\' tests with seekOffset and actionHook', async(t) => {
     t.pass('play: succeeds');
     const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_customHook`)
     t.ok(obj.body.reason === "playCompleted", "play: actionHook success received")
+    t.ok(obj.body.playback_seconds === "2", "playback_seconds: actionHook success received")
+    t.ok(obj.body.playback_milliseconds === "2048", "playback_milliseconds: actionHook success received")
+    t.ok(obj.body.playback_last_offset_pos === "16000", "playback_last_offset_pos: actionHook success received")
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);

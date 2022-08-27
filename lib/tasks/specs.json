@@ -96,9 +96,11 @@
   },
   "play": {
     "properties": {
-      "url": "string|array|object",
+      "url": "string|array",
       "loop": "number|string",
       "earlyMedia": "boolean",
+      "seekOffset": "number|string",
+      "timeoutSecs": "number|string",
       "actionHook": "object|string"
     },
     "required": [
