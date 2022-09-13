@@ -98,7 +98,10 @@
     "properties": {
       "url": "string|array",
       "loop": "number|string",
-      "earlyMedia": "boolean"
+      "earlyMedia": "boolean",
+      "seekOffset": "number|string",
+      "timeoutSecs": "number|string",
+      "actionHook": "object|string"
     },
     "required": [
       "url"

@@ -156,3 +156,43 @@ test('\'play\' tests multi links in array in conference', async(t) => {
     t.error(err);
   }
 });
+
+test('\'play\' tests with seekOffset and actionHook', async(t) => {
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+
+    // GIVEN
+    const verbs = [
+      {
+        verb: 'play',
+        url: 'silence_stream://5000',
+        seekOffset: 8000,
+        timeoutSecs: 2,
+        actionHook: '/customHook'
+      }
+    ];
+
+    const waitHookVerbs = [];
+
+    const from = 'play_action_hook';
+    provisionCallHook(from, verbs)
+    provisionCustomHook(from, waitHookVerbs)
+
+    // THEN
+    await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
+    t.pass('play: succeeds');
+    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_customHook`)
+    t.ok(obj.body.reason === "playCompleted", "play: actionHook success received")
+    t.ok(obj.body.playback_seconds === "2", "playback_seconds: actionHook success received")
+    t.ok(obj.body.playback_milliseconds === "2048", "playback_milliseconds: actionHook success received")
+    t.ok(obj.body.playback_last_offset_pos === "16000", "playback_last_offset_pos: actionHook success received")
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
