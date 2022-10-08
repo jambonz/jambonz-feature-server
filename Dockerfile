@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:18.8.0-alpine as base
+FROM --platform=linux/amd64 node:18.10-alpine as base
 
 RUN apk --update --no-cache add --virtual .builds-deps build-base python3
 
