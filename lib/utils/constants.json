@@ -67,6 +67,11 @@
     "MaxDurationExceeded": "google_transcribe::max_duration_exceeded",
     "VadDetected": "google_transcribe::vad_detected"
   },
+  "NuanceTranscriptionEvents": {
+    "Transcription": "nuance_transcribe::transcription",
+    "EndOfUtterance": "nuance_transcribe::end_of_utterance",
+    "VadDetected": "nuance_transcribe::vad_detected"
+  },
   "AwsTranscriptionEvents": {
     "Transcription": "aws_transcribe::transcription",
     "EndOfTranscript": "aws_transcribe::end_of_transcript",
