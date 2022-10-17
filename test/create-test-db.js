@@ -22,11 +22,17 @@ test('creating schema', (t) => {
       const google_credential = encrypt(process.env.GCP_JSON_KEY);
       const aws_credential = encrypt(JSON.stringify({
         access_key_id: process.env.AWS_ACCESS_KEY_ID,
-        secret_access_key: process.env.AWS_SECRET_ACCESS_KEY
+        secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
+        aws_region: process.env.AWS_REGION
+      }));
+      const microsoft_credential = encrypt(JSON.stringify({
+        region: process.env.MICROSOFT_REGION || 'useast',
+        api_key: process.env.MICROSOFT_API_KEY || '1234567890'
       }));
       const cmd = `
 UPDATE speech_credentials SET credential='${google_credential}' WHERE vendor='google';
 UPDATE speech_credentials SET credential='${aws_credential}' WHERE vendor='aws';
+UPDATE speech_credentials SET credential='${microsoft_credential}' WHERE vendor='microsoft';
 `;
       const path = `${__dirname}/.creds.sql`;
       fs.writeFileSync(path, cmd);
