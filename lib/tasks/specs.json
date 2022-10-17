@@ -551,9 +551,76 @@
       "utteranceEndSilenceMs": "number",
       "maxHypotheses": "number",
       "speechDomain": "string",
-      "formatting": "string"
+      "formatting": "#formatting",
+      "clientData": "object",
+      "userId": "string",
+      "speechDetectionSensitivity": "number",
+      "resources": "[#resource]"
     },
     "required": [
+    ]
+  },
+  "resource": {
+    "properties": {
+      "externalReference": "#resourceReference",
+      "inlineWordset": "string",
+      "builtin": "string",
+      "inlineGrammar": "string",
+      "wakeupWord": "[string]",
+      "weightName": {
+        "type": "string",
+        "enum": [
+          "defaultWeight",
+          "lowest",
+          "low",
+          "medium",
+          "high",
+          "highest"
+        ]
+      },
+      "weightValue": "number",
+      "reuse": {
+        "type": "string",
+        "enum": [
+          "undefined_reuse",
+          "low_reuse",
+          "high_reuse"
+        ]
+      }
+    },
+    "required": [
+    ]
+  },
+  "resourceReference": {
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "undefined_resource_type",
+          "wordset",
+          "compiled_wordset",
+          "domain_lm",
+          "speaker_profile",
+          "grammar",
+          "settings"
+        ]
+      },
+      "uri": "string",
+      "maxLoadFailures": "boolean",
+      "requestTimeoutMs": "number",
+      "headers": "object"
+    },
+    "required": [
+    ]
+  },
+  "formatting": {
+    "properties": {
+      "scheme": "string",
+      "options": "object"
+    },
+    "required": [
+      "scheme",
+      "options"
     ]
   },
   "lexIntent": {
