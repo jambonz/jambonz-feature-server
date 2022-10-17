@@ -69,7 +69,8 @@
   },
   "NuanceTranscriptionEvents": {
     "Transcription": "nuance_transcribe::transcription",
-    "EndOfUtterance": "nuance_transcribe::end_of_utterance",
+    "StartOfSpeech": "nuance_transcribe::start_of_speech",
+    "Error": "nuance_transcribe::error",
     "VadDetected": "nuance_transcribe::vad_detected"
   },
   "AwsTranscriptionEvents": {
