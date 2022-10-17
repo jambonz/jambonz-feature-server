@@ -70,6 +70,7 @@
   "NuanceTranscriptionEvents": {
     "Transcription": "nuance_transcribe::transcription",
     "StartOfSpeech": "nuance_transcribe::start_of_speech",
+    "TranscriptionComplete": "nuance_transcribe::end_of_transcription",
     "Error": "nuance_transcribe::error",
     "VadDetected": "nuance_transcribe::vad_detected"
   },
