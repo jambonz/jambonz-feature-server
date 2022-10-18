@@ -42,7 +42,7 @@
     "bent": "^7.3.12",
     "debug": "^4.3.4",
     "deepcopy": "^2.1.0",
-    "drachtio-fsmrf": "^3.0.4",
+    "drachtio-fsmrf": "^3.0.5",
     "drachtio-srf": "^4.5.18",
     "express": "^4.18.2",
     "helmet": "^5.1.1",
