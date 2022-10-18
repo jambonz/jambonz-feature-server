@@ -555,7 +555,7 @@
       "clientData": "object",
       "userId": "string",
       "speechDetectionSensitivity": "number",
-      "resources": "[#resource]"
+      "resources": ["#resource"]
     },
     "required": [
     ]
