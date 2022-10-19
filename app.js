@@ -15,6 +15,7 @@ const tracer = require('./tracer')(process.env.JAMBONES_OTEL_SERVICE_NAME || 'ja
 const api = require('@opentelemetry/api');
 srf.locals = {...srf.locals, otel: {tracer, api}};
 
+const useMultiple = process.env.JAMBONES_IGNORE_EADDRINUSE || false;
 const PORT = process.env.HTTP_PORT || 3000;
 const opts = {level: process.env.JAMBONES_LOGLEVEL || 'info'};
 const pino = require('pino');
@@ -92,7 +93,15 @@ app.use((err, req, res, next) => {
   logger.error(err, 'burped error');
   res.status(err.status || 500).json({msg: err.message});
 });
+
 const httpServer = app.listen(PORT);
+process.on('uncaughtException', function(err) {
+    if(err.errno === 'EADDRINUSE' && useMultiple) {
+        const httpServer = app.listen(PORT++);
+        } else {
+          logger.warn(`Unable to bind to port ${PORT}, Address already in use`);
+        }
+});
 
 logger.info(`listening for HTTP requests on port ${PORT}, serviceUrl is ${srf.locals.serviceUrl}`);
 
@@ -106,6 +115,7 @@ sessionTracker.on('idle', () => {
 
 const getCount = () => sessionTracker.count;
 const healthCheck = require('@jambonz/http-health-check');
+const { on } = require('events');
 healthCheck({app, logger, path: '/', fn: getCount});
 
 setInterval(() => {
