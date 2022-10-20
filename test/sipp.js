@@ -41,7 +41,7 @@ obj.sippUac = (file, bindAddress, from='sipp', to='16174000000') => {
 
   if (bindAddress) args.splice(5, 0, '--ip', bindAddress);
 
-  console.log(args.join(' '));
+  //console.log(args.join(' '));
   clearOutput();
 
   return new Promise((resolve, reject) => {
