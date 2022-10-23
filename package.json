@@ -24,9 +24,9 @@
     "jslint": "eslint app.js lib"
   },
   "dependencies": {
-    "@jambonz/db-helpers": "^0.6.18",
     "@jambonz/http-health-check": "^0.0.1",
-    "@jambonz/realtimedb-helpers": "^0.4.32",
+    "@jambonz/db-helpers": "^0.6.19",
+    "@jambonz/realtimedb-helpers": "^0.4.35",
     "@jambonz/stats-collector": "^0.1.6",
     "@jambonz/time-series": "^0.2.5",
     "@opentelemetry/api": "^1.1.0",

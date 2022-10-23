@@ -387,6 +387,7 @@
         "enum": ["GET", "POST"]
       },
       "headers": "object",
+      "from": "#dialFrom",
       "name": "string",
       "number": "string",
       "sipUri": "string",
@@ -398,6 +399,14 @@
     },
     "required": [
       "type"
+    ]
+  },
+  "dialFrom": {
+    "properties": {
+      "user": "string",
+      "host": "string"
+    },
+    "required": [
     ]
   },
   "auth": {
