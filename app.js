@@ -85,7 +85,7 @@ const createHttpListener = require('./lib/utils/http-listener');
 createHttpListener(logger, srf)
   .then(({server, app}) => {
     httpServer = server;
-    //healthCheck({app, logger, path: '/', fn: getCount});
+    healthCheck({app, logger, path: '/', fn: getCount});
     return {server, app};
   })
   .catch((err) => {
@@ -99,8 +99,8 @@ setInterval(() => {
 
 const disconnect = () => {
   return new Promise ((resolve) => {
-    httpServer.on('close', resolve);
-    httpServer.close();
+    httpServer?.on('close', resolve);
+    httpServer?.close();
     srf.disconnect();
     srf.locals.mediaservers.forEach((ms) => ms.disconnect());
   });
