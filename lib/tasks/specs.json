@@ -509,7 +509,8 @@
       "azureServiceEndpoint": "string",
       "azureSttEndpointId": "string",
       "asrDtmfTerminationDigit": "string",
-      "asrTimeout": "number"
+      "asrTimeout": "number",
+      "audioLogging": "boolean"
     },
     "required": [
       "vendor"
