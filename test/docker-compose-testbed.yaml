@@ -57,7 +57,7 @@ services:
         condition: service_healthy
 
   freeswitch:
-    image: drachtio/drachtio-freeswitch-mrf:v1.10.1-full
+    image: drachtio/drachtio-freeswitch-mrf:0.4.15
     restart: always
     command: freeswitch --rtp-range-start 20000 --rtp-range-end 20100
     environment:
@@ -68,7 +68,7 @@ services:
       - /tmp:/tmp
       - ./credentials:/opt/credentials
     healthcheck:
-      test: ['CMD', 'fs_cli' ,'-x', '"sofia status"']
+      test: ['CMD', 'fs_cli' ,'-p', 'JambonzR0ck$$', '-x', '"sofia status"']
       timeout: 5s
       retries: 15
     networks:

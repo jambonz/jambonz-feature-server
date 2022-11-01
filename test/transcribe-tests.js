@@ -17,7 +17,7 @@ function connect(connectable) {
   });
 }
 
-test('\'gather\' test - google', async(t) => {
+test('\'transcribe\' test - google', async(t) => {
   if (!process.env.GCP_JSON_KEY) {
     t.pass('skipping google tests');
     return t.end();
@@ -30,14 +30,12 @@ test('\'gather\' test - google', async(t) => {
     // GIVEN
     let verbs = [
       {
-        "verb": "gather",
-        "input": ["speech"],
+        "verb": "transcribe",
         "recognizer": {
           "vendor": "google",
           "hints": ["customer support", "sales", "human resources", "HR"]
         },
-        "timeout": 10,
-        "actionHook": "/actionHook"
+        "transcriptionHook": "/transcriptionHook"
       }
     ];
     let from = "gather_success";
@@ -46,7 +44,7 @@ test('\'gather\' test - google', async(t) => {
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
     t.ok(obj.body.speech.alternatives[0].transcript = 'I\'d like to speak to customer support',
-      'gather: succeeds when using google credentials');
+      'transcribe: succeeds when using google credentials');
 
     disconnect();
   } catch (err) {
@@ -56,7 +54,7 @@ test('\'gather\' test - google', async(t) => {
   }
 });
 
-test('\'gather\' test - microsoft', async(t) => {
+test('\'transcribe\' test - microsoft', async(t) => {
   if (!process.env.MICROSOFT_REGION || !process.env.MICROSOFT_API_KEY) {
     t.pass('skipping microsoft tests');
     return t.end();
@@ -69,14 +67,12 @@ test('\'gather\' test - microsoft', async(t) => {
     // GIVEN
     let verbs = [
       {
-        "verb": "gather",
-        "input": ["speech"],
+        "verb": "transcribe",
         "recognizer": {
           "vendor": "microsoft",
           "hints": ["customer support", "sales", "human resources", "HR"]
         },
-        "timeout": 10,
-        "actionHook": "/actionHook"
+        "transcriptionHook": "/transcriptionHook"
       }
     ];
     let from = "gather_success";
@@ -85,7 +81,7 @@ test('\'gather\' test - microsoft', async(t) => {
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
     t.ok(obj.body.speech.alternatives[0].transcript = 'I\'d like to speak to customer support',
-      'gather: succeeds when using  microsoft credentials');
+      'transcribe: succeeds when using  microsoft credentials');
 
     disconnect();
   } catch (err) {
@@ -95,7 +91,7 @@ test('\'gather\' test - microsoft', async(t) => {
   }
 });
 
-test('\'gather\' test - aws', async(t) => {
+test('\'transcribe\' test - aws', async(t) => {
   if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
     t.pass('skipping aws tests');
     return t.end();
@@ -108,14 +104,12 @@ test('\'gather\' test - aws', async(t) => {
     // GIVEN
     let verbs = [
       {
-        "verb": "gather",
-        "input": ["speech"],
+        "verb": "transcribe",
         "recognizer": {
           "vendor": "aws",
           "hints": ["customer support", "sales", "human resources", "HR"]
         },
-        "timeout": 10,
-        "actionHook": "/actionHook"
+        "transcriptionHook": "/transcriptionHook"
       }
     ];
     let from = "gather_success";
@@ -124,7 +118,7 @@ test('\'gather\' test - aws', async(t) => {
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
     t.ok(obj.body.speech.alternatives[0].transcript = 'I\'d like to speak to customer support',
-      'gather: succeeds when using aws credentials');
+      'transcribe: succeeds when using aws credentials');
 
     disconnect();
   } catch (err) {

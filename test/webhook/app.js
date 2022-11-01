@@ -39,7 +39,16 @@ app.post('/callStatus', (req, res) => {
   return res.sendStatus(200);
 });
 /*
- * action Hook
+ * transcriptionHook
+ */
+app.post('/transcriptionHook', (req, res) => {
+  console.log({payload: req.body}, 'POST /transcriptionHook');
+  let key = req.body.from + "_actionHook"
+  addRequestToMap(key, req, hook_mapping);
+  return res.json([{"verb": "hangup"}]);
+});
+/*
+ * actionHook
  */
 app.post('/actionHook', (req, res) => {
   console.log({payload: req.body}, 'POST /actionHook');
