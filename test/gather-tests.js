@@ -56,6 +56,41 @@ test('\'gather\' test - google', async(t) => {
   }
 });
 
+test('\'gather\' test - default (google)', async(t) => {
+  if (!process.env.GCP_JSON_KEY) {
+    t.pass('skipping google tests');
+    return t.end();
+  }
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+    // GIVEN
+    let verbs = [
+      {
+        "verb": "gather",
+        "input": ["speech"],
+        "timeout": 10,
+        "actionHook": "/actionHook"
+      }
+    ];
+    let from = "gather_success";
+    provisionCallHook(from, verbs);
+    // THEN
+    await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    t.ok(obj.body.speech.alternatives[0].transcript = 'I\'d like to speak to customer support',
+      'gather: succeeds when using default (google) credentials');
+
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
 test('\'gather\' test - microsoft', async(t) => {
   if (!process.env.MICROSOFT_REGION || !process.env.MICROSOFT_API_KEY) {
     t.pass('skipping microsoft tests');
