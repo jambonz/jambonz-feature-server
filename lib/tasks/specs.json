@@ -1,6 +1,7 @@
 {
   "sip:decline": {
     "properties": {
+      "id": "string",
       "status": "number",
       "reason": "string",
       "headers": "object"
@@ -11,6 +12,7 @@
   },
   "sip:request": {
     "properties": {
+      "id": "string",
       "method": "string",
       "body": "string",
       "headers": "object",
@@ -22,6 +24,7 @@
   },
   "sip:refer": {
     "properties": {
+      "id": "string",
       "referTo": "string",
       "referredBy": "string",
       "headers": "object",
@@ -34,11 +37,13 @@
   },
   "config": {
     "properties": {
+      "id": "string",
       "synthesizer": "#synthesizer",
       "recognizer": "#recognizer",
       "bargeIn": "#bargeIn",
       "record": "#recordOptions",
-      "amd": "#amd"
+      "amd": "#amd",
+      "notifyEvents": "boolean"
     },
     "required": []
   },
@@ -62,6 +67,7 @@
   },
   "dequeue": {
     "properties": {
+      "id": "string",
       "name": "string",
       "actionHook": "object|string",
       "timeout": "number",
@@ -73,6 +79,7 @@
   },
   "enqueue": {
     "properties": {
+      "id": "string",
       "name": "string",
       "actionHook": "object|string",
       "waitHook": "object|string",
@@ -84,11 +91,12 @@
   },
   "leave": {
     "properties": {
-
+      "id": "string"
     }
   },
   "hangup": {
     "properties": {
+      "id": "string",
       "headers": "object"
     },
     "required": [
@@ -96,6 +104,7 @@
   },
   "play": {
     "properties": {
+      "id": "string",
       "url": "string|array",
       "loop": "number|string",
       "earlyMedia": "boolean",
@@ -109,6 +118,7 @@
   },
   "say": {
     "properties": {
+      "id": "string",
       "text": "string|array",
       "loop": "number|string",
       "synthesizer": "#synthesizer",
@@ -120,6 +130,7 @@
   },
   "gather": {
     "properties": {
+      "id": "string",
       "actionHook": "object|string",
       "finishOnKey": "string",
       "input": "array",
@@ -143,6 +154,7 @@
   },
   "conference": {
     "properties": {
+      "id": "string",
       "name": "string",
       "beep": "boolean",
       "startConferenceOnEnter": "boolean",
@@ -162,6 +174,7 @@
   },
   "dial": {
     "properties": {
+      "id": "string",
       "actionHook": "object|string",
       "answerOnBridge": "boolean",
       "callerId": "string",
@@ -185,6 +198,7 @@
   },
   "dialogflow": {
     "properties": {
+      "id": "string",
       "credentials": "object|string",
       "project": "string",
       "environment": "string",
@@ -213,6 +227,7 @@
   },
   "dtmf": {
     "properties": {
+      "id": "string",
       "dtmf": "string",
       "duration": "number"
     },
@@ -222,6 +237,7 @@
   },
   "lex": {
     "properties": {
+      "id": "string",
       "botId": "string",
       "botAlias": "string",
       "credentials": "object",
@@ -246,6 +262,7 @@
   },
   "listen": {
     "properties": {
+      "id": "string",
       "actionHook": "object|string",
       "auth": "#auth",
       "finishOnKey": "string",
@@ -270,6 +287,7 @@
   },
   "message": {
     "properties": {
+      "id": "string",
       "carrier": "string",
       "account_sid": "string",
       "message_sid": "string",
@@ -286,6 +304,7 @@
   },
   "pause": {
     "properties": {
+      "id": "string",
       "length": "number"
     },
     "required": [
@@ -294,6 +313,7 @@
   },
   "rasa": {
     "properties": {
+      "id": "string",
       "url": "string",
       "recognizer": "#recognizer",
       "tts": "#synthesizer",
@@ -328,6 +348,7 @@
   },
   "redirect": {
     "properties": {
+      "id": "string",
       "actionHook": "object|string"
     },
     "required": [
@@ -336,6 +357,7 @@
   },
   "rest:dial": {
     "properties": {
+      "id": "string",
       "account_sid": "string",
       "application_sid": "string",
       "call_hook": "object|string",
@@ -360,6 +382,7 @@
   },
   "tag": {
     "properties": {
+      "id": "string",
       "data": "object"
     },
     "required": [
@@ -368,6 +391,7 @@
   },
   "transcribe": {
     "properties": {
+      "id": "string",
       "transcriptionHook": "string",
       "recognizer": "#recognizer",
       "earlyMedia": "boolean"
