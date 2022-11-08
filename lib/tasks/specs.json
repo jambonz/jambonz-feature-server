@@ -445,7 +445,7 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google", "aws", "microsoft", "nuance", "default"]
+        "enum": ["google", "aws", "microsoft", "nuance", "deepgram", "default"]
       },
       "language": "string",
       "vad": "#vad",
@@ -510,11 +510,61 @@
       "azureSttEndpointId": "string",
       "asrDtmfTerminationDigit": "string",
       "asrTimeout": "number",
-      "nuanceOptions": "#nuanceOptions"
+      "nuanceOptions": "#nuanceOptions",
+      "deepgramOptions": "#deepgramOptions"
     },
     "required": [
       "vendor"
     ]
+  },
+  "deepgramOptions": {
+    "properties": {
+      "apiKey": "string",
+      "tier": {
+        "type": "string",
+        "enum": [
+          "enhanced",
+          "base"
+        ]
+      },
+      "model": {
+        "type": "string",
+        "enum": [
+          "general",
+          "meeting",
+          "phonecall",
+          "voicemail",
+          "finance",
+          "conversationalai",
+          "video",
+          "custom"
+        ]
+      },
+      "customModel": "string",
+      "version": "string",
+      "punctuate": "boolean",
+      "profanityFilter": "boolean",
+      "redact": {
+        "type": "string",
+        "enum": [
+          "pci",
+          "numbers",
+          "true",
+          "ssn"
+        ]
+      },
+      "diarize": "boolean",
+      "diarizeVersion": "string",
+      "ner": "boolean",
+      "multichannel": "boolean",
+      "alternatives": "number",
+      "numerals": "boolean",
+      "search": "array",
+      "replace": "array",
+      "keywords": "array",
+      "vadTurnoff": "number",
+      "tag": "stirng"
+    }
   },
   "nuanceOptions": {
     "properties": {
