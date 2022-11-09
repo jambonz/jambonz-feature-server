@@ -562,8 +562,9 @@
       "search": "array",
       "replace": "array",
       "keywords": "array",
+      "endpointing": "boolean",
       "vadTurnoff": "number",
-      "tag": "stirng"
+      "tag": "string"
     }
   },
   "nuanceOptions": {
