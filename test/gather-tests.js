@@ -45,6 +45,7 @@ test('\'gather\' test - google', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    console.log(obj);
     t.ok(obj.body.speech.alternatives[0].transcript = 'I\'d like to speak to customer support',
       'gather: succeeds when using google credentials');
 
@@ -119,6 +120,7 @@ test('\'gather\' test - microsoft', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    console.log(obj);
     t.ok(obj.body.speech.alternatives[0].transcript = 'I\'d like to speak to customer support',
       'gather: succeeds when using  microsoft credentials');
 
@@ -158,6 +160,7 @@ test('\'gather\' test - aws', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    console.log(obj);
     t.ok(obj.body.speech.alternatives[0].transcript = 'I\'d like to speak to customer support',
       'gather: succeeds when using aws credentials');
 
