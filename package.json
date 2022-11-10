@@ -26,7 +26,7 @@
   "dependencies": {
     "@jambonz/http-health-check": "^0.0.1",
     "@jambonz/db-helpers": "^0.7.3",
-    "@jambonz/realtimedb-helpers": "^0.5.5",
+    "@jambonz/realtimedb-helpers": "^0.5.9",
     "@jambonz/stats-collector": "^0.1.6",
     "@jambonz/time-series": "^0.2.5",
     "@opentelemetry/api": "^1.1.0",
