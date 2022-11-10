@@ -76,8 +76,8 @@
   },
   "DeepgramTranscriptionEvents": {
     "Transcription": "deepgram_transcribe::transcription",
-    "Error": "deepgram_transcribe::error",
-    "VadDetected": "deepgram_transcribe::vad_detected"
+    "ConnectFailure": "deepgram_transcribe::connect_failed",
+    "Connect": "deepgram_transcribe::connect"
   },
   "AwsTranscriptionEvents": {
     "Transcription": "aws_transcribe::transcription",
