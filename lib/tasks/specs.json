@@ -522,6 +522,7 @@
     "properties": {
       "apiKey": "string",
       "instanceId": "string",
+      "region": "string",
       "model": "string",
       "languageCustomizationId": "string",
       "acousticCustomizationId": "string",
