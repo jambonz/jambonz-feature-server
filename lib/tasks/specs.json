@@ -424,7 +424,7 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google", "aws", "polly", "microsoft", "default"]
+        "enum": ["google", "aws", "polly", "microsoft", "nuance", "ibm", "default"]
       },
       "language": "string",
       "voice": "string",
@@ -445,7 +445,7 @@
     "properties": {
       "vendor": {
         "type": "string",
-        "enum": ["google", "aws", "microsoft", "nuance", "deepgram", "default"]
+        "enum": ["google", "aws", "microsoft", "nuance", "deepgram", "ibm", "default"]
       },
       "language": "string",
       "vad": "#vad",
@@ -511,10 +511,25 @@
       "asrDtmfTerminationDigit": "string",
       "asrTimeout": "number",
       "nuanceOptions": "#nuanceOptions",
-      "deepgramOptions": "#deepgramOptions"
+      "deepgramOptions": "#deepgramOptions",
+      "ibmOptions": "#ibmOptions"
     },
     "required": [
       "vendor"
+    ]
+  },
+  "ibmOptions": {
+    "properties": {
+      "apiKey": "string",
+      "instanceId": "string",
+      "model": "string",
+      "languageCustomizationId": "string",
+      "acousticCustomizationId": "string",
+      "baseModelVersion": "string",
+      "watsonMetadata": "string",
+      "watsonLearningOptOut": "boolean"
+    },
+    "required": [
     ]
   },
   "deepgramOptions": {
