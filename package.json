@@ -26,7 +26,7 @@
   "dependencies": {
     "@jambonz/db-helpers": "^0.7.3",
     "@jambonz/http-health-check": "^0.0.1",
-    "@jambonz/realtimedb-helpers": "^0.5.7",
+    "@jambonz/realtimedb-helpers": "^0.6.0",
     "@jambonz/stats-collector": "^0.1.6",
     "@jambonz/time-series": "^0.2.5",
     "@opentelemetry/api": "^1.2.0",
@@ -42,7 +42,7 @@
     "bent": "^7.3.12",
     "debug": "^4.3.4",
     "deepcopy": "^2.1.0",
-    "drachtio-fsmrf": "^3.0.5",
+    "drachtio-fsmrf": "^3.0.6",
     "drachtio-srf": "^4.5.18",
     "express": "^4.18.2",
     "helmet": "^5.1.1",

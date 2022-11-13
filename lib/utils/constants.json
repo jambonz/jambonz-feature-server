@@ -74,6 +74,11 @@
     "Error": "nuance_transcribe::error",
     "VadDetected": "nuance_transcribe::vad_detected"
   },
+  "DeepgramTranscriptionEvents": {
+    "Transcription": "deepgram_transcribe::transcription",
+    "ConnectFailure": "deepgram_transcribe::connect_failed",
+    "Connect": "deepgram_transcribe::connect"
+  },
   "AwsTranscriptionEvents": {
     "Transcription": "aws_transcribe::transcription",
     "EndOfTranscript": "aws_transcribe::end_of_transcript",
