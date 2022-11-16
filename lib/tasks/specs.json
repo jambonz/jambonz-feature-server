@@ -520,9 +520,11 @@
   },
   "ibmOptions": {
     "properties": {
-      "apiKey": "string",
+      "sttApiKey": "string",
+      "sttRegion": "string",
+      "ttsApiKey": "string",
+      "ttsRegion": "string",
       "instanceId": "string",
-      "region": "string",
       "model": "string",
       "languageCustomizationId": "string",
       "acousticCustomizationId": "string",
