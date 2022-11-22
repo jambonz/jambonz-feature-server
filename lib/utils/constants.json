@@ -79,6 +79,12 @@
     "ConnectFailure": "deepgram_transcribe::connect_failed",
     "Connect": "deepgram_transcribe::connect"
   },
+  "IbmTranscriptionEvents": {
+    "Transcription": "ibm_transcribe::transcription",
+    "ConnectFailure": "ibm_transcribe::connect_failed",
+    "Connect": "ibm_transcribe::connect",
+    "Error": "ibm_transcribe::error"
+  },
   "AwsTranscriptionEvents": {
     "Transcription": "aws_transcribe::transcription",
     "EndOfTranscript": "aws_transcribe::end_of_transcript",
