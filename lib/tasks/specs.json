@@ -435,7 +435,8 @@
       "gender": {
         "type": "string",
         "enum": ["MALE", "FEMALE", "NEUTRAL"]
-      }
+      },
+      "azureServiceEndpoint": "string"
     },
     "required": [
       "vendor"
