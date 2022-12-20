@@ -123,7 +123,7 @@
       "loop": "number|string",
       "synthesizer": "#synthesizer",
       "earlyMedia": "boolean",
-      "forceTtsGeneration": "boolean"
+      "disableTtsCache": "boolean"
     },
     "required": [
       "text"
