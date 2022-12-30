@@ -22,7 +22,7 @@ module.exports = (serviceName) => {
     });
 
     let exporter;
-    if (process.env.OTEL_EXPORTER_JAEGER_AGENT_HOST) {
+    if (process.env.OTEL_EXPORTER_JAEGER_AGENT_HOST  || process.env.OTEL_EXPORTER_JAEGER_ENDPOINT) {
       exporter = new JaegerExporter();
     }
     else if (process.env.OTEL_EXPORTER_ZIPKIN_URL) {
