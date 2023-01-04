@@ -122,7 +122,8 @@
       "text": "string|array",
       "loop": "number|string",
       "synthesizer": "#synthesizer",
-      "earlyMedia": "boolean"
+      "earlyMedia": "boolean",
+      "disableTtsCache": "boolean"
     },
     "required": [
       "text"
