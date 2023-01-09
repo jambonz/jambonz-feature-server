@@ -1,7 +1,6 @@
 name: CI
 
-on:
-  push:
+on: [push, pull_request]
 
 jobs:
   build:
@@ -10,7 +9,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: lts/*
+          node-version: 16
       - run: npm ci
       - run: npm run jslint
       - run: docker pull drachtio/sipp
@@ -20,3 +19,5 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
+          MICROSOFT_REGION: ${{ secrets.MICROSOFT_REGION }}
+          MICROSOFT_API_KEY: ${{ secrets.MICROSOFT_API_KEY }}
