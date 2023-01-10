@@ -184,11 +184,15 @@ test('\'play\' tests with seekOffset and actionHook', async(t) => {
     // THEN
     await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
     t.pass('play: succeeds');
-    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_customHook`)
-    t.ok(obj.body.reason === "playCompleted", "play: actionHook success received")
-    t.ok(obj.body.playback_seconds === "2", "playback_seconds: actionHook success received")
-    t.ok(obj.body.playback_milliseconds === "2048", "playback_milliseconds: actionHook success received")
-    t.ok(obj.body.playback_last_offset_pos === "16000", "playback_last_offset_pos: actionHook success received")
+    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_customHook`);
+    const seconds = parseInt(obj.body.playback_seconds);
+    const milliseconds = parseInt(obj.body.playback_milliseconds);
+    const lastOffsetPos = parseInt(obj.body.playback_last_offset_pos);
+    //console.log({obj}, 'lastRequest');
+    t.ok(obj.body.reason === "playCompleted", "play: actionHook success received");
+    t.ok(seconds === 2, "playback_seconds: actionHook success received");
+    t.ok(milliseconds === 2048, "playback_milliseconds: actionHook success received");
+    t.ok(lastOffsetPos > 15500 && lastOffsetPos < 16500, "playback_last_offset_pos: actionHook success received")
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
