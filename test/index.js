@@ -9,5 +9,6 @@ require('./transcribe-tests');
 require('./sip-request-tests');
 require('./create-call-test');
 require('./play-tests');
+require('./sip-refer-tests');
 require('./remove-test-db');
 require('./docker_stop');

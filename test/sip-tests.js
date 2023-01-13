@@ -54,6 +54,13 @@ test('incoming call tests', (t) => {
       return t.pass('handles in-dialog requests');
     })
     .then(() => {
+      return sippUac('uac-refer-no-notify.xml', '172.38.0.30');
+    })
+    .then(() => {
+      return t.pass('handles sip:refer where we get 202 but no NOTIFY');
+    })
+
+    .then(() => {
       srf.disconnect();
       t.end();
       return;
