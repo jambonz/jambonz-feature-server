@@ -1,18 +1,43 @@
 const assert = require('assert');
 const fs = require('fs');
 const express = require('express');
+const http = require('http');
+const WebSocket = require('ws');
+
 const app = express();
 const listenPort = process.env.HTTP_PORT || 3000;
+//initialize a simple http server
+const server = http.createServer(app);
+//initialize the WebSocket server instance
+const wss = new WebSocket.Server({ server });
+
 let json_mapping = new Map();
 let hook_mapping = new Map();
 
-app.listen(listenPort, () => {
+server.listen(listenPort, () => {
   console.log(`sample jambones app server listening on ${listenPort}`);
 });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+/*
+ * WS Server
+*/
+
+wss.on('connection', (ws, req) => {
+
+  console.log('OnConnection: %s', req);
+
+    ws.on('message', (message) => {
+        console.log('received: %s', message);
+        ws.send("");
+    });
+});
+
+
+/*
+ * HTTP SERVER
 /*
  * Markup language
  */
