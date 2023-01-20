@@ -46,6 +46,10 @@ test('unit tests', (t) => {
   t.ok(task.name === 'say', 'parsed say with multiple segments');
   
   task = makeTask(logger, require('./data/good/say-ssml'));
+  // the ssml is more than 1000 chars, 
+  // expecting first chunk is length > 100, stop at ? instead of first .
+  // 2nd chunk is long text < 1000 char, stop at .
+  // 3rd chunk is the rest.
   t.ok(task.text.length === 3 &&
     task.text[0].length === 187 &&
     task.text[1].length === 882 &&
@@ -53,6 +57,7 @@ test('unit tests', (t) => {
 
   try {
     task = undefined;
+    // the SSML tag contains text more than 1000 chars, exception should be through.
     task = makeTask(logger, require('./data/bad/bad-say-ssml'));
   } catch (err) {
     t.ok('Cannot parsed say with too long SSML tag content');
