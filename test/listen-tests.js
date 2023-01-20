@@ -28,7 +28,7 @@ test('\'listen\'', async(t) => {
     let verbs = [
       {
         "verb": "listen",
-        "url": `ws://172.38.0.60:3100/${from}`,
+        "url": `ws://172.38.0.60:3000/${from}`,
         "mixType" : "mixed",
         "timeout": 10
       },
