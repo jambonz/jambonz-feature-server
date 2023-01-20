@@ -1,43 +1,50 @@
-const assert = require('assert');
-const fs = require('fs');
 const express = require('express');
-const http = require('http');
-const WebSocket = require('ws');
-
 const app = express();
+const Websocket = require('ws');
 const listenPort = process.env.HTTP_PORT || 3000;
-//initialize a simple http server
-const server = http.createServer(app);
-//initialize the WebSocket server instance
-const wss = new WebSocket.Server({ server });
-
 let json_mapping = new Map();
 let hook_mapping = new Map();
 
-server.listen(listenPort, () => {
+/** websocket server for listen audio  */
+const recvAudio = (socket) => {
+  let packets = 0;
+  console.log('received websocket connection');
+  socket.on('message', (data, isBinary) => {
+    if (!isBinary) {
+      try {
+        const msg = JSON.parse(data);
+        console.log({msg}, 'received websocket message');
+      }
+      catch (err) {
+        console.log({err}, 'error parsing websocket message');
+      }
+    }
+    else {
+      packets++;
+    }
+  });
+  socket.on('error', (err) => {
+    console.log({err}, 'listen websocket: error');
+  });
+};
+
+const wsServer = new Websocket.Server({ noServer: true });
+wsServer.setMaxListeners(0);
+wsServer.on('connection', recvAudio.bind(null));
+
+const server = app.listen(listenPort, () => {
   console.log(`sample jambones app server listening on ${listenPort}`);
+});
+server.on('upgrade', (request, socket, head) => {
+  console.log('received upgrade request');
+  wsServer.handleUpgrade(request, socket, head, (socket) => {
+    wsServer.emit('connection', socket, request);
+  });
 });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-/*
- * WS Server
-*/
-
-wss.on('connection', (ws, req) => {
-
-  console.log('OnConnection: %s', req);
-
-    ws.on('message', (message) => {
-        console.log('received: %s', message);
-        ws.send("");
-    });
-});
-
-
-/*
- * HTTP SERVER
 /*
  * Markup language
  */
