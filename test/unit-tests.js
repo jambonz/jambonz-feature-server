@@ -44,7 +44,24 @@ test('unit tests', (t) => {
 
   task = makeTask(logger, require('./data/good/say-text-array'));
   t.ok(task.name === 'say', 'parsed say with multiple segments');
+  
+  task = makeTask(logger, require('./data/good/say-ssml'));
+  t.ok(task.text.length === 3 &&
+    task.text[0].length === 187 &&
+    task.text[1].length === 882 &&
+    task.text[2].length === 123, 'parsed say');
 
+  try {
+    task = undefined;
+    task = makeTask(logger, require('./data/bad/bad-say-ssml'));
+  } catch (err) {
+    t.ok('Cannot parsed say with too long SSML tag content');
+  }
+  // task must be undefined as bad SSML input
+  if (task) {
+    t.fail('Cannot parsed say with too long SSML tag content, this is wrong.');
+  }
+  
   const alt = require('./data/good/alternate-syntax');
   const normalize = require('../lib/utils/normalize-jambones');
   normalize(logger, alt).forEach((t) => {
