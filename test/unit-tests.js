@@ -55,17 +55,10 @@ test('unit tests', (t) => {
     task.text[1].length === 882 &&
     task.text[2].length === 123, 'parsed say');
 
-  try {
-    task = undefined;
-    // the SSML tag contains text more than 1000 chars, exception should be through.
-    task = makeTask(logger, require('./data/bad/bad-say-ssml'));
-  } catch (err) {
-    t.ok('Cannot parsed say with too long SSML tag content');
-  }
-  // task must be undefined as bad SSML input
-  if (task) {
-    t.fail('Cannot parsed say with too long SSML tag content, this is wrong.');
-  }
+  task = makeTask(logger, require('./data/bad/bad-say-ssml'));
+  t.ok(task.text.length === 1 &&
+    task.text[0].length === 1162, 'parsed bad say');
+
   
   const alt = require('./data/good/alternate-syntax');
   const normalize = require('../lib/utils/normalize-jambones');
