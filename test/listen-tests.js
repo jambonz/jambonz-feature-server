@@ -17,7 +17,7 @@ function connect(connectable) {
   });
 }
 
-test('\'listen\'', async(t) => {
+test('\'listen-success\'', async(t) => {
   clearModule.all();
   const {srf, disconnect} = require('../app');
   try {
@@ -30,16 +30,6 @@ test('\'listen\'', async(t) => {
         "verb": "listen",
         "url": `ws://172.38.0.60:3000/${from}`,
         "mixType" : "mixed",
-        "timeout": 10
-      },
-      {
-        "verb": "gather",
-        "input": ["speech"],
-        "recognizer": {
-          "vendor": "google",
-          "hints": ["customer support", "sales", "human resources", "HR"]
-        },
-        "timeout": 10,
         "actionHook": "/actionHook"
       }
     ];
@@ -47,11 +37,52 @@ test('\'listen\'', async(t) => {
     provisionCallHook(from, verbs);
 
     // THEN
+    await sippUac('uac-gather-account-creds-success-send-bye.xml', '172.38.0.10', from);
+    let obj = await getJSON(`http://127.0.0.1:3100/ws_packet_count/${from}`);
+    t.ok(47680 <= obj.count && obj.count <= 48200, 'listen: success incomming call audio');
+
+    obj = await getJSON(`http://127.0.0.1:3100/ws_metadata/${from}`);
+    t.ok(obj.metadata.from === from && obj.metadata.sampleRate === 8000, 'listen: success metadata');
+
+    obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    t.ok(obj.body.from === from,
+      'listen: succeeds actionHook');
+
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
+test('\'listen-timeout\'', async(t) => {
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+  try {
+    await connect(srf);
+
+    // GIVEN
+    let from = "listen_timeout";
+    let verbs = [
+      {
+        "verb": "listen",
+        "url": `ws://172.38.0.60:3000/${from}`,
+        "mixType" : "mixed",
+        "timeout": 2,
+        "maxLength": 2
+      }
+    ];
+
+    provisionCallHook(from, verbs);
+
+    // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
-    // let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
-    // //console.log(JSON.stringify(obj));
-    // t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase() === 'i\'d like to speak to customer support',
-    //   'gather: succeeds when using default (google) credentials');
+    let obj = await getJSON(`http://127.0.0.1:3100/ws_packet_count/${from}`);
+    t.ok(31680 <= obj.count && obj.count <= 32100, 'listen: success maxLength incomming call audio');
+
+    obj = await getJSON(`http://127.0.0.1:3100/ws_metadata/${from}`);
+    t.ok(obj.metadata.from === from && obj.metadata.sampleRate === 8000, 'listen: success maxLength metadata');
 
     disconnect();
   } catch (err) {
