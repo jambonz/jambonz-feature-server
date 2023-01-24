@@ -24,13 +24,14 @@ test('\'listen-success\'', async(t) => {
     await connect(srf);
 
     // GIVEN
-    let from = "listen_success";
+    const from = "listen_success";
     let verbs = [
       {
         "verb": "listen",
         "url": `ws://172.38.0.60:3000/${from}`,
-        "mixType" : "mixed",
-        "actionHook": "/actionHook"
+        "mixType" : "mono",
+        "actionHook": "/actionHook",
+        "playBeep": true,
       }
     ];
 
@@ -39,7 +40,7 @@ test('\'listen-success\'', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success-send-bye.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/ws_packet_count/${from}`);
-    t.ok(47680 <= obj.count && obj.count <= 48200, 'listen: success incomming call audio');
+    t.ok(39500 <= obj.count && obj.count <= 40100, 'listen: success incomming call audio');
 
     obj = await getJSON(`http://127.0.0.1:3100/ws_metadata/${from}`);
     t.ok(obj.metadata.from === from && obj.metadata.sampleRate === 8000, 'listen: success metadata');
