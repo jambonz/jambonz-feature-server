@@ -1,0 +1,9 @@
+{
+  "say": {
+    "text": "<speak>I already told you I already told you I already told you I already told you I already told you! I already told you I already told you I already told you I already told you? I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you I already told you told I already told you I already told you told I already told you I already told you. I already told you <break time=\"3s\"/> I <emphasis level=\"strong\">really like that person!</emphasis> this is another long text.</speak>",
+    "synthesizer": {
+      "vendor": "google",
+      "language": "en-US"
+    }
+  }
+}

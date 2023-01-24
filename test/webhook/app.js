@@ -60,6 +60,7 @@ app.use(express.json());
 app.all('/', (req, res) => {
   console.log(req.body, 'POST /');
   const key = req.body.from
+  addRequestToMap(key, req, hook_mapping);
   return getJsonFromMap(key, req, res);
 });
 
