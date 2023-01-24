@@ -57,7 +57,7 @@ test('\'listen-success\'', async(t) => {
   }
 });
 
-test('\'listen-timeout\'', async(t) => {
+test('\'listen-maxLength\'', async(t) => {
   clearModule.all();
   const {srf, disconnect} = require('../app');
   try {
