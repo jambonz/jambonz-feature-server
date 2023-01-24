@@ -42,7 +42,7 @@ test('\'transcribe\' test - google', async(t) => {
     provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
-    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_transcriptionHook`);
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
       'transcribe: succeeds when using google credentials');
 
@@ -79,7 +79,7 @@ test('\'transcribe\' test - microsoft', async(t) => {
     provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
-    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_transcriptionHook`);
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
       'transcribe: succeeds when using  microsoft credentials');
 
@@ -116,7 +116,7 @@ test('\'transcribe\' test - aws', async(t) => {
     provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
-    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_transcriptionHook`);
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
       'transcribe: succeeds when using aws credentials');
 
@@ -156,7 +156,7 @@ test('\'transcribe\' test - deepgram', async(t) => {
     provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
-    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_transcriptionHook`);
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
       'transcribe: succeeds when using deepgram credentials');
 
