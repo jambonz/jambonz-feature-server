@@ -5,7 +5,7 @@ require('./account-validation-tests');
 require('./webhooks-tests');
 require('./say-tests');
 require('./gather-tests');
-// require('./transcribe-tests');
+require('./transcribe-tests');
 require('./sip-request-tests');
 require('./create-call-test');
 require('./play-tests');
