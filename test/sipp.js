@@ -24,13 +24,13 @@ obj.output = () => {
   return output;
 };
 
-obj.sippUac = (file, bindAddress, from='sipp', to='16174000000') => {
+obj.sippUac = (file, bindAddress, from='sipp', to='16174000000', loop=1) => {
   const cmd = 'docker';
   const args = [
     'run', '-t', '--rm', '--net', `${network}`,
     '-v', `${__dirname}/scenarios:/tmp/scenarios`,
     'drachtio/sipp', 'sipp', '-sf', `/tmp/scenarios/${file}`,
-    '-m', '1',
+    '-m', loop,
     '-sleep', '250ms',
     '-nostdin',
     '-cid_str', `%u-%p@%s-${idx++}`,
