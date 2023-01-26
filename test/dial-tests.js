@@ -19,6 +19,9 @@ function connect(connectable) {
 
 test('\'dial-phone\'', async(t) => {
   clearModule.all();
+  // Wait here 2 second that the rest of testcases cleanup successfully.
+  await new Promise(r => setTimeout(r, 2000));
+  
   const {srf, disconnect} = require('../app');
   try {
     await connect(srf);
