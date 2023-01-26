@@ -200,3 +200,37 @@ test('\'play\' tests with seekOffset and actionHook', async(t) => {
     t.error(err);
   }
 });
+
+test('\'play\' tests with earlymedia', async(t) => {
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+
+    // GIVEN
+    const verbs = [
+      {
+        verb: 'play',
+        url: 'silence_stream://5000',
+        earlyMedia: true
+      }
+    ];
+
+    const from = 'play_early_media';
+    provisionCallHook(from, verbs)
+
+    // THEN
+    await sippUac('uac-invite-expect-183-cancel.xml', '172.38.0.10', from);
+    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_callStatus`);
+    console.log(obj);
+    t.ok(obj.body.sip_status === 487, "play: actionHook success received");
+    t.ok(obj.body.sip_reason === 'Request Terminated', "play: actionHook success received");
+    t.ok(obj.body.call_termination_by === 'caller', "play: actionHook success received");
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
