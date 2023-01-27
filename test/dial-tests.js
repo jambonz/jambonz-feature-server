@@ -19,9 +19,7 @@ function connect(connectable) {
 
 test('\'dial-phone\'', async(t) => {
   clearModule.all();
-  // Wait here 2 second that the rest of testcases cleanup successfully.
-  await new Promise(r => setTimeout(r, 2000));
-  
+
   const {srf, disconnect} = require('../app');
   try {
     await connect(srf);
@@ -49,15 +47,12 @@ test('\'dial-phone\'', async(t) => {
     const p = sippUac('uas-dial.xml', '172.38.0.10', undefined, undefined, 2);
 
     let account_sid = '622f62e4-303a-49f2-bbe0-eb1e1714e37a';
-
     let post = bent('http://127.0.0.1:3000/', 'POST', 'json', 201);
     post('v1/createCall', {
       'account_sid':account_sid,
       "call_hook": {
         "url": "http://127.0.0.1:3100/",
         "method": "POST",
-        "username": "username",
-        "password": "password"
       },
       "from": from,
       "to": {
@@ -115,9 +110,7 @@ test('\'dial-sip\'', async(t) => {
         'account_sid':account_sid,
         "call_hook": {
           "url": "http://127.0.0.1:3100/",
-          "method": "POST",
-          "username": "username",
-          "password": "password"
+          "method": "GET",
         },
         "from": from,
         "to": {
@@ -183,9 +176,7 @@ test('\'dial-user\'', async(t) => {
         'account_sid':account_sid,
         "call_hook": {
           "url": "http://127.0.0.1:3100/",
-          "method": "POST",
-          "username": "username",
-          "password": "password"
+          "method": "GET",
         },
         "from": from,
         "to": {
