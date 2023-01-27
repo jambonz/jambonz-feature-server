@@ -20,8 +20,6 @@ function connect(connectable) {
 test('\'dial-phone\'', async(t) => {
   clearModule.all();
 
-  await new Promise(r => setTimeout(r, 5000));
-
   const {srf, disconnect} = require('../app');
   try {
     await connect(srf);
