@@ -223,7 +223,6 @@ test('\'play\' tests with earlymedia', async(t) => {
     // THEN
     await sippUac('uac-invite-expect-183-cancel.xml', '172.38.0.10', from);
     const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_callStatus`);
-    console.log(obj);
     t.ok(obj.body.sip_status === 487, "play: actionHook success received");
     t.ok(obj.body.sip_reason === 'Request Terminated', "play: actionHook success received");
     t.ok(obj.body.call_termination_by === 'caller', "play: actionHook success received");
