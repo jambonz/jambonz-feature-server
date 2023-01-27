@@ -110,7 +110,7 @@ test('\'dial-sip\'', async(t) => {
         'account_sid':account_sid,
         "call_hook": {
           "url": "http://127.0.0.1:3100/",
-          "method": "GET",
+          "method": "POST",
         },
         "from": from,
         "to": {
@@ -176,7 +176,7 @@ test('\'dial-user\'', async(t) => {
         'account_sid':account_sid,
         "call_hook": {
           "url": "http://127.0.0.1:3100/",
-          "method": "GET",
+          "method": "POST",
         },
         "from": from,
         "to": {
