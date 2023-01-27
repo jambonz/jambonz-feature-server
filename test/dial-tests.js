@@ -19,10 +19,11 @@ function connect(connectable) {
 
 test('\'dial-phone\'', async(t) => {
   clearModule.all();
-
   const {srf, disconnect} = require('../app');
   try {
     await connect(srf);
+    // wait for fs connected to drachtio server.
+    await new Promise(r => setTimeout(r, 1000));
 
     // GIVEN
     const from = "dial_success";
@@ -80,7 +81,8 @@ test('\'dial-sip\'', async(t) => {
     const {srf, disconnect} = require('../app');
     try {
       await connect(srf);
-  
+      // wait for fs connected to drachtio server.
+      await new Promise(r => setTimeout(r, 1000));
       // GIVEN
       const from = "dial_sip";
       let verbs = [
@@ -147,7 +149,8 @@ test('\'dial-user\'', async(t) => {
     const {srf, disconnect} = require('../app');
     try {
       await connect(srf);
-  
+      // wait for fs connected to drachtio server.
+      await new Promise(r => setTimeout(r, 1000));
       // GIVEN
       const from = "dial_user";
       let verbs = [
