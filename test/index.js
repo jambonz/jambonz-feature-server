@@ -9,7 +9,6 @@ require('./gather-tests');
 require('./transcribe-tests');
 require('./sip-request-tests');
 require('./create-call-test');
-require('./dial-tests');
 require('./play-tests');
 require('./remove-test-db');
 require('./docker_stop');
@@ -17,6 +16,7 @@ require('./docker_stop');
 // 2nd blog
 require('./docker_start');
 require('./create-test-db');
+require('./dial-tests');
 require('./listen-tests');
 require('./remove-test-db');
 require('./docker_stop');
