@@ -80,7 +80,7 @@ test('\'listen-maxLength\'', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/ws_packet_count/${from}`);
-    t.ok(30000 <= obj.count, 'listen: success maxLength incomming call audio');
+    t.ok(30000 <= obj.count, 'listen: success maxLength incoming call audio');
 
     obj = await getJSON(`http://127.0.0.1:3100/ws_metadata/${from}`);
     t.ok(obj.metadata.from === from && obj.metadata.sampleRate === 8000, 'listen: success maxLength metadata');

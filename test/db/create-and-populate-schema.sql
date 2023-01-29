@@ -217,6 +217,7 @@ CREATE TABLE `applications` (
   `call_hook_sid` char(36) DEFAULT NULL COMMENT 'webhook to call for inbound calls ',
   `call_status_hook_sid` char(36) DEFAULT NULL COMMENT 'webhook to call for call status events',
   `messaging_hook_sid` char(36) DEFAULT NULL COMMENT 'webhook to call for inbound SMS/MMS ',
+  `app_json` VARCHAR(16384),
   `speech_synthesis_vendor` varchar(64) NOT NULL DEFAULT 'google',
   `speech_synthesis_language` varchar(12) NOT NULL DEFAULT 'en-US',
   `speech_synthesis_voice` varchar(64) DEFAULT NULL,
@@ -245,13 +246,14 @@ CREATE TABLE `applications` (
 
 LOCK TABLES `applications` WRITE;
 /*!40000 ALTER TABLE `applications` DISABLE KEYS */;
-INSERT INTO `applications` VALUES ('0dddaabf-0a30-43e3-84e8-426873b1a78b','decline call',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c71e79db-24f2-4866-a3ee-febb0f97b341','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('308b4f41-1a18-4052-b89a-c054e75ce242','say',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','54ab0976-a6c0-45d8-89a4-d90d45bf9d96','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('24d0f6af-e976-44dd-a2e8-41c7b55abe33','say account 2',NULL,'622f62e4-303a-49f2-bbe0-eb1e1714e37a','54ab0976-a6c0-45d8-89a4-d90d45bf9d96','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('17461c69-56b5-4dab-ad83-1c43a0f93a3d','gather',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','10692465-a511-4277-9807-b7157e4f81e1','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('baf9213b-5556-4c20-870c-586392ed246f','transcribe',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('ae026ab5-3029-47b4-9d7c-236e3a4b4ebe','transcribe account 2',NULL,'622f62e4-303a-49f2-bbe0-eb1e1714e37a','ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('195d9507-6a42-46a8-825f-f009e729d023','sip info',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c9113e7a-741f-48b9-96c1-f2f78176eeb3','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'google','en-US','en-US-Standard-C','google','en-US');
+INSERT INTO `applications` VALUES ('0dddaabf-0a30-43e3-84e8-426873b1a78b','decline call',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c71e79db-24f2-4866-a3ee-febb0f97b341','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
+INSERT INTO `applications` VALUES ('308b4f41-1a18-4052-b89a-c054e75ce242','say',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','54ab0976-a6c0-45d8-89a4-d90d45bf9d96','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
+INSERT INTO `applications` VALUES ('24d0f6af-e976-44dd-a2e8-41c7b55abe33','say account 2',NULL,'622f62e4-303a-49f2-bbe0-eb1e1714e37a','54ab0976-a6c0-45d8-89a4-d90d45bf9d96','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
+INSERT INTO `applications` VALUES ('17461c69-56b5-4dab-ad83-1c43a0f93a3d','gather',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','10692465-a511-4277-9807-b7157e4f81e1','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
+INSERT INTO `applications` VALUES ('baf9213b-5556-4c20-870c-586392ed246f','transcribe',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
+INSERT INTO `applications` VALUES ('ae026ab5-3029-47b4-9d7c-236e3a4b4ebe','transcribe account 2',NULL,'622f62e4-303a-49f2-bbe0-eb1e1714e37a','ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
+INSERT INTO `applications` VALUES ('195d9507-6a42-46a8-825f-f009e729d023','sip info',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c9113e7a-741f-48b9-96c1-f2f78176eeb3','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
+INSERT INTO `applications` VALUES ('0dddaabf-0a30-43e3-84e8-426873b1a78c','app json',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c71e79db-24f2-4866-a3ee-febb0f97b341','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'[{"verb": "play","url": "silence_stream://5000"}]','google','en-US','en-US-Standard-C','google','en-US');
 /*!40000 ALTER TABLE `applications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -451,6 +453,7 @@ INSERT INTO `phone_numbers` VALUES ('05eeed62-b29b-4679-bf38-d7a4e318be44','1617
 INSERT INTO `phone_numbers` VALUES ('f3c53863-b629-4cf6-9dcb-c7fb7072314b','16174000004','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','baf9213b-5556-4c20-870c-586392ed246f', NULL);
 INSERT INTO `phone_numbers` VALUES ('f6416c17-829a-4f11-9c32-f0d00e4a9ae9','16174000005','5145b436-2f38-4029-8d4c-fd8c67831c7a','622f62e4-303a-49f2-bbe0-eb1e1714e37a','ae026ab5-3029-47b4-9d7c-236e3a4b4ebe', NULL);
 INSERT INTO `phone_numbers` VALUES ('964d0581-9627-44cb-be20-8118050406b2','16174000006','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','195d9507-6a42-46a8-825f-f009e729d023', NULL);
+INSERT INTO `phone_numbers` VALUES ('964d0581-9627-44cb-be20-8118050406b3','16174000007','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','0dddaabf-0a30-43e3-84e8-426873b1a78c', NULL);
 /*!40000 ALTER TABLE `phone_numbers` ENABLE KEYS */;
 UNLOCK TABLES;
 
