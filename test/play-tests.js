@@ -244,6 +244,7 @@ test('\'play\' tests with initial app_json', async(t) => {
 
     // THEN
     await sippUac('uac-success-received-bye.xml', '172.38.0.10', from, "16174000007");
+    t.pass('application can use app_json for initial instructions');
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
