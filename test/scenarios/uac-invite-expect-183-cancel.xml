@@ -70,7 +70,7 @@
         <![CDATA[
 
       ACK sip:[to]@[remote_ip]:[remote_port] SIP/2.0
-      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      Via: SIP/2.0/[transport] [local_ip]:[local_port][$1]
       From: [from] <sip:[from]@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
       To: [to] <sip:[to]@[remote_ip]:[remote_port]>[peer_tag_param]
       Call-ID: [call_id]
@@ -84,4 +84,3 @@
     </send>
 
 </scenario>
-
