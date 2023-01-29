@@ -233,3 +233,21 @@ test('\'play\' tests with earlymedia', async(t) => {
     t.error(err);
   }
 });
+
+test('\'play\' tests with initial app_json', async(t) => {
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+    const from = 'play_initial_app_json';
+
+    // THEN
+    await sippUac('uac-success-received-bye.xml', '172.38.0.10', from, "16174000007");
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
