@@ -44,7 +44,7 @@ services:
   drachtio:
     image: drachtio/drachtio-server:latest
     restart: always
-    command: drachtio --contact "sip:*;transport=udp,tcp" --address 0.0.0.0 --port 9022
+    command: drachtio --contact "sip:*;transport=udp" --mtu 4096 --address 0.0.0.0 --port 9022
     ports:
       - "9060:9022/tcp"
     networks:
