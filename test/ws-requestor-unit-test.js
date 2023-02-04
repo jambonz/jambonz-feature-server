@@ -97,3 +97,36 @@ test('ws close success reconnect', async (t) => {
 
   t.end();
 });
+
+
+test('ws response error 1000', async (t) => {
+  // GIVEN
+
+  const call_sid = 'ws_terminated'
+  const json = '[{\"verb\": \"play\",\"url\": \"silence_stream://5000\"}]';
+  const ws_response = {
+    action: ['terminate'],
+    body: json
+  }
+  MockWebsocket.addJsonMapping(call_sid, ws_response);
+
+  const hook = {
+    url: 'ws://localhost:3000',
+    username: 'username',
+    password: 'password'
+  }
+
+  const params = {
+    callSid: call_sid
+  }
+
+  // WHEN
+  
+  const requestor = new WsRequestor(logger, "account_sid", hook, "webhook_secret");
+  const result = await requestor.request('session:new',hook, params, {});
+
+  // THEN
+  t.ok(result == json,'ws successfully download jambonz json');
+
+  t.end();
+});

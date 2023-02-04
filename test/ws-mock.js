@@ -40,6 +40,10 @@ class MockWebsocket {
         }
     }
 
+    removeAllListeners() {
+        this.eventListeners.clear();
+    }
+
     send(data, callback) {
         const json = JSON.parse(data);
         if (MockWebsocket.eventResponses.has(json.call_sid)) {
@@ -61,7 +65,7 @@ class MockWebsocket {
                 if (this.eventListeners.has('close')) {
                     this.eventListeners.get('close')(500);
                 }
-            } else if (action === 'terminated') {
+            } else if (action === 'terminate') {
                 if (this.eventListeners.has('close')) {
                     this.eventListeners.get('close')(1000);
                 }
