@@ -54,7 +54,11 @@
       "url": "string",
       "sampleRate": "number",
       "wsAuth": "#auth",
-      "metadata": "object"
+      "metadata": "object",
+      "mixType": {
+        "type": "string",
+        "enum": ["mono", "stereo", "mixed"]
+      }
     },
     "required": [
       "enable"
