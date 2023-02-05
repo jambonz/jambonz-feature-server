@@ -46,6 +46,7 @@ class MockWebsocket {
 
     send(data, callback) {
         const json = JSON.parse(data);
+        console.log({json}, 'got message from ws-requestor');
         if (MockWebsocket.eventResponses.has(json.call_sid)) {
 
             const resp_data = MockWebsocket.eventResponses.get(json.call_sid);
@@ -59,6 +60,7 @@ class MockWebsocket {
                         call_sid: json.call_sid,
                         queueCommand: false, 
                         data: resp_data.body}
+                    console.log({msg}, 'sending ack to ws-requestor');
                     this.mockOnMessage(JSON.stringify(msg));
                 }, 100);
             } else if (action === 'close') {

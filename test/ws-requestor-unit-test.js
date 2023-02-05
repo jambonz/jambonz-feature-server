@@ -3,11 +3,7 @@ const sinon = require('sinon');
 const proxyquire = require("proxyquire");
 proxyquire.noCallThru();
 const MockWebsocket = require('./ws-mock')
-
-const logger = {
-  debug: (data) => {console.log(data)},
-  info: (data) => {console.log(data)}
-};
+const logger = require('pino')({level: process.env.JAMBONES_LOGLEVEL || 'error'});
 
 const BaseRequestor = proxyquire(
   "../lib/utils/base-requestor",
@@ -61,7 +57,7 @@ test('ws success', async (t) => {
   const result = await requestor.request('session:new',hook, params, {});
 
   // THEN
-  t.ok(result == json,'ws successfully download jambonz json');
+  t.ok(result == json,'ws successfully sent session:new and got initial jambonz app');
 
   t.end();
 });
@@ -93,7 +89,7 @@ test('ws close success reconnect', async (t) => {
   const result = await requestor.request('session:new',hook, params, {});
 
   // THEN
-  t.ok(result == json,'ws successfully download jambonz json');
+  t.ok(result == json,'ws successfully reconnect after close from far end');
 
   t.end();
 });
@@ -123,10 +119,13 @@ test('ws response error 1000', async (t) => {
   // WHEN
   
   const requestor = new WsRequestor(logger, "account_sid", hook, "webhook_secret");
-  const result = await requestor.request('session:new',hook, params, {});
-
-  // THEN
-  t.ok(result == json,'ws successfully download jambonz json');
-
-  t.end();
+  try {
+    await requestor.request('session:new',hook, params, {});
+  }
+  catch (err) {
+    console.log({err});
+    // THEN
+    t.ok(err.startsWith('timeout from far end for msgid'), 'ws does not reconnect if far end closes gracefully');
+    t.end();
+  }
 });
