@@ -123,9 +123,76 @@ test('ws response error 1000', async (t) => {
     await requestor.request('session:new',hook, params, {});
   }
   catch (err) {
-    console.log({err});
     // THEN
     t.ok(err.startsWith('timeout from far end for msgid'), 'ws does not reconnect if far end closes gracefully');
+    t.end();
+  }
+});
+
+test('ws response error', async (t) => {
+  // GIVEN
+
+  const call_sid = 'ws_error'
+  const json = '[{\"verb\": \"play\",\"url\": \"silence_stream://5000\"}]';
+  const ws_response = {
+    action: ['error'],
+    body: json
+  }
+  MockWebsocket.addJsonMapping(call_sid, ws_response);
+
+  const hook = {
+    url: 'ws://localhost:3000',
+    username: 'username',
+    password: 'password'
+  }
+
+  const params = {
+    callSid: call_sid
+  }
+
+  // WHEN
+  
+  const requestor = new WsRequestor(logger, "account_sid", hook, "webhook_secret");
+  try {
+    await requestor.request('session:new',hook, params, {});
+  }
+  catch (err) {
+    // THEN
+    t.ok(err.startsWith('timeout from far end for msgid'), 'ws does not reconnect if far end closes gracefully');
+    t.end();
+  }
+});
+
+test('ws unexpected-response', async (t) => {
+  // GIVEN
+
+  const call_sid = 'ws_unexpected-response'
+  const json = '[{\"verb\": \"play\",\"url\": \"silence_stream://5000\"}]';
+  const ws_response = {
+    action: ['unexpected-response'],
+    body: json
+  }
+  MockWebsocket.addJsonMapping(call_sid, ws_response);
+
+  const hook = {
+    url: 'ws://localhost:3000',
+    username: 'username',
+    password: 'password'
+  }
+
+  const params = {
+    callSid: call_sid
+  }
+
+  // WHEN
+  
+  const requestor = new WsRequestor(logger, "account_sid", hook, "webhook_secret");
+  try {
+    await requestor.request('session:new',hook, params, {});
+  }
+  catch (err) {
+    // THEN
+    t.ok(err.code = 'ERR_ASSERTION', 'ws does not reconnect if far end closes gracefully');
     t.end();
   }
 });

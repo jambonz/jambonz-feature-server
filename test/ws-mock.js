@@ -71,6 +71,14 @@ class MockWebsocket {
                 if (this.eventListeners.has('close')) {
                     this.eventListeners.get('close')(1000);
                 }
+            } else if (action === 'error') {
+                if (this.eventListeners.has('error')) {
+                    this.eventListeners.get('error')();
+                }
+            } else if (action === 'unexpected-response') {
+                if (this.eventListeners.has('unexpected-response')) {
+                    this.eventListeners.get('unexpected-response')();
+                }
             }
             
         }
