@@ -106,16 +106,28 @@ const disconnect = () => {
   });
 };
 
-process.on('SIGUSR2', handle);
 process.on('SIGTERM', handle);
 
 function handle(signal) {
   const {removeFromSet} = srf.locals.dbHelpers;
+  srf.locals.disabled = true;
+  logger.info(`got signal ${signal}`);
   const setName = `${(process.env.JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
   logger.info(`got signal ${signal}, removing ${srf.locals.localSipAddress} from set ${setName}`);
   removeFromSet(setName, srf.locals.localSipAddress);
+  if (setName && srf.locals.localSipAddress) {
+    logger.info(`got signal ${signal}, removing ${srf.locals.localSipAddress} from set ${setName}`);
+    removeFromSet(setName, srf.locals.localSipAddress);
+  }
   removeFromSet(FS_UUID_SET_NAME, srf.locals.fsUUID);
   srf.locals.disabled = true;
+  if (process.env.K8S) {
+    srf.locals.lifecycleEmitter.operationalState = LifeCycleEvents.ScaleIn;
+  }
+  if (getCount() === 0) {
+    logger.info('no calls in progress, exiting');
+    process.exit(0);
+  }
 }
 
 if (process.env.JAMBONZ_CLEANUP_INTERVAL_MINS) {
