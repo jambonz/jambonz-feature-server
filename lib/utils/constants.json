@@ -74,6 +74,13 @@
     "Error": "nuance_transcribe::error",
     "VadDetected": "nuance_transcribe::vad_detected"
   },
+  "NvidiaTranscriptionEvents": {
+    "Transcription": "nvidia_transcribe::transcription",
+    "StartOfSpeech": "nvidia_transcribe::start_of_speech",
+    "TranscriptionComplete": "nvidia_transcribe::end_of_transcription",
+    "Error": "nvidia_transcribe::error",
+    "VadDetected": "nvidia_transcribe::vad_detected"
+  },
   "DeepgramTranscriptionEvents": {
     "Transcription": "deepgram_transcribe::transcription",
     "ConnectFailure": "deepgram_transcribe::connect_failed",
