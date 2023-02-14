@@ -38,6 +38,7 @@
     "@opentelemetry/sdk-trace-base": "^1.9.0",
     "@opentelemetry/sdk-trace-node": "^1.9.0",
     "@opentelemetry/semantic-conventions": "^1.9.0",
+    "verb-specifications":"^0.0.1",
     "aws-sdk": "^2.1313.0",
     "bent": "^7.3.12",
     "debug": "^4.3.4",
