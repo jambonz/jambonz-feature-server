@@ -1,4 +1,4 @@
-require('./ws-requestor-unit-test')
+require('./ws-requestor-unit-test');
 require('./unit-tests');
 require('./docker_start');
 require('./create-test-db');

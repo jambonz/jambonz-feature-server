@@ -61,8 +61,8 @@ test('unit tests', (t) => {
 
   
   const alt = require('./data/good/alternate-syntax');
-  const normalize = require('../lib/utils/normalize-jambones');
-  normalize(logger, alt).forEach((t) => {
+  const { normalizeJambones } = require('@jambonz/verb-specifications');
+  normalizeJambones(logger, alt).forEach((t) => {
     const task = makeTask(logger, t);
   });
   t.pass('alternate syntax works');
