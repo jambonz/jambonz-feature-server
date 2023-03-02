@@ -151,6 +151,7 @@
     "queue:status",
     "dial:confirm",
     "verb:hook",
+    "verb:status",
     "jambonz:error"
   ],
   "RecordState": {
