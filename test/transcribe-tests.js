@@ -143,7 +143,7 @@ test('\'transcribe\' test - deepgram', async(t) => {
       {
         "verb": "transcribe",
         "recognizer": {
-          "vendor": "aws",
+          "vendor": "deepgram",
           "hints": ["customer support", "sales", "human resources", "HR"],
           "deepgramOptions": {
             "apiKey": process.env.DEEPGRAM_API_KEY
@@ -159,6 +159,47 @@ test('\'transcribe\' test - deepgram', async(t) => {
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
       'transcribe: succeeds when using deepgram credentials');
+
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
+test('\'transcribe\' test - soniox', async(t) => {
+  if (!process.env.SONIOX_API_KEY ) {
+    t.pass('skipping soniox tests');
+    return t.end();
+  }
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+    // GIVEN
+    let verbs = [
+      {
+        "verb": "transcribe",
+        "recognizer": {
+          "vendor": "soniox",
+          "hints": ["customer support", "sales", "human resources", "HR"],
+          "deepgramOptions": {
+            "apiKey": process.env.SONIOX_API_KEY
+          }
+        },
+        "transcriptionHook": "/transcriptionHook"
+      }
+    ];
+    let from = "gather_success";
+    provisionCallHook(from, verbs);
+    // THEN
+    await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    console.log(JSON.stringify(obj));
+    t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
+      'transcribe: succeeds when using soniox credentials');
 
     disconnect();
   } catch (err) {
