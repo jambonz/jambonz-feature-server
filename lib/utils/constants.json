@@ -110,6 +110,12 @@
     "NoSpeechDetected": "azure_transcribe::no_speech_detected",
     "VadDetected": "azure_transcribe::vad_detected"
   },
+  "JambonzTranscriptionEvents": {
+    "Transcription": "jambonz_transcribe::transcription",
+    "ConnectFailure": "jambonz_transcribe::connect_failed",
+    "Connect": "jambonz_transcribe::connect",
+    "Error": "jambonz_transcribe::error"
+  },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",
     "ConnectFailure": "mod_audio_fork::connect_failed",
