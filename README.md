@@ -18,6 +18,7 @@ Configuration is provided via environment variables:
 |DRACHTIO_PORT| listening port of drachtio server for control connections (typically 9022)|yes|
 |DRACHTIO_SECRET| shared secret|yes|
 |ENABLE_METRICS| if 1, metrics will be generated|no|
+|ENCRYPTION_SECRET| secret for credential encryption(JWT_SECRET is deprecated) |yes|
 |GOOGLE_APPLICATION_CREDENTIALS| path to gcp service key file|yes|
 |HTTP_PORT| tcp port to listen on for API requests from jambonz-api-server|yes|
 |JAMBONES_GATHER_EARLY_HINTS_MATCH| if true and hints are provided, gather will opportunistically review interim transcripts if possible to reduce ASR latency |no|
