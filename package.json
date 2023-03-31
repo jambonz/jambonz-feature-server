@@ -27,7 +27,7 @@
     "@jambonz/db-helpers": "^0.7.4",
     "@jambonz/http-health-check": "^0.0.1",
     "@jambonz/realtimedb-helpers": "^0.7.0",
-    "@jambonz/speech-utils": "^0.0.8",
+    "@jambonz/speech-utils": "^0.0.9",
     "@jambonz/stats-collector": "^0.1.6",
     "@jambonz/time-series": "^0.2.5",
     "@jambonz/verb-specifications": "^0.0.11",
