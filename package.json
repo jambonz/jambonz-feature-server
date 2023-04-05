@@ -28,7 +28,7 @@
     "@jambonz/http-health-check": "^0.0.1",
     "@jambonz/realtimedb-helpers": "^0.7.0",
     "@jambonz/speech-utils": "^0.0.12",
-    "@jambonz/stats-collector": "^0.1.6",
+    "@jambonz/stats-collector": "^0.1.8",
     "@jambonz/time-series": "^0.2.5",
     "@jambonz/verb-specifications": "^0.0.11",
     "@opentelemetry/api": "^1.4.0",
