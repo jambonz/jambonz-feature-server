@@ -49,3 +49,6 @@ jobs:
           build-args: |
             GITHUB_REPOSITORY=$GITHUB_REPOSITORY
             GITHUB_REF=$GITHUB_REF
+        env:
+          IMAGE_ID: ${{ env.IMAGE_ID }}
+          VERSION: ${{ env.VERSION }}
