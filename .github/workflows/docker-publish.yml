@@ -45,7 +45,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: jambonz/$IMAGE_NAME:$VERSION
+          tags: ${{ IMAGE_ID }}:${{ VERSION }}
           build-args: |
             GITHUB_REPOSITORY=$GITHUB_REPOSITORY
             GITHUB_REF=$GITHUB_REF
