@@ -18,12 +18,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Login to Docker Hub 
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: prepare tag 
         run: |
             IMAGE_ID=jambonz/$IMAGE_NAME
@@ -40,12 +34,18 @@ jobs:
             echo IMAGE_ID=$IMAGE_ID
             echo VERSION=$VERSION
 
+      - name: Login to Docker Hub 
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ${{ IMAGE_ID }}:${{ VERSION }}
+          tags: ${{ env.IMAGE_ID }}:${{ env.VERSION }}
           build-args: |
             GITHUB_REPOSITORY=$GITHUB_REPOSITORY
             GITHUB_REF=$GITHUB_REF
