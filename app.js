@@ -8,7 +8,10 @@ const {
   JAMBONZ_CLEANUP_INTERVAL_MINS,
   K8S,
   NODE_ENV,
+  checkEnvs,
 } = require('./lib/config');
+
+checkEnvs();
 
 const Srf = require('drachtio-srf');
 const srf = new Srf();
