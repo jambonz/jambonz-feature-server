@@ -3,7 +3,10 @@ const sinon = require('sinon');
 const proxyquire = require("proxyquire");
 proxyquire.noCallThru();
 const MockWebsocket = require('./ws-mock')
-const logger = require('pino')({level: process.env.JAMBONES_LOGLEVEL || 'error'});
+const {
+  JAMBONES_LOGLEVEL,  
+} = require('../lib/config');
+const logger = require('pino')({level: JAMBONES_LOGLEVEL || 'error'});
 
 const BaseRequestor = proxyquire(
   "../lib/utils/base-requestor",

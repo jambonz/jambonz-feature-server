@@ -1,22 +1,22 @@
-const assert = require('assert');
-assert.ok(process.env.JAMBONES_MYSQL_HOST &&
-  process.env.JAMBONES_MYSQL_USER &&
-  process.env.JAMBONES_MYSQL_PASSWORD &&
-  process.env.JAMBONES_MYSQL_DATABASE, 'missing JAMBONES_MYSQL_XXX env vars');
-assert.ok(process.env.DRACHTIO_PORT || process.env.DRACHTIO_HOST, 'missing DRACHTIO_PORT env var');
-assert.ok(process.env.DRACHTIO_SECRET, 'missing DRACHTIO_SECRET env var');
-assert.ok(process.env.JAMBONES_FREESWITCH, 'missing JAMBONES_FREESWITCH env var');
-assert.ok(process.env.JAMBONES_REDIS_HOST, 'missing JAMBONES_REDIS_HOST env var');
-assert.ok(process.env.JAMBONES_NETWORK_CIDR || process.env.K8S, 'missing JAMBONES_SUBNET env var');
-assert.ok(process.env.ENCRYPTION_SECRET || process.env.JWT_SECRET, 'missing ENCRYPTION_SECRET env var');
+const {
+  DRACHTIO_PORT,
+  DRACHTIO_HOST,
+  DRACHTIO_SECRET,
+  JAMBONES_OTEL_SERVICE_NAME,
+  JAMBONES_LOGLEVEL,
+  JAMBONES_CLUSTER_ID,
+  JAMBONZ_CLEANUP_INTERVAL_MINS,
+  K8S,
+  NODE_ENV,
+} = require('./lib/config');
 
 const Srf = require('drachtio-srf');
 const srf = new Srf();
-const tracer = require('./tracer')(process.env.JAMBONES_OTEL_SERVICE_NAME || 'jambonz-feature-server');
+const tracer = require('./tracer')(JAMBONES_OTEL_SERVICE_NAME);
 const api = require('@opentelemetry/api');
 srf.locals = {...srf.locals, otel: {tracer, api}};
 
-const opts = {level: process.env.JAMBONES_LOGLEVEL || 'info'};
+const opts = {level: JAMBONES_LOGLEVEL || 'info'};
 const pino = require('pino');
 const logger = pino(opts, pino.destination({sync: false}));
 const {LifeCycleEvents, FS_UUID_SET_NAME} = require('./lib/utils/constants');
@@ -36,8 +36,8 @@ const {
 const InboundCallSession = require('./lib/session/inbound-call-session');
 const SipRecCallSession = require('./lib/session/siprec-call-session');
 
-if (process.env.DRACHTIO_HOST) {
-  srf.connect({host: process.env.DRACHTIO_HOST, port: process.env.DRACHTIO_PORT, secret: process.env.DRACHTIO_SECRET });
+if (DRACHTIO_HOST) {
+  srf.connect({host: DRACHTIO_HOST, port: DRACHTIO_PORT, secret: DRACHTIO_SECRET });
   srf.on('connect', (err, hp) => {
     const arr = /^(.*)\/(.*)$/.exec(hp.split(',').pop());
     srf.locals.localSipAddress = `${arr[2]}`;
@@ -45,10 +45,10 @@ if (process.env.DRACHTIO_HOST) {
   });
 }
 else {
-  logger.info(`listening for drachtio requests on port ${process.env.DRACHTIO_PORT}`);
-  srf.listen({port: process.env.DRACHTIO_PORT, secret: process.env.DRACHTIO_SECRET});
+  logger.info(`listening for drachtio requests on port ${DRACHTIO_PORT}`);
+  srf.listen({port: DRACHTIO_PORT, secret: DRACHTIO_SECRET});
 }
-if (process.env.NODE_ENV === 'test') {
+if (NODE_ENV === 'test') {
   srf.on('error', (err) => {
     logger.info(err, 'Error connecting to drachtio');
   });
@@ -113,13 +113,13 @@ function handle(signal) {
   const {removeFromSet} = srf.locals.dbHelpers;
   srf.locals.disabled = true;
   logger.info(`got signal ${signal}`);
-  const setName = `${(process.env.JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
+  const setName = `${(JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
   if (setName && srf.locals.localSipAddress) {
     logger.info(`got signal ${signal}, removing ${srf.locals.localSipAddress} from set ${setName}`);
     removeFromSet(setName, srf.locals.localSipAddress);
   }
   removeFromSet(FS_UUID_SET_NAME, srf.locals.fsUUID);
-  if (process.env.K8S) {
+  if (K8S) {
     srf.locals.lifecycleEmitter.operationalState = LifeCycleEvents.ScaleIn;
   }
   if (getCount() === 0) {
@@ -128,7 +128,7 @@ function handle(signal) {
   }
 }
 
-if (process.env.JAMBONZ_CLEANUP_INTERVAL_MINS) {
+if (JAMBONZ_CLEANUP_INTERVAL_MINS) {
   const {clearFiles} = require('./lib/utils/cron-jobs');
 
   /* cleanup orphaned files or channels every so often */
@@ -138,7 +138,7 @@ if (process.env.JAMBONZ_CLEANUP_INTERVAL_MINS) {
     } catch (err) {
       logger.error({err}, 'app.js: error clearing files');
     }
-  }, 1000 * 60 * (process.env.JAMBONZ_CLEANUP_INTERVAL_MINS || 60));
+  }, 1000 * 60 * (JAMBONZ_CLEANUP_INTERVAL_MINS || 60));
 }
 
 module.exports = {srf, logger, disconnect};
