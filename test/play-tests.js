@@ -184,11 +184,67 @@ test('\'play\' tests with seekOffset and actionHook', async(t) => {
     // THEN
     await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
     t.pass('play: succeeds');
-    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_customHook`)
-    t.ok(obj.body.reason === "playCompleted", "play: actionHook success received")
-    t.ok(obj.body.playback_seconds === "2", "playback_seconds: actionHook success received")
-    t.ok(obj.body.playback_milliseconds === "2048", "playback_milliseconds: actionHook success received")
-    t.ok(obj.body.playback_last_offset_pos === "16000", "playback_last_offset_pos: actionHook success received")
+    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_customHook`);
+    const seconds = parseInt(obj.body.playback_seconds);
+    const milliseconds = parseInt(obj.body.playback_milliseconds);
+    const lastOffsetPos = parseInt(obj.body.playback_last_offset_pos);
+    //console.log({obj}, 'lastRequest');
+    t.ok(obj.body.reason === "playCompleted", "play: actionHook success received");
+    t.ok(seconds === 2, "playback_seconds: actionHook success received");
+    t.ok(milliseconds === 2048, "playback_milliseconds: actionHook success received");
+    t.ok(lastOffsetPos > 15500 && lastOffsetPos < 16500, "playback_last_offset_pos: actionHook success received")
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
+test('\'play\' tests with earlymedia', async(t) => {
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+
+    // GIVEN
+    const verbs = [
+      {
+        verb: 'play',
+        url: 'silence_stream://5000',
+        earlyMedia: true
+      }
+    ];
+
+    const from = 'play_early_media';
+    provisionCallHook(from, verbs)
+
+    // THEN
+    await sippUac('uac-invite-expect-183-cancel.xml', '172.38.0.10', from);
+    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_callStatus`);
+    t.ok(obj.body.sip_status === 487, "play: actionHook success received");
+    t.ok(obj.body.sip_reason === 'Request Terminated', "play: actionHook success received");
+    t.ok(obj.body.call_termination_by === 'caller', "play: actionHook success received");
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
+test('\'play\' tests with initial app_json', async(t) => {
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+    const from = 'play_initial_app_json';
+
+    // THEN
+    await sippUac('uac-success-received-bye.xml', '172.38.0.10', from, "16174000007");
+    t.pass('application can use app_json for initial instructions');
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);

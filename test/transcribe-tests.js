@@ -17,7 +17,7 @@ function connect(connectable) {
   });
 }
 
-test('\'gather\' test - google', async(t) => {
+test('\'transcribe\' test - google', async(t) => {
   if (!process.env.GCP_JSON_KEY) {
     t.pass('skipping google tests');
     return t.end();
@@ -30,14 +30,12 @@ test('\'gather\' test - google', async(t) => {
     // GIVEN
     let verbs = [
       {
-        "verb": "gather",
-        "input": ["speech"],
+        "verb": "transcribe",
         "recognizer": {
           "vendor": "google",
           "hints": ["customer support", "sales", "human resources", "HR"]
         },
-        "timeout": 10,
-        "actionHook": "/actionHook"
+        "transcriptionHook": "/transcriptionHook"
       }
     ];
     let from = "gather_success";
@@ -45,9 +43,8 @@ test('\'gather\' test - google', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
-    //console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
-      'gather: succeeds when using google credentials');
+      'transcribe: succeeds when using google credentials');
 
     disconnect();
   } catch (err) {
@@ -57,43 +54,7 @@ test('\'gather\' test - google', async(t) => {
   }
 });
 
-test('\'gather\' test - default (google)', async(t) => {
-  if (!process.env.GCP_JSON_KEY) {
-    t.pass('skipping google tests');
-    return t.end();
-  }
-  clearModule.all();
-  const {srf, disconnect} = require('../app');
-
-  try {
-    await connect(srf);
-    // GIVEN
-    let verbs = [
-      {
-        "verb": "gather",
-        "input": ["speech"],
-        "timeout": 10,
-        "actionHook": "/actionHook"
-      }
-    ];
-    let from = "gather_success";
-    provisionCallHook(from, verbs);
-    // THEN
-    await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
-    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
-    //console.log(JSON.stringify(obj));
-    t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase() === 'i\'d like to speak to customer support',
-      'gather: succeeds when using default (google) credentials');
-
-    disconnect();
-  } catch (err) {
-    console.log(`error received: ${err}`);
-    disconnect();
-    t.error(err);
-  }
-});
-
-test('\'gather\' test - microsoft', async(t) => {
+test('\'transcribe\' test - microsoft', async(t) => {
   if (!process.env.MICROSOFT_REGION || !process.env.MICROSOFT_API_KEY) {
     t.pass('skipping microsoft tests');
     return t.end();
@@ -106,14 +67,12 @@ test('\'gather\' test - microsoft', async(t) => {
     // GIVEN
     let verbs = [
       {
-        "verb": "gather",
-        "input": ["speech"],
+        "verb": "transcribe",
         "recognizer": {
           "vendor": "microsoft",
           "hints": ["customer support", "sales", "human resources", "HR"]
         },
-        "timeout": 10,
-        "actionHook": "/actionHook"
+        "transcriptionHook": "/transcriptionHook"
       }
     ];
     let from = "gather_success";
@@ -121,9 +80,8 @@ test('\'gather\' test - microsoft', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
-    //console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
-      'gather: succeeds when using  microsoft credentials');
+      'transcribe: succeeds when using  microsoft credentials');
 
     disconnect();
   } catch (err) {
@@ -133,7 +91,7 @@ test('\'gather\' test - microsoft', async(t) => {
   }
 });
 
-test('\'gather\' test - aws', async(t) => {
+test('\'transcribe\' test - aws', async(t) => {
   if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
     t.pass('skipping aws tests');
     return t.end();
@@ -146,14 +104,12 @@ test('\'gather\' test - aws', async(t) => {
     // GIVEN
     let verbs = [
       {
-        "verb": "gather",
-        "input": ["speech"],
+        "verb": "transcribe",
         "recognizer": {
           "vendor": "aws",
           "hints": ["customer support", "sales", "human resources", "HR"]
         },
-        "timeout": 10,
-        "actionHook": "/actionHook"
+        "transcriptionHook": "/transcriptionHook"
       }
     ];
     let from = "gather_success";
@@ -161,9 +117,8 @@ test('\'gather\' test - aws', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
-    //console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
-      'gather: succeeds when using aws credentials');
+      'transcribe: succeeds when using aws credentials');
 
     disconnect();
   } catch (err) {
@@ -173,7 +128,7 @@ test('\'gather\' test - aws', async(t) => {
   }
 });
 
-test('\'gather\' test - deepgram', async(t) => {
+test('\'transcribe\' test - deepgram', async(t) => {
   if (!process.env.DEEPGRAM_API_KEY ) {
     t.pass('skipping deepgram tests');
     return t.end();
@@ -186,8 +141,7 @@ test('\'gather\' test - deepgram', async(t) => {
     // GIVEN
     let verbs = [
       {
-        "verb": "gather",
-        "input": ["speech"],
+        "verb": "transcribe",
         "recognizer": {
           "vendor": "deepgram",
           "hints": ["customer support", "sales", "human resources", "HR"],
@@ -195,8 +149,7 @@ test('\'gather\' test - deepgram', async(t) => {
             "apiKey": process.env.DEEPGRAM_API_KEY
           }
         },
-        "timeout": 10,
-        "actionHook": "/actionHook"
+        "transcriptionHook": "/transcriptionHook"
       }
     ];
     let from = "gather_success";
@@ -204,9 +157,9 @@ test('\'gather\' test - deepgram', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
-    //console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
-      'gather: succeeds when using deepgram credentials');
+      'transcribe: succeeds when using deepgram credentials');
+
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
@@ -215,7 +168,7 @@ test('\'gather\' test - deepgram', async(t) => {
   }
 });
 
-test('\'gather\' test - soniox', async(t) => {
+test('\'transcribe\' test - soniox', async(t) => {
   if (!process.env.SONIOX_API_KEY ) {
     t.pass('skipping soniox tests');
     return t.end();
@@ -228,17 +181,15 @@ test('\'gather\' test - soniox', async(t) => {
     // GIVEN
     let verbs = [
       {
-        "verb": "gather",
-        "input": ["speech"],
+        "verb": "transcribe",
         "recognizer": {
-          "vendor": "deepgram",
+          "vendor": "soniox",
           "hints": ["customer support", "sales", "human resources", "HR"],
           "deepgramOptions": {
             "apiKey": process.env.SONIOX_API_KEY
           }
         },
-        "timeout": 10,
-        "actionHook": "/actionHook"
+        "transcriptionHook": "/transcriptionHook"
       }
     ];
     let from = "gather_success";
@@ -248,7 +199,7 @@ test('\'gather\' test - soniox', async(t) => {
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
     console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
-      'gather: succeeds when using soniox credentials');
+      'transcribe: succeeds when using soniox credentials');
 
     disconnect();
   } catch (err) {

@@ -18,8 +18,10 @@ Configuration is provided via environment variables:
 |DRACHTIO_PORT| listening port of drachtio server for control connections (typically 9022)|yes|
 |DRACHTIO_SECRET| shared secret|yes|
 |ENABLE_METRICS| if 1, metrics will be generated|no|
+|ENCRYPTION_SECRET| secret for credential encryption(JWT_SECRET is deprecated) |yes|
 |GOOGLE_APPLICATION_CREDENTIALS| path to gcp service key file|yes|
 |HTTP_PORT| tcp port to listen on for API requests from jambonz-api-server|yes|
+|JAMBONES_GATHER_EARLY_HINTS_MATCH| if true and hints are provided, gather will opportunistically review interim transcripts if possible to reduce ASR latency |no|
 |JAMBONES_FREESWITCH| IP:port:secret for Freeswitch server (e.g. '127.0.0.1:8021:JambonzR0ck$'|yes|
 |JAMBONES_LOGLEVEL| log level for application, 'info' or 'debug'|no|
 |JAMBONES_MYSQL_HOST| mysql host|yes|
@@ -87,4 +89,4 @@ module.exports = {
 
 #### Running the test suite
 
-Please [see this]](./docs/contributing.md#run-the-regression-test-suite).
+Please [see this](./docs/contributing.md#run-the-regression-test-suite).

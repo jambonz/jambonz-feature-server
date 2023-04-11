@@ -44,10 +44,25 @@ test('unit tests', (t) => {
 
   task = makeTask(logger, require('./data/good/say-text-array'));
   t.ok(task.name === 'say', 'parsed say with multiple segments');
+  
+  task = makeTask(logger, require('./data/good/say-ssml'));
+  // the ssml is more than 1000 chars, 
+  // expecting first chunk is length > 100, stop at ? instead of first .
+  // 2nd chunk is long text < 1000 char, stop at .
+  // 3rd chunk is the rest.
+  t.ok(task.text.length === 3 &&
+    task.text[0].length === 187 &&
+    task.text[1].length === 882 &&
+    task.text[2].length === 123, 'parsed say');
 
+  task = makeTask(logger, require('./data/bad/bad-say-ssml'));
+  t.ok(task.text.length === 1 &&
+    task.text[0].length === 1162, 'parsed bad say');
+
+  
   const alt = require('./data/good/alternate-syntax');
-  const normalize = require('../lib/utils/normalize-jambones');
-  normalize(logger, alt).forEach((t) => {
+  const { normalizeJambones } = require('@jambonz/verb-specifications');
+  normalizeJambones(logger, alt).forEach((t) => {
     const task = makeTask(logger, t);
   });
   t.pass('alternate syntax works');

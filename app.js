@@ -8,6 +8,7 @@ assert.ok(process.env.DRACHTIO_SECRET, 'missing DRACHTIO_SECRET env var');
 assert.ok(process.env.JAMBONES_FREESWITCH, 'missing JAMBONES_FREESWITCH env var');
 assert.ok(process.env.JAMBONES_REDIS_HOST, 'missing JAMBONES_REDIS_HOST env var');
 assert.ok(process.env.JAMBONES_NETWORK_CIDR || process.env.K8S, 'missing JAMBONES_SUBNET env var');
+assert.ok(process.env.ENCRYPTION_SECRET || process.env.JWT_SECRET, 'missing ENCRYPTION_SECRET env var');
 
 const Srf = require('drachtio-srf');
 const srf = new Srf();
@@ -15,7 +16,6 @@ const tracer = require('./tracer')(process.env.JAMBONES_OTEL_SERVICE_NAME || 'ja
 const api = require('@opentelemetry/api');
 srf.locals = {...srf.locals, otel: {tracer, api}};
 
-const PORT = process.env.HTTP_PORT || 3000;
 const opts = {level: process.env.JAMBONES_LOGLEVEL || 'info'};
 const pino = require('pino');
 const logger = pino(opts, pino.destination({sync: false}));
@@ -32,17 +32,6 @@ const {
   retrieveApplication,
   invokeWebCallback
 } = require('./lib/middleware')(srf, logger);
-
-// HTTP
-const express = require('express');
-const helmet = require('helmet');
-const app = express();
-Object.assign(app.locals, {
-  logger,
-  srf
-});
-
-const httpRoutes = require('./lib/http-routes');
 
 const InboundCallSession = require('./lib/session/inbound-call-session');
 const SipRecCallSession = require('./lib/session/siprec-call-session');
@@ -82,20 +71,6 @@ srf.invite(async(req, res) => {
   session.exec();
 });
 
-// HTTP
-app.use(helmet());
-app.use(helmet.hidePoweredBy());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use('/', httpRoutes);
-app.use((err, req, res, next) => {
-  logger.error(err, 'burped error');
-  res.status(err.status || 500).json({msg: err.message});
-});
-const httpServer = app.listen(PORT);
-
-logger.info(`listening for HTTP requests on port ${PORT}, serviceUrl is ${srf.locals.serviceUrl}`);
-
 const sessionTracker = srf.locals.sessionTracker = require('./lib/session/session-tracker');
 sessionTracker.on('idle', () => {
   if (srf.locals.lifecycleEmitter.operationalState === LifeCycleEvents.ScaleIn) {
@@ -103,34 +78,54 @@ sessionTracker.on('idle', () => {
     srf.locals.lifecycleEmitter.scaleIn();
   }
 });
-
 const getCount = () => sessionTracker.count;
 const healthCheck = require('@jambonz/http-health-check');
-healthCheck({app, logger, path: '/', fn: getCount});
+let httpServer;
+
+const createHttpListener = require('./lib/utils/http-listener');
+createHttpListener(logger, srf)
+  .then(({server, app}) => {
+    httpServer = server;
+    healthCheck({app, logger, path: '/', fn: getCount});
+    return {server, app};
+  })
+  .catch((err) => {
+    logger.error(err, 'Error creating http listener');
+  });
+
 
 setInterval(() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
-}, 5000);
+}, 20000);
 
 const disconnect = () => {
   return new Promise ((resolve) => {
-    httpServer.on('close', resolve);
-    httpServer.close();
+    httpServer?.on('close', resolve);
+    httpServer?.close();
     srf.disconnect();
     srf.locals.mediaservers.forEach((ms) => ms.disconnect());
   });
 };
 
-process.on('SIGUSR2', handle);
 process.on('SIGTERM', handle);
 
 function handle(signal) {
   const {removeFromSet} = srf.locals.dbHelpers;
-  const setName = `${(process.env.JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
-  logger.info(`got signal ${signal}, removing ${srf.locals.localSipAddress} from set ${setName}`);
-  removeFromSet(setName, srf.locals.localSipAddress);
-  removeFromSet(FS_UUID_SET_NAME, srf.locals.fsUUID);
   srf.locals.disabled = true;
+  logger.info(`got signal ${signal}`);
+  const setName = `${(process.env.JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
+  if (setName && srf.locals.localSipAddress) {
+    logger.info(`got signal ${signal}, removing ${srf.locals.localSipAddress} from set ${setName}`);
+    removeFromSet(setName, srf.locals.localSipAddress);
+  }
+  removeFromSet(FS_UUID_SET_NAME, srf.locals.fsUUID);
+  if (process.env.K8S) {
+    srf.locals.lifecycleEmitter.operationalState = LifeCycleEvents.ScaleIn;
+  }
+  if (getCount() === 0) {
+    logger.info('no calls in progress, exiting');
+    process.exit(0);
+  }
 }
 
 if (process.env.JAMBONZ_CLEANUP_INTERVAL_MINS) {
