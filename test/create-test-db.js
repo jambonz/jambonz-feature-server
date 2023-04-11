@@ -5,7 +5,9 @@ const {encrypt} = require('../lib/utils/encrypt-decrypt');
 const {
   GCP_JSON_KEY,
   AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY,  
+  AWS_SECRET_ACCESS_KEY,
+  MICROSOFT_REGION,
+  MICROSOFT_API_KEY,
 } = require('../lib/config');
 
 test('creating jambones_test database', (t) => {

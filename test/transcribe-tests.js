@@ -6,8 +6,12 @@ const clearModule = require('clear-module');
 const {provisionCallHook} = require('./utils')
 const {
   GCP_JSON_KEY,
+  AWS_ACCESS_KEY_ID,  
+  AWS_SECRET_ACCESS_KEY,
   MICROSOFT_REGION,
-  MICROSOFT_API_KEY,      
+  MICROSOFT_API_KEY,
+  SONIOX_API_KEY,
+  DEEPGRAM_API_KEY,
 } = require('../lib/config');
 
 process.on('unhandledRejection', (reason, p) => {
