@@ -8,7 +8,7 @@ const {
 } = require('../lib/config');
 const opts = {
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;},
-  level: JAMBONES_LOGLEVEL || 'info'
+  level: JAMBONES_LOGLEVEL
 };
 const logger = require('pino')(opts);
 const { queryAlerts } = require('@jambonz/time-series')(

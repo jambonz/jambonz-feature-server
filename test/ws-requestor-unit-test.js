@@ -6,7 +6,7 @@ const MockWebsocket = require('./ws-mock')
 const {
   JAMBONES_LOGLEVEL,  
 } = require('../lib/config');
-const logger = require('pino')({level: JAMBONES_LOGLEVEL || 'error'});
+const logger = require('pino')({level: JAMBONES_LOGLEVEL});
 
 const BaseRequestor = proxyquire(
   "../lib/utils/base-requestor",
