@@ -6,6 +6,7 @@ const {
   JAMBONES_LOGLEVEL,
   JAMBONES_CLUSTER_ID,
   JAMBONZ_CLEANUP_INTERVAL_MINS,
+  getCleanupIntervalMins,
   K8S,
   NODE_ENV,
   checkEnvs,
@@ -141,7 +142,7 @@ if (JAMBONZ_CLEANUP_INTERVAL_MINS) {
     } catch (err) {
       logger.error({err}, 'app.js: error clearing files');
     }
-  }, 1000 * 60 * (JAMBONZ_CLEANUP_INTERVAL_MINS || 60));
+  }, getCleanupIntervalMins());
 }
 
 module.exports = {srf, logger, disconnect};
