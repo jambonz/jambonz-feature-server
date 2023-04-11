@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const bent = require('bent');
 const getJSON = bent('json');
-const PORT = process.env.HTTP_PORT || 3000;
+const {PORT} = require('../lib/config')
 
 const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
