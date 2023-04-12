@@ -4,6 +4,15 @@ const bent = require('bent');
 const getJSON = bent('json')
 const clearModule = require('clear-module');
 const {provisionCallHook} = require('./utils')
+const {
+  GCP_JSON_KEY,
+  AWS_ACCESS_KEY_ID,  
+  AWS_SECRET_ACCESS_KEY,
+  MICROSOFT_REGION,
+  MICROSOFT_API_KEY,
+  SONIOX_API_KEY,
+  DEEPGRAM_API_KEY,
+} = require('../lib/config');
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
@@ -18,7 +27,7 @@ function connect(connectable) {
 }
 
 test('\'transcribe\' test - google', async(t) => {
-  if (!process.env.GCP_JSON_KEY) {
+  if (!GCP_JSON_KEY) {
     t.pass('skipping google tests');
     return t.end();
   }
@@ -55,7 +64,7 @@ test('\'transcribe\' test - google', async(t) => {
 });
 
 test('\'transcribe\' test - microsoft', async(t) => {
-  if (!process.env.MICROSOFT_REGION || !process.env.MICROSOFT_API_KEY) {
+  if (!MICROSOFT_REGION || !MICROSOFT_API_KEY) {
     t.pass('skipping microsoft tests');
     return t.end();
   }
@@ -92,7 +101,7 @@ test('\'transcribe\' test - microsoft', async(t) => {
 });
 
 test('\'transcribe\' test - aws', async(t) => {
-  if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+  if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY) {
     t.pass('skipping aws tests');
     return t.end();
   }
@@ -129,7 +138,7 @@ test('\'transcribe\' test - aws', async(t) => {
 });
 
 test('\'transcribe\' test - deepgram', async(t) => {
-  if (!process.env.DEEPGRAM_API_KEY ) {
+  if (!DEEPGRAM_API_KEY ) {
     t.pass('skipping deepgram tests');
     return t.end();
   }
@@ -146,7 +155,7 @@ test('\'transcribe\' test - deepgram', async(t) => {
           "vendor": "deepgram",
           "hints": ["customer support", "sales", "human resources", "HR"],
           "deepgramOptions": {
-            "apiKey": process.env.DEEPGRAM_API_KEY
+            "apiKey": DEEPGRAM_API_KEY
           }
         },
         "transcriptionHook": "/transcriptionHook"
@@ -169,7 +178,7 @@ test('\'transcribe\' test - deepgram', async(t) => {
 });
 
 test('\'transcribe\' test - soniox', async(t) => {
-  if (!process.env.SONIOX_API_KEY ) {
+  if (!SONIOX_API_KEY ) {
     t.pass('skipping soniox tests');
     return t.end();
   }
@@ -186,7 +195,7 @@ test('\'transcribe\' test - soniox', async(t) => {
           "vendor": "soniox",
           "hints": ["customer support", "sales", "human resources", "HR"],
           "deepgramOptions": {
-            "apiKey": process.env.SONIOX_API_KEY
+            "apiKey": SONIOX_API_KEY
           }
         },
         "transcriptionHook": "/transcriptionHook"

@@ -7,13 +7,16 @@ const { BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { JaegerExporter } = require('@opentelemetry/exporter-jaeger');
 const { ZipkinExporter } = require('@opentelemetry/exporter-zipkin');
 const  { OTLPTraceExporter } = require ('@opentelemetry/exporter-trace-otlp-http');
-const {SipPropagator} = require('./lib/utils/sip-propagator');
-//const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
-//const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
-//const { PinoInstrumentation } = require('@opentelemetry/instrumentation-pino');
+const {
+  JAMBONES_OTEL_ENABLED,
+  OTEL_EXPORTER_JAEGER_AGENT_HOST,
+  OTEL_EXPORTER_JAEGER_ENDPOINT,
+  OTEL_EXPORTER_ZIPKIN_URL,
+  OTEL_EXPORTER_COLLECTOR_URL
+} = require('./lib/config');
 
 module.exports = (serviceName) => {
-  if (process.env.JAMBONES_OTEL_ENABLED) {
+  if (JAMBONES_OTEL_ENABLED) {
     const {version} = require('./package.json');
     const provider = new NodeTracerProvider({
       resource: new Resource({
@@ -21,17 +24,17 @@ module.exports = (serviceName) => {
         [SemanticResourceAttributes.SERVICE_VERSION]: version,
       }),
     });
-    opentelemetry.propagation.setGlobalPropagator(new SipPropagator());
+
     let exporter;
-    if (process.env.OTEL_EXPORTER_JAEGER_AGENT_HOST  || process.env.OTEL_EXPORTER_JAEGER_ENDPOINT) {
+    if (OTEL_EXPORTER_JAEGER_AGENT_HOST  || OTEL_EXPORTER_JAEGER_ENDPOINT) {
       exporter = new JaegerExporter();
     }
-    else if (process.env.OTEL_EXPORTER_ZIPKIN_URL) {
-      exporter = new ZipkinExporter({url:process.env.OTEL_EXPORTER_ZIPKIN_URL});
+    else if (OTEL_EXPORTER_ZIPKIN_URL) {
+      exporter = new ZipkinExporter({url:OTEL_EXPORTER_ZIPKIN_URL});
     }
     else {
       exporter = new OTLPTraceExporter({
-        url: process.OTEL_EXPORTER_COLLECTOR_URL
+        url: OTEL_EXPORTER_COLLECTOR_URL
       });
     }
 
