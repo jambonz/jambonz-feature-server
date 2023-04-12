@@ -7,6 +7,7 @@ const { BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { JaegerExporter } = require('@opentelemetry/exporter-jaeger');
 const { ZipkinExporter } = require('@opentelemetry/exporter-zipkin');
 const  { OTLPTraceExporter } = require ('@opentelemetry/exporter-trace-otlp-http');
+const {SipPropagator} = require('./lib/utils/sip-propagator');
 //const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 //const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 //const { PinoInstrumentation } = require('@opentelemetry/instrumentation-pino');
@@ -20,7 +21,7 @@ module.exports = (serviceName) => {
         [SemanticResourceAttributes.SERVICE_VERSION]: version,
       }),
     });
-
+    opentelemetry.propagation.setGlobalPropagator(new SipPropagator());
     let exporter;
     if (process.env.OTEL_EXPORTER_JAEGER_AGENT_HOST  || process.env.OTEL_EXPORTER_JAEGER_ENDPOINT) {
       exporter = new JaegerExporter();
