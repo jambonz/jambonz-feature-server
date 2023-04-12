@@ -31,6 +31,7 @@ test('\'dial-phone\'', async(t) => {
       {
         "verb": "dial",
         "callerId": from,
+        "callerName": "test_callerName",
         "actionHook": "/actionHook",
         "timeLimit": 5,
         "target": [
@@ -56,6 +57,7 @@ test('\'dial-phone\'', async(t) => {
         "method": "POST",
       },
       "from": from,
+      "callerName": "Tom",
       "to": {
         "type": "phone",
         "number": "15583084808"
