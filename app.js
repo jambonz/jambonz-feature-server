@@ -1,8 +1,17 @@
+const {JambonzTracer} = require('@jambonz/tracing');
+const {version} = require('./package.json');
+const api = require('@opentelemetry/api');
+
 const {
   DRACHTIO_PORT,
   DRACHTIO_HOST,
   DRACHTIO_SECRET,
+  JAMBONES_OTEL_ENABLED,
   JAMBONES_OTEL_SERVICE_NAME,
+  OTEL_EXPORTER_COLLECTOR_URL,
+  OTEL_EXPORTER_JAEGER_AGENT_HOST,
+  OTEL_EXPORTER_JAEGER_ENDPOINT,
+  OTEL_EXPORTER_ZIPKIN_URL,
   JAMBONES_LOGLEVEL,
   JAMBONES_CLUSTER_ID,
   JAMBONZ_CLEANUP_INTERVAL_MINS,
@@ -16,8 +25,17 @@ checkEnvs();
 
 const Srf = require('drachtio-srf');
 const srf = new Srf();
-const tracer = require('./tracer')(JAMBONES_OTEL_SERVICE_NAME);
-const api = require('@opentelemetry/api');
+
+const tracer = new JambonzTracer({
+  version,
+  serviceName: JAMBONES_OTEL_SERVICE_NAME,
+  enabled: JAMBONES_OTEL_ENABLED,
+  jaegerHost: OTEL_EXPORTER_JAEGER_AGENT_HOST,
+  jaegerEndpoint: OTEL_EXPORTER_JAEGER_ENDPOINT,
+  zipkinUrl: OTEL_EXPORTER_ZIPKIN_URL,
+  collectorUrl: OTEL_EXPORTER_COLLECTOR_URL
+}).tracer();
+
 srf.locals = {...srf.locals, otel: {tracer, api}};
 
 const opts = {level: JAMBONES_LOGLEVEL};
@@ -41,14 +59,13 @@ const InboundCallSession = require('./lib/session/inbound-call-session');
 const SipRecCallSession = require('./lib/session/siprec-call-session');
 
 if (DRACHTIO_HOST) {
-  srf.connect({host: DRACHTIO_HOST, port: DRACHTIO_PORT, secret: DRACHTIO_SECRET });
+  srf.connect({host: DRACHTIO_HOST, port: DRACHTIO_PORT, secret: DRACHTIO_SECRET});
   srf.on('connect', (err, hp) => {
     const arr = /^(.*)\/(.*)$/.exec(hp.split(',').pop());
     srf.locals.localSipAddress = `${arr[2]}`;
     logger.info(`connected to drachtio listening on ${hp}, local sip address is ${srf.locals.localSipAddress}`);
   });
-}
-else {
+} else {
   logger.info(`listening for drachtio requests on port ${DRACHTIO_PORT}`);
   srf.listen({port: DRACHTIO_PORT, secret: DRACHTIO_SECRET});
 }
@@ -103,7 +120,7 @@ setInterval(() => {
 }, 20000);
 
 const disconnect = () => {
-  return new Promise ((resolve) => {
+  return new Promise((resolve) => {
     httpServer?.on('close', resolve);
     httpServer?.close();
     srf.disconnect();
