@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
 const Websocket = require('ws');
-const {PORT} = require('../../lib/config');
-const listenPort = PORT;
+const listenPort = process.env.HTTP_PORT || 3000;
 let json_mapping = new Map();
 let hook_mapping = new Map();
 let ws_packet_count = new Map();
