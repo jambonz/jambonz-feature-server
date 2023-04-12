@@ -2,13 +2,17 @@ const test = require('tape');
 const { sippUac } = require('./sipp')('test_fs');
 const clearModule = require('clear-module');
 const {provisionCallHook} = require('./utils')
+const {
+  JAMBONES_LOGLEVEL,
+  JAMBONES_TIME_SERIES_HOST
+} = require('../lib/config');
 const opts = {
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;},
-  level: process.env.JAMBONES_LOGLEVEL || 'info'
+  level: JAMBONES_LOGLEVEL
 };
 const logger = require('pino')(opts);
 const { queryAlerts } = require('@jambonz/time-series')(
-  logger, process.env.JAMBONES_TIME_SERIES_HOST
+  logger, JAMBONES_TIME_SERIES_HOST
 );
 
 process.on('unhandledRejection', (reason, p) => {
