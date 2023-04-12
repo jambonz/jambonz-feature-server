@@ -7,10 +7,12 @@ const { BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { JaegerExporter } = require('@opentelemetry/exporter-jaeger');
 const { ZipkinExporter } = require('@opentelemetry/exporter-zipkin');
 const  { OTLPTraceExporter } = require ('@opentelemetry/exporter-trace-otlp-http');
-const {  
-  JAMBONES_OTEL_ENABLED,  
+const {
+  JAMBONES_OTEL_ENABLED,
   OTEL_EXPORTER_JAEGER_AGENT_HOST,
-  OTEL_EXPORTER_ZIPKIN_URL,  
+  OTEL_EXPORTER_JAEGER_ENDPOINT,
+  OTEL_EXPORTER_ZIPKIN_URL,
+  OTEL_EXPORTER_COLLECTOR_URL
 } = require('./lib/config');
 
 module.exports = (serviceName) => {
@@ -32,7 +34,7 @@ module.exports = (serviceName) => {
     }
     else {
       exporter = new OTLPTraceExporter({
-        url: process.OTEL_EXPORTER_COLLECTOR_URL
+        url: OTEL_EXPORTER_COLLECTOR_URL
       });
     }
 
