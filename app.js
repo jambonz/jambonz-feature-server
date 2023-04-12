@@ -1,6 +1,5 @@
-const {JambonzTracer} = require('@jambonz/tracing');
+const {JambonzTracer, api} = require('@jambonz/tracing');
 const {version} = require('./package.json');
-const api = require('@opentelemetry/api');
 
 const {
   DRACHTIO_PORT,
@@ -26,7 +25,7 @@ checkEnvs();
 const Srf = require('drachtio-srf');
 const srf = new Srf();
 
-const tracer = new JambonzTracer({
+const {tracer} = new JambonzTracer({
   version,
   serviceName: JAMBONES_OTEL_SERVICE_NAME,
   enabled: JAMBONES_OTEL_ENABLED,
@@ -34,7 +33,7 @@ const tracer = new JambonzTracer({
   jaegerEndpoint: OTEL_EXPORTER_JAEGER_ENDPOINT,
   zipkinUrl: OTEL_EXPORTER_ZIPKIN_URL,
   collectorUrl: OTEL_EXPORTER_COLLECTOR_URL
-}).tracer();
+});
 
 srf.locals = {...srf.locals, otel: {tracer, api}};
 
