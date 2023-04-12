@@ -12,6 +12,7 @@ const {
   OTEL_EXPORTER_JAEGER_AGENT_HOST,
   OTEL_EXPORTER_JAEGER_ENDPOINT,
   OTEL_EXPORTER_ZIPKIN_URL,
+  OTEL_EXPORTER_COLLECTOR_URL
 } = require('./lib/config');
 
 module.exports = (serviceName) => {
@@ -33,7 +34,7 @@ module.exports = (serviceName) => {
     }
     else {
       exporter = new OTLPTraceExporter({
-        url: process.OTEL_EXPORTER_COLLECTOR_URL
+        url: OTEL_EXPORTER_COLLECTOR_URL
       });
     }
 
