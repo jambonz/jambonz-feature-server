@@ -27,7 +27,7 @@ const srf = new Srf();
 
 const {tracer} = new JambonzTracer({
   version,
-  serviceName: JAMBONES_OTEL_SERVICE_NAME,
+  name: JAMBONES_OTEL_SERVICE_NAME || 'jambonz-feature-server',
   enabled: JAMBONES_OTEL_ENABLED,
   jaegerHost: OTEL_EXPORTER_JAEGER_AGENT_HOST,
   jaegerEndpoint: OTEL_EXPORTER_JAEGER_ENDPOINT,
