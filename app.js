@@ -32,7 +32,8 @@ const {tracer} = new JambonzTracer({
   jaegerHost: OTEL_EXPORTER_JAEGER_AGENT_HOST,
   jaegerEndpoint: OTEL_EXPORTER_JAEGER_ENDPOINT,
   zipkinUrl: OTEL_EXPORTER_ZIPKIN_URL,
-  collectorUrl: OTEL_EXPORTER_COLLECTOR_URL
+  collectorUrl: OTEL_EXPORTER_COLLECTOR_URL,
+  logLevel: JAMBONES_LOGLEVEL
 });
 
 srf.locals = {...srf.locals, otel: {tracer, api}};
