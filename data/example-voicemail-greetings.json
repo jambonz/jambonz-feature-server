@@ -5,14 +5,11 @@
     "at the tone",
     "leave a message",
     "leave me a message",
-    "not available right now",
-    "not available to take your call",
+    "not available",
     "can't take your call",
-    "I will get back to you",
+    "will get back to you",
     "I'll get back to you",
-    "we will get back to you",
-    "we are unable",
-    "we are not available"
+    "we are unable"
   ],
   "es-ES": [
     "le pasamos la llamada",
@@ -48,5 +45,18 @@
     "ens posarem en contacto",
     "ara no estem disponibles",
     "no hi som"
+  ],
+  "de-DE": [
+    "nicht erreichbar",
+    "nnruf wurde weitergeleitet",
+    "beim piepsen",
+    "am ton",
+    "eine nachricht hinterlassen",
+    "hinterlasse mir eine Nachricht",
+    "nicht verfügbar",
+    "kann ihren anruf nicht entgegennehmen",
+    "wird sich bei Ihnen melden",
+    "ich melde mich bei dir",
+    "wir können nicht"
   ]
 }
