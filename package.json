@@ -41,7 +41,7 @@
     "@opentelemetry/sdk-trace-base": "^1.9.0",
     "@opentelemetry/sdk-trace-node": "^1.9.0",
     "@opentelemetry/semantic-conventions": "^1.9.0",
-    "aws-sdk": "^2.1313.0",
+    "aws-sdk": "^2.1354.0",
     "bent": "^7.3.12",
     "debug": "^4.3.4",
     "deepcopy": "^2.1.0",
