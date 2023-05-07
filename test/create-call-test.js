@@ -106,17 +106,19 @@ test("test create-call call-hook basic authentication", async (t) => {
     await p;
 
     let obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}`);
+    console.log(obj);
     t.ok(
-      (obj.headers.Authorization === "Basic dXNlcm5hbWU6cGFzc3dvcmQ="),
+      obj.headers.Authorization === "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
       "create-call: call-hook contains basic authentication header"
     );
     t.ok(
-      (obj.customerData.customer === 'acme'),
+      obj.body.customerdata.customer === "acme",
       "create-call: metadata is working"
     );
     obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_callStatus`);
+    console.log(obj);
     t.ok(
-      (obj.customerData.customer === 'acme'),
+      obj.body.customerData.customer === "acme",
       "create-call: metadata is working"
     );
     disconnect();
