@@ -25,13 +25,13 @@
     "jslint:fix": "eslint app.js tracer.js lib --fix"
   },
   "dependencies": {
-    "@jambonz/db-helpers": "^0.7.4",
+    "@jambonz/db-helpers": "^0.7.9",
     "@jambonz/http-health-check": "^0.0.1",
-    "@jambonz/realtimedb-helpers": "^0.7.0",
+    "@jambonz/realtimedb-helpers": "^0.7.2",
     "@jambonz/speech-utils": "^0.0.12",
     "@jambonz/stats-collector": "^0.1.8",
     "@jambonz/time-series": "^0.2.5",
-    "@jambonz/verb-specifications": "^0.0.17",
+    "@jambonz/verb-specifications": "^0.0.21",
     "@opentelemetry/api": "^1.4.0",
     "@opentelemetry/exporter-jaeger": "^1.9.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.35.0",

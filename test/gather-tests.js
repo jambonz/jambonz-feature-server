@@ -102,6 +102,53 @@ test('\'gather\' test - default (google)', async(t) => {
   }
 });
 
+test('\'config\' test - reset to app defaults', async(t) => {
+  if (!GCP_JSON_KEY) {
+    t.pass('skipping config tests');
+    return t.end();
+  }
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+    // GIVEN
+    let verbs = [
+      {
+        "verb": "config",
+        "recognizer": {
+          "vendor": "google",
+          "language": "fr-FR"
+        },
+      },
+      {
+        "verb": "config",
+        "reset": ['recognizer'],
+      },
+      {
+        "verb": "gather",
+        "input": ["speech"],
+        "timeout": 10,
+        "actionHook": "/actionHook"
+      }
+    ];
+    let from = "gather_success";
+    provisionCallHook(from, verbs);
+    // THEN
+    await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    //console.log(JSON.stringify(obj));
+    t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase() === 'i\'d like to speak to customer support',
+      'config: resets recognizer to app defaults');
+
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
 test('\'gather\' test - microsoft', async(t) => {
   if (!MICROSOFT_REGION || !MICROSOFT_API_KEY) {
     t.pass('skipping microsoft tests');
