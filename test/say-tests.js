@@ -83,3 +83,44 @@ test('\'config\' reset synthesizer tests', async(t) => {
     t.error(err);
   }
 });
+
+const {MICROSOFT_CUSTOM_API_KEY, MICROSOFT_DEPLOYMENT_ID, MICROSOFT_CUSTOM_REGION, MICROSOFT_CUSTOM_VOICE} = process.env;
+if (MICROSOFT_CUSTOM_API_KEY && MICROSOFT_DEPLOYMENT_ID && MICROSOFT_CUSTOM_REGION && MICROSOFT_CUSTOM_VOICE) {
+  test('\'say\' tests - microsoft custom voice', async(t) => {
+    clearModule.all();
+    const {srf, disconnect} = require('../app');
+
+    try {
+      await connect(srf);
+
+      // GIVEN
+      const verbs = [
+        {
+          verb: 'say',
+          text: 'hello',
+          synthesizer: {
+            vendor: 'microsoft',
+            voice: MICROSOFT_CUSTOM_VOICE,
+            options: {
+              deploymentId: MICROSOFT_DEPLOYMENT_ID,
+              apiKey: MICROSOFT_CUSTOM_API_KEY,
+              region: MICROSOFT_CUSTOM_REGION,
+            }
+          }
+        }
+      ];
+
+      const from = 'say_test_success';
+      provisionCallHook(from, verbs)
+
+      // THEN
+      await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
+      t.pass('say: succeeds when using microsoft custom voice');
+      disconnect();
+    } catch (err) {
+      console.log(`error received: ${err}`);
+      disconnect();
+      t.error(err);
+    }
+  });
+}
