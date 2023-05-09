@@ -120,7 +120,7 @@ test('test create-call amd', async(t) => {
     let account_sid = 'bb845d4b-83a9-4cde-a6e9-50f3743bab3f';
 
     // Give UAS app time to come up
-    const p = sippUac('uas-play.xml', '172.38.0.10', from);
+    const p = sippUac('uas.xml', '172.38.0.10', from);
     await waitFor(1000);
 
     const post = bent('http://127.0.0.1:3000/', 'POST', 'json', 201);
