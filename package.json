@@ -25,9 +25,9 @@
     "jslint:fix": "eslint app.js lib --fix"
   },
   "dependencies": {
-    "@jambonz/db-helpers": "^0.7.4",
+    "@jambonz/db-helpers": "^0.7.9",
     "@jambonz/http-health-check": "^0.0.1",
-    "@jambonz/realtimedb-helpers": "^0.7.0",
+    "@jambonz/realtimedb-helpers": "^0.7.2",
     "@jambonz/speech-utils": "^0.0.12",
     "@jambonz/stats-collector": "^0.1.8",
     "@jambonz/time-series": "^0.2.5",
