@@ -18,7 +18,7 @@ jobs:
       - name: prepare tag 
         id: prepare_tag
         run: |
-            IMAGE_ID=$GITHUB_REPOSITORY
+            IMAGE_ID=feature-server
 
             # Strip git ref prefix from version
             VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
