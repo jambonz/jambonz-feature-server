@@ -36,7 +36,7 @@ obj.sippUac = (file, bindAddress, from='sipp', to='16174000000', loop=1) => {
     '-cid_str', `%u-%p@%s-${idx++}`,
     '172.38.0.50',
     '-key','from', from,
-    '-key','to', to, '-trace_msg'
+    '-key','to', to, '-trace_msg', '-trace_err'
   ];
 
   if (bindAddress) args.splice(5, 0, '--ip', bindAddress);
