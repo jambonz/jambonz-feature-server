@@ -21,12 +21,7 @@ const api = require('@opentelemetry/api');
 srf.locals = {...srf.locals, otel: {tracer, api}};
 
 const opts = {
-  level: JAMBONES_LOGLEVEL,
-  ...(process.env.JAMBONZ_LOGGER_TIMESTAMP_ENABLED && {
-    timestamp: () => {
-      return `, "time": "${new Date().toISOString()}"`;
-    }
-  })
+  level: JAMBONES_LOGLEVEL
 };
 const pino = require('pino');
 const logger = pino(opts, pino.destination({sync: false}));
