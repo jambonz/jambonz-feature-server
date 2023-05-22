@@ -22,9 +22,11 @@ srf.locals = {...srf.locals, otel: {tracer, api}};
 
 const opts = {
   level: JAMBONES_LOGLEVEL,
-  timestamp: () => {
-    return `, "time": "${new Date().toISOString()}"`;
-  }
+  ...(process.env.JAMBONZ_LOGGER_TIMESTAMP_ENABLED && {
+    timestamp: () => {
+      return `, "time": "${new Date().toISOString()}"`;
+    }
+  })
 };
 const pino = require('pino');
 const logger = pino(opts, pino.destination({sync: false}));
