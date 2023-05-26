@@ -181,12 +181,12 @@ test('test create-call app_json', async(t) => {
     const p = sippUac('uas.xml', '172.38.0.10', from);
     await waitFor(1000);
 
-    const app_json = [
+    const app_json = `[
       {
         "verb": "pause",
         "length": 7
       }
-    ];
+    ]`;
 
     const post = bent('http://127.0.0.1:3000/', 'POST', 'json', 201);
     post('v1/createCall', {
