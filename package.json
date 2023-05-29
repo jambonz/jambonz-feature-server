@@ -31,7 +31,11 @@
     "@jambonz/speech-utils": "^0.0.13",
     "@jambonz/stats-collector": "^0.1.8",
     "@jambonz/time-series": "^0.2.5",
+<<<<<<< HEAD
     "@jambonz/verb-specifications": "^0.0.24",
+=======
+    "@jambonz/verb-specifications": "^0.0.23",
+>>>>>>> b616556 (update verb specification)
     "@opentelemetry/api": "^1.4.0",
     "@opentelemetry/exporter-jaeger": "^1.9.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.35.0",
