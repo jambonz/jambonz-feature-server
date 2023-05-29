@@ -25,9 +25,9 @@
     "jslint:fix": "eslint app.js tracer.js lib --fix"
   },
   "dependencies": {
-    "@jambonz/db-helpers": "^0.8.1",
+    "@jambonz/db-helpers": "^0.9.0",
     "@jambonz/http-health-check": "^0.0.1",
-    "@jambonz/realtimedb-helpers": "^0.7.2",
+    "@jambonz/realtimedb-helpers": "^0.8.1",
     "@jambonz/speech-utils": "^0.0.13",
     "@jambonz/stats-collector": "^0.1.8",
     "@jambonz/time-series": "^0.2.5",
