@@ -31,7 +31,7 @@ test('\'say\' tests', async(t) => {
     ];
 
     const from = 'say_test_success';
-    provisionCallHook(from, verbs)
+    await provisionCallHook(from, verbs)
 
     // THEN
     await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
@@ -71,7 +71,7 @@ test('\'config\' reset synthesizer tests', async(t) => {
     ];
 
     const from = 'say_test_success';
-    provisionCallHook(from, verbs)
+    await provisionCallHook(from, verbs)
 
     // THEN
     await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
@@ -111,7 +111,7 @@ if (MICROSOFT_CUSTOM_API_KEY && MICROSOFT_DEPLOYMENT_ID && MICROSOFT_CUSTOM_REGI
       ];
 
       const from = 'say_test_success';
-      provisionCallHook(from, verbs)
+      await provisionCallHook(from, verbs)
 
       // THEN
       await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);

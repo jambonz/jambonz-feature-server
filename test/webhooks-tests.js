@@ -45,7 +45,7 @@ test('basic webhook tests', async(t) => {
     ];
 
     const from = 'sip_decline_test_success';
-    provisionCallHook(from, verbs)
+    await provisionCallHook(from, verbs)
 
     await sippUac('uac-expect-603.xml', '172.38.0.10', from);
     t.pass('webhook successfully declines call');
@@ -73,7 +73,7 @@ test('invalid jambonz json create alert tests', async(t) => {
     };
 
     const from = 'invalid_json_create_alert';
-    provisionCallHook(from, verbs)
+    await provisionCallHook(from, verbs)
 
     // THEN
     await sippUac('uac-invite-expect-480.xml', '172.38.0.10', from);

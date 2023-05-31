@@ -33,7 +33,7 @@ test('\'play\' tests single link in plain text', async(t) => {
     ];
 
     const from = 'play_single_link';
-    provisionCallHook(from, verbs)
+    await provisionCallHook(from, verbs)
 
     // THEN
     await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
@@ -62,7 +62,7 @@ test('\'play\' tests multi links in array', async(t) => {
     ];
 
     const from = 'play_multi_links_in_array';
-    provisionCallHook(from, verbs)
+    await provisionCallHook(from, verbs)
 
     // THEN
     await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
@@ -100,8 +100,8 @@ test('\'play\' tests single link in conference', async(t) => {
         waitHook: `/customHook`
       }
     ];
-    provisionCustomHook(from, waitHookVerbs)
-    provisionCallHook(from, verbs)
+    await provisionCustomHook(from, waitHookVerbs)
+    await provisionCallHook(from, verbs)
 
     // THEN
     await sippUac('uac-success-send-bye.xml', '172.38.0.10', from);
@@ -141,8 +141,8 @@ test('\'play\' tests multi links in array in conference', async(t) => {
         waitHook: `/customHook`
       }
     ];
-    provisionCustomHook(from, waitHookVerbs)
-    provisionCallHook(from, verbs)
+    await provisionCustomHook(from, waitHookVerbs)
+    await provisionCallHook(from, verbs)
 
     // THEN
     await sippUac('uac-success-send-bye.xml', '172.38.0.10', from);
@@ -178,8 +178,8 @@ test('\'play\' tests with seekOffset and actionHook', async(t) => {
     const waitHookVerbs = [];
 
     const from = 'play_action_hook';
-    provisionCallHook(from, verbs)
-    provisionCustomHook(from, waitHookVerbs)
+    await provisionCallHook(from, verbs)
+    await provisionCustomHook(from, waitHookVerbs)
 
     // THEN
     await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
@@ -218,7 +218,7 @@ test('\'play\' tests with earlymedia', async(t) => {
     ];
 
     const from = 'play_early_media';
-    provisionCallHook(from, verbs)
+    await provisionCallHook(from, verbs)
 
     // THEN
     await sippUac('uac-invite-expect-183-cancel.xml', '172.38.0.10', from);

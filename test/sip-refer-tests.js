@@ -41,8 +41,8 @@ test('\'refer\' tests w/202 and NOTIFY', {timeout: 25000}, async(t) => {
     const noVerbs = [];
 
     const from = 'refer_with_notify';
-    provisionCallHook(from, verbs);
-    provisionActionHook(from, noVerbs)
+    await provisionCallHook(from, verbs);
+    await provisionActionHook(from, noVerbs)
 
     // THEN
     await sippUac('uac-refer-with-notify.xml', '172.38.0.10', from);
@@ -81,8 +81,8 @@ test('\'refer\' tests w/202 but no NOTIFY', {timeout: 25000}, async(t) => {
     const noVerbs = [];
 
     const from = 'refer_no_notify';
-    provisionCallHook(from, verbs);
-    provisionActionHook(from, noVerbs)
+    await provisionCallHook(from, verbs);
+    await provisionActionHook(from, noVerbs)
 
     // THEN
     await sippUac('uac-refer-no-notify.xml', '172.38.0.10', from);

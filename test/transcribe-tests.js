@@ -48,7 +48,7 @@ test('\'transcribe\' test - google', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -85,7 +85,7 @@ test('\'transcribe\' test - microsoft', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -122,7 +122,7 @@ test('\'transcribe\' test - aws', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -162,7 +162,7 @@ test('\'transcribe\' test - deepgram', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -202,7 +202,7 @@ test('\'transcribe\' test - soniox', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);

@@ -35,7 +35,7 @@ test('\'listen-success\'', async(t) => {
       }
     ];
 
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
 
     // THEN
     await sippUac('uac-gather-account-creds-success-send-bye.xml', '172.38.0.10', from);
@@ -75,7 +75,7 @@ test('\'listen-maxLength\'', async(t) => {
       }
     ];
 
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
 
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
@@ -109,7 +109,7 @@ test('\'listen-pause-resume\'', async(t) => {
       }
     ];
 
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
 
     // THEN
     const p = sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);

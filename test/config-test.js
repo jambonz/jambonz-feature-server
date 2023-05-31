@@ -39,7 +39,7 @@ test('\'config: listen\'', async(t) => {
       }
     ];
 
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
 
     // THEN
     await sippUac('uac-gather-account-creds-success-send-bye.xml', '172.38.0.10', from);
@@ -86,7 +86,7 @@ test('\'config: listen - stop\'', async(t) => {
       }
     ];
 
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
 
     // THEN
     await sippUac('uac-gather-account-creds-success-send-bye.xml', '172.38.0.10', from);
