@@ -1,7 +1,7 @@
 const test = require('tape');
 const { sippUac } = require('./sipp')('test_fs');
 const clearModule = require('clear-module');
-const {provisionCallHook, provisionActionHook} = require('./utils');
+const {provisionCallHook, provisionActionHook, provisionAnyHook} = require('./utils');
 const bent = require('bent');
 const getJSON = bent('json');
 
@@ -66,6 +66,57 @@ test('\'enqueue-dequeue\' tests', async(t) => {
     await Promise.all([p1, p2]);
     const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_actionHook`);
     t.ok(obj.body.queue_result === 'bridged');
+    t.pass('enqueue-dequeue: succeeds connect');
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
+test('\leave\' tests', async(t) => {
+
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+  try {
+    await connect(srf);
+    // GIVEN
+    const verbs = [
+      {
+        verb: 'enqueue',
+        name: 'support1',
+        waitHook: '/anyHook/enqueue_success_leave',
+        actionHook: '/actionHook'
+      }
+    ];
+
+    const anyHookVerbs = [
+      {
+        verb: 'leave'
+      }
+    ];
+
+        const actionVerbs = [
+      {
+        verb: 'play',
+        url: 'silence_stream://1000',
+        earlyMedia: true
+      }
+    ];
+
+    const from = 'enqueue_success_leave';
+    await provisionCallHook(from, verbs);
+    await provisionAnyHook(from, anyHookVerbs);
+    await provisionActionHook(from, actionVerbs)
+    
+
+    // THEN
+    await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
+    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/enqueue_success_leave`);
+    t.ok(obj.body.queue_position === 0);
+    const obj1  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    t.ok(obj1.body.queue_result === 'leave');
     t.pass('enqueue-dequeue: succeeds connect');
     disconnect();
   } catch (err) {

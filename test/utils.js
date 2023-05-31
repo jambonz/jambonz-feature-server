@@ -33,4 +33,13 @@ const provisionActionHook = async(from, verbs) => {
   await post(`/actionHook`, mapping);
 }
 
-module.exports = { provisionCallHook, provisionCustomHook, provisionActionHook}
+const provisionAnyHook = async(key, verbs) => {
+  const mapping = {
+    key,
+    data: JSON.stringify(verbs)
+  };
+  const post = bent('http://127.0.0.1:3100', 'POST', 'string', 200);
+  await post(`/anyHookMapping`, mapping);
+}
+
+module.exports = { provisionCallHook, provisionCustomHook, provisionActionHook, provisionAnyHook}
