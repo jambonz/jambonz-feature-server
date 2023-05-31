@@ -28,7 +28,9 @@ test('\'enqueue-dequeue\' tests', async(t) => {
     // GIVEN
     const verbs = [
       {
-        verb: 'leave'
+        verb: 'enqueue',
+        name: 'support',
+        actionHook: '/actionHook'
       }
     ];
 
