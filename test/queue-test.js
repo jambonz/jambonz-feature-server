@@ -19,61 +19,61 @@ function connect(connectable) {
 
 const sleepFor = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
-// test('\'enqueue-dequeue\' tests', async(t) => {
+test('\'enqueue-dequeue\' tests', async(t) => {
 
-//   clearModule.all();
-//   const {srf, disconnect} = require('../app');
-//   try {
-//     await connect(srf);
-//     // GIVEN
-//     const verbs = [
-//       {
-//         verb: 'enqueue',
-//         name: 'support',
-//         actionHook: '/actionHook'
-//       }
-//     ];
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+  try {
+    await connect(srf);
+    // GIVEN
+    const verbs = [
+      {
+        verb: 'enqueue',
+        name: 'support',
+        actionHook: '/actionHook'
+      }
+    ];
 
-//     const verbs2 = [
-//       {
-//         verb: 'dequeue',
-//         name: 'support'
-//       }
-//     ];
+    const verbs2 = [
+      {
+        verb: 'dequeue',
+        name: 'support'
+      }
+    ];
 
-//     const actionVerbs = [
-//       {
-//         verb: 'play',
-//         url: 'silence_stream://1000',
-//         earlyMedia: true
-//       }
-//     ];
+    const actionVerbs = [
+      {
+        verb: 'play',
+        url: 'silence_stream://1000',
+        earlyMedia: true
+      }
+    ];
 
-//     const from = 'enqueue_success';
-//     await provisionCallHook(from, verbs);
-//     await provisionActionHook(from, actionVerbs)
+    const from = 'enqueue_success';
+    await provisionCallHook(from, verbs);
+    await provisionActionHook(from, actionVerbs)
 
-//     const from2 = 'dequeue_success';
-//     await provisionCallHook(from2, verbs2);
+    const from2 = 'dequeue_success';
+    await provisionCallHook(from2, verbs2);
     
 
-//     // THEN
-//     const p1 = sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
+    // THEN
+    const p1 = sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
 
-//     await sleepFor(1000);
+    await sleepFor(1000);
 
-//     const p2 = sippUac('uac-success-send-bye.xml', '172.38.0.11', from2);
-//     await Promise.all([p1, p2]);
-//     const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_actionHook`);
-//     t.ok(obj.body.queue_result === 'bridged');
-//     t.pass('enqueue-dequeue: succeeds connect');
-//     disconnect();
-//   } catch (err) {
-//     console.log(`error received: ${err}`);
-//     disconnect();
-//     t.error(err);
-//   }
-// });
+    const p2 = sippUac('uac-success-send-bye.xml', '172.38.0.11', from2);
+    await Promise.all([p1, p2]);
+    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    t.ok(obj.body.queue_result === 'bridged');
+    t.pass('enqueue-dequeue: succeeds connect');
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
 
 test('\leave\' tests', async(t) => {
 
