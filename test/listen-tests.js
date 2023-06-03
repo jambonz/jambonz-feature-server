@@ -28,7 +28,7 @@ test('\'listen-success\'', async(t) => {
     let verbs = [
       {
         "verb": "listen",
-        "url": `ws://127.0.0.1:3100/${from}`,
+        "url": `ws://172.38.0.60:3000/${from}`,
         "mixType" : "mono",
         "actionHook": "/actionHook",
         "playBeep": true,
@@ -68,8 +68,8 @@ test('\'listen-maxLength\'', async(t) => {
     let verbs = [
       {
         "verb": "listen",
-        "url": `ws://127.0.0.1:3100/${from}`,
-        "mixType" : "mixed",
+        "url": `ws://172.38.0.60:3000/${from}`,
+        "mixType" : "stereo",
         "timeout": 2,
         "maxLength": 2
       }
@@ -104,7 +104,7 @@ test('\'listen-pause-resume\'', async(t) => {
     let verbs = [
       {
         "verb": "listen",
-        "url": `ws://127.0.0.1:3100/${from}`,
+        "url": `ws://172.38.0.60:3000/${from}`,
         "mixType" : "mixed"
       }
     ];
