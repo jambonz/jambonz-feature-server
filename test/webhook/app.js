@@ -172,7 +172,7 @@ app.get('/ws_metadata/:key', (req, res) => {
   if (ws_metadata.has(key)) {
     return res.json({ metadata: ws_metadata.get(key) });
   } else {
-    return res.status(200).json(ws_metadata);
+    return res.status(404);
   }
 })
 

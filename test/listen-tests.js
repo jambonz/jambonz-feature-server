@@ -28,7 +28,7 @@ test('\'listen-success\'', async(t) => {
     let verbs = [
       {
         "verb": "listen",
-        "url": `ws://172.38.0.60:3000/${from}`,
+        "url": `ws://127.0.0.1:3100/${from}`,
         "mixType" : "mono",
         "actionHook": "/actionHook",
         "playBeep": true,
@@ -68,7 +68,7 @@ test('\'listen-maxLength\'', async(t) => {
     let verbs = [
       {
         "verb": "listen",
-        "url": `ws://172.38.0.60:3000/${from}`,
+        "url": `ws://127.0.0.1:3100/${from}`,
         "mixType" : "mixed",
         "timeout": 2,
         "maxLength": 2
@@ -83,7 +83,6 @@ test('\'listen-maxLength\'', async(t) => {
     t.ok(30000 <= obj.count, 'listen: success maxLength incoming call audio');
 
     obj = await getJSON(`http://127.0.0.1:3100/ws_metadata/${from}`);
-    console.log(obj);
     t.ok(obj.metadata.from === from && obj.metadata.sampleRate === 8000, 'listen: success maxLength metadata');
 
     disconnect();
@@ -105,7 +104,7 @@ test('\'listen-pause-resume\'', async(t) => {
     let verbs = [
       {
         "verb": "listen",
-        "url": `ws://172.38.0.60:3000/${from}`,
+        "url": `ws://127.0.0.1:3100/${from}`,
         "mixType" : "mixed"
       }
     ];
