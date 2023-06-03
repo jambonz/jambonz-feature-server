@@ -43,7 +43,7 @@ test('\'dial-phone\'', async(t) => {
       }
     ];
 
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
 
     // THEN
     const p = sippUac('uas-dial.xml', '172.38.0.10', undefined, undefined, 2);
@@ -102,7 +102,7 @@ test('\'dial-sip\'', async(t) => {
         }
       ];
   
-      provisionCallHook(from, verbs);
+      await provisionCallHook(from, verbs);
   
       // THEN
       const p = sippUac('uas-dial.xml', '172.38.0.10', undefined, undefined, 2);
@@ -169,7 +169,7 @@ test('\'dial-user\'', async(t) => {
         }
       ];
   
-      provisionCallHook(from, verbs);
+      await provisionCallHook(from, verbs);
   
       // THEN
       const p = sippUac('uas-dial.xml', '172.38.0.10', undefined, undefined, 2);

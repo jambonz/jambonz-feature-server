@@ -40,7 +40,7 @@ test('sending SIP in-dialog requests tests', async(t) => {
       }
     ];
     let from = "sip_indialog_test";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-send-info-during-dialog.xml', '172.38.0.10', from);
     const obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);

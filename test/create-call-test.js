@@ -92,7 +92,7 @@ test('test create-call call-hook basic authentication', async(t) => {
         "text": "hello"
       }
     ];
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     //THEN
     await p;
 
@@ -150,7 +150,7 @@ test('test create-call amd', async(t) => {
         "length": 7
       }
     ];
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     //THEN
     await p;
 

@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.18, for macos10.14 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.42, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: jambones_test
+-- Host: localhost    Database: jambones_test
 -- ------------------------------------------------------
--- Server version	5.7.33
+-- Server version	5.7.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -16,12 +16,71 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `account_limits`
+--
+
+DROP TABLE IF EXISTS `account_limits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `account_limits` (
+  `account_limits_sid` char(36) NOT NULL,
+  `account_sid` char(36) NOT NULL,
+  `category` enum('api_rate','voice_call_session','device','voice_call_minutes','voice_call_session_license','voice_call_minutes_license') NOT NULL,
+  `quantity` int(11) NOT NULL,
+  PRIMARY KEY (`account_limits_sid`),
+  UNIQUE KEY `account_limits_sid` (`account_limits_sid`),
+  KEY `account_sid_idx` (`account_sid`),
+  CONSTRAINT `account_limits_ibfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `account_limits`
+--
+
+LOCK TABLES `account_limits` WRITE;
+/*!40000 ALTER TABLE `account_limits` DISABLE KEYS */;
+/*!40000 ALTER TABLE `account_limits` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `account_offers`
+--
+
+DROP TABLE IF EXISTS `account_offers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `account_offers` (
+  `account_offer_sid` char(36) NOT NULL,
+  `account_sid` char(36) NOT NULL,
+  `product_sid` char(36) NOT NULL,
+  `stripe_product_id` varchar(56) NOT NULL,
+  PRIMARY KEY (`account_offer_sid`),
+  UNIQUE KEY `account_offer_sid` (`account_offer_sid`),
+  KEY `account_offer_sid_idx` (`account_offer_sid`),
+  KEY `account_sid_idx` (`account_sid`),
+  KEY `product_sid_idx` (`product_sid`),
+  CONSTRAINT `account_offers_ibfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `account_offers_ibfk_2` FOREIGN KEY (`product_sid`) REFERENCES `products` (`product_sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `account_offers`
+--
+
+LOCK TABLES `account_offers` WRITE;
+/*!40000 ALTER TABLE `account_offers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `account_offers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `account_products`
 --
 
 DROP TABLE IF EXISTS `account_products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account_products` (
   `account_product_sid` char(36) NOT NULL,
   `account_subscription_sid` char(36) NOT NULL,
@@ -32,6 +91,8 @@ CREATE TABLE `account_products` (
   KEY `account_product_sid_idx` (`account_product_sid`),
   KEY `account_subscription_sid_idx` (`account_subscription_sid`),
   KEY `product_sid_idxfk` (`product_sid`),
+  CONSTRAINT `account_products_ibfk_1` FOREIGN KEY (`account_subscription_sid`) REFERENCES `account_subscriptions` (`account_subscription_sid`),
+  CONSTRAINT `account_products_ibfk_2` FOREIGN KEY (`product_sid`) REFERENCES `products` (`product_sid`),
   CONSTRAINT `account_subscription_sid_idxfk` FOREIGN KEY (`account_subscription_sid`) REFERENCES `account_subscriptions` (`account_subscription_sid`),
   CONSTRAINT `product_sid_idxfk` FOREIGN KEY (`product_sid`) REFERENCES `products` (`product_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -53,7 +114,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `account_static_ips`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account_static_ips` (
   `account_static_ip_sid` char(36) NOT NULL,
   `account_sid` char(36) NOT NULL,
@@ -66,6 +127,7 @@ CREATE TABLE `account_static_ips` (
   KEY `account_sid_idx` (`account_sid`),
   KEY `sbc_address_sid_idxfk` (`sbc_address_sid`),
   CONSTRAINT `account_sid_idxfk_3` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `account_static_ips_ibfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
   CONSTRAINT `sbc_address_sid_idxfk` FOREIGN KEY (`sbc_address_sid`) REFERENCES `sbc_addresses` (`sbc_address_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -85,7 +147,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `account_subscriptions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account_subscriptions` (
   `account_subscription_sid` char(36) NOT NULL,
   `account_sid` char(36) NOT NULL,
@@ -105,7 +167,8 @@ CREATE TABLE `account_subscriptions` (
   UNIQUE KEY `account_subscription_sid` (`account_subscription_sid`),
   KEY `account_subscription_sid_idx` (`account_subscription_sid`),
   KEY `account_sid_idx` (`account_sid`),
-  CONSTRAINT `account_sid_idxfk` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`)
+  CONSTRAINT `account_sid_idxfk` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `account_subscriptions_ibfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -125,13 +188,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `accounts` (
   `account_sid` char(36) NOT NULL,
   `name` varchar(64) NOT NULL,
   `sip_realm` varchar(132) DEFAULT NULL COMMENT 'sip domain that will be used for devices registering under this account',
   `service_provider_sid` char(36) NOT NULL COMMENT 'service provider that owns the customer relationship with this account',
   `registration_hook_sid` char(36) DEFAULT NULL COMMENT 'webhook to call when devices underr this account attempt to register',
+  `queue_event_hook_sid` char(36) DEFAULT NULL,
   `device_calling_application_sid` char(36) DEFAULT NULL COMMENT 'application to use for outbound calling from an account',
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -141,6 +205,12 @@ CREATE TABLE `accounts` (
   `disable_cdrs` tinyint(1) NOT NULL DEFAULT '0',
   `trial_end_date` datetime DEFAULT NULL,
   `deactivated_reason` varchar(255) DEFAULT NULL,
+  `device_to_call_ratio` int(11) NOT NULL DEFAULT '5',
+  `subspace_client_id` varchar(255) DEFAULT NULL,
+  `subspace_client_secret` varchar(255) DEFAULT NULL,
+  `subspace_sip_teleport_id` varchar(255) DEFAULT NULL,
+  `subspace_sip_teleport_destinations` varchar(255) DEFAULT NULL,
+  `siprec_hook_sid` char(36) DEFAULT NULL,
   PRIMARY KEY (`account_sid`),
   UNIQUE KEY `account_sid` (`account_sid`),
   UNIQUE KEY `sip_realm` (`sip_realm`),
@@ -149,6 +219,13 @@ CREATE TABLE `accounts` (
   KEY `service_provider_sid_idx` (`service_provider_sid`),
   KEY `registration_hook_sid_idxfk_1` (`registration_hook_sid`),
   KEY `device_calling_application_sid_idxfk` (`device_calling_application_sid`),
+  KEY `siprec_hook_sid_idxfk` (`siprec_hook_sid`),
+  KEY `queue_event_hook_sid_idxfk` (`queue_event_hook_sid`),
+  CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`),
+  CONSTRAINT `accounts_ibfk_2` FOREIGN KEY (`registration_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
+  CONSTRAINT `accounts_ibfk_3` FOREIGN KEY (`device_calling_application_sid`) REFERENCES `applications` (`application_sid`),
+  CONSTRAINT `accounts_ibfk_4` FOREIGN KEY (`siprec_hook_sid`) REFERENCES `applications` (`application_sid`),
+  CONSTRAINT `accounts_ibfk_5` FOREIGN KEY (`queue_event_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
   CONSTRAINT `device_calling_application_sid_idxfk` FOREIGN KEY (`device_calling_application_sid`) REFERENCES `applications` (`application_sid`),
   CONSTRAINT `registration_hook_sid_idxfk_1` FOREIGN KEY (`registration_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
   CONSTRAINT `service_provider_sid_idxfk_6` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`)
@@ -161,8 +238,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES ('bb845d4b-83a9-4cde-a6e9-50f3743bab3f','Joe User','test.yakeeda.com','2708b1b3-2736-40ea-b502-c53d8396247f',NULL,NULL,1,'2021-04-03 15:41:03','trial',NULL,'wh_secret_ehV2dVyzNBs5kHxeJcatRQ',0,NULL,NULL);
-INSERT INTO `accounts` VALUES ('622f62e4-303a-49f2-bbe0-eb1e1714e37a','Dave Horton','delta.yakeeda.com','2708b1b3-2736-40ea-b502-c53d8396247f',NULL,NULL,0,'2021-04-03 15:41:03','trial',NULL,'wh_secret_ehV2dVyzNBs5kHxeJcatRQ',0,NULL,NULL);
+INSERT INTO `accounts` VALUES ('622f62e4-303a-49f2-bbe0-eb1e1714e37a','Dave Horton','delta.yakeeda.com','2708b1b3-2736-40ea-b502-c53d8396247f',NULL,NULL,NULL,0,'2021-04-03 15:41:03','trial',NULL,'wh_secret_ehV2dVyzNBs5kHxeJcatRQ',0,NULL,NULL,5,NULL,NULL,NULL,NULL,NULL),('bb845d4b-83a9-4cde-a6e9-50f3743bab3f','Joe User','test.yakeeda.com','2708b1b3-2736-40ea-b502-c53d8396247f',NULL,NULL,NULL,1,'2021-04-03 15:41:03','trial',NULL,'wh_secret_ehV2dVyzNBs5kHxeJcatRQ',0,NULL,NULL,5,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +248,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `api_keys`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `api_keys` (
   `api_key_sid` char(36) NOT NULL,
   `token` char(36) NOT NULL,
@@ -188,6 +264,8 @@ CREATE TABLE `api_keys` (
   KEY `account_sid_idx` (`account_sid`),
   KEY `service_provider_sid_idx` (`service_provider_sid`),
   CONSTRAINT `account_sid_idxfk_4` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `api_keys_ibfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `api_keys_ibfk_2` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`),
   CONSTRAINT `service_provider_sid_idxfk` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An authorization token that is used to access the REST api';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -208,7 +286,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `applications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `applications` (
   `application_sid` char(36) NOT NULL,
   `name` varchar(64) NOT NULL,
@@ -217,12 +295,13 @@ CREATE TABLE `applications` (
   `call_hook_sid` char(36) DEFAULT NULL COMMENT 'webhook to call for inbound calls ',
   `call_status_hook_sid` char(36) DEFAULT NULL COMMENT 'webhook to call for call status events',
   `messaging_hook_sid` char(36) DEFAULT NULL COMMENT 'webhook to call for inbound SMS/MMS ',
-  `app_json` VARCHAR(16384),
+  `app_json` varchar(16384) DEFAULT NULL,
   `speech_synthesis_vendor` varchar(64) NOT NULL DEFAULT 'google',
   `speech_synthesis_language` varchar(12) NOT NULL DEFAULT 'en-US',
   `speech_synthesis_voice` varchar(64) DEFAULT NULL,
   `speech_recognizer_vendor` varchar(64) NOT NULL DEFAULT 'google',
   `speech_recognizer_language` varchar(64) NOT NULL DEFAULT 'en-US',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`application_sid`),
   UNIQUE KEY `application_sid` (`application_sid`),
   UNIQUE KEY `applications_idx_name` (`account_sid`,`name`),
@@ -233,6 +312,11 @@ CREATE TABLE `applications` (
   KEY `call_status_hook_sid_idxfk` (`call_status_hook_sid`),
   KEY `messaging_hook_sid_idxfk` (`messaging_hook_sid`),
   CONSTRAINT `account_sid_idxfk_10` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `applications_ibfk_1` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`),
+  CONSTRAINT `applications_ibfk_2` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `applications_ibfk_3` FOREIGN KEY (`call_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
+  CONSTRAINT `applications_ibfk_4` FOREIGN KEY (`call_status_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
+  CONSTRAINT `applications_ibfk_5` FOREIGN KEY (`messaging_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
   CONSTRAINT `call_hook_sid_idxfk` FOREIGN KEY (`call_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
   CONSTRAINT `call_status_hook_sid_idxfk` FOREIGN KEY (`call_status_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
   CONSTRAINT `messaging_hook_sid_idxfk` FOREIGN KEY (`messaging_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
@@ -246,15 +330,33 @@ CREATE TABLE `applications` (
 
 LOCK TABLES `applications` WRITE;
 /*!40000 ALTER TABLE `applications` DISABLE KEYS */;
-INSERT INTO `applications` VALUES ('0dddaabf-0a30-43e3-84e8-426873b1a78b','decline call',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c71e79db-24f2-4866-a3ee-febb0f97b341','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('308b4f41-1a18-4052-b89a-c054e75ce242','say',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','54ab0976-a6c0-45d8-89a4-d90d45bf9d96','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('24d0f6af-e976-44dd-a2e8-41c7b55abe33','say account 2',NULL,'622f62e4-303a-49f2-bbe0-eb1e1714e37a','54ab0976-a6c0-45d8-89a4-d90d45bf9d96','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('17461c69-56b5-4dab-ad83-1c43a0f93a3d','gather',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','10692465-a511-4277-9807-b7157e4f81e1','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('baf9213b-5556-4c20-870c-586392ed246f','transcribe',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('ae026ab5-3029-47b4-9d7c-236e3a4b4ebe','transcribe account 2',NULL,'622f62e4-303a-49f2-bbe0-eb1e1714e37a','ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('195d9507-6a42-46a8-825f-f009e729d023','sip info',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c9113e7a-741f-48b9-96c1-f2f78176eeb3','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US');
-INSERT INTO `applications` VALUES ('0dddaabf-0a30-43e3-84e8-426873b1a78c','app json',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c71e79db-24f2-4866-a3ee-febb0f97b341','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'[{"verb": "play","url": "silence_stream://5000"}]','google','en-US','en-US-Standard-C','google','en-US');
+INSERT INTO `applications` VALUES ('0dddaabf-0a30-43e3-84e8-426873b1a78b','decline call',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c71e79db-24f2-4866-a3ee-febb0f97b341','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US','2023-05-31 03:52:48'),('0dddaabf-0a30-43e3-84e8-426873b1a78c','app json',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c71e79db-24f2-4866-a3ee-febb0f97b341','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,'[{\"verb\": \"play\",\"url\": \"silence_stream://5000\"}]','google','en-US','en-US-Standard-C','google','en-US','2023-05-31 03:52:48'),('17461c69-56b5-4dab-ad83-1c43a0f93a3d','gather',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','10692465-a511-4277-9807-b7157e4f81e1','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US','2023-05-31 03:52:48'),('195d9507-6a42-46a8-825f-f009e729d023','sip info',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','c9113e7a-741f-48b9-96c1-f2f78176eeb3','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US','2023-05-31 03:52:48'),('24d0f6af-e976-44dd-a2e8-41c7b55abe33','say account 2',NULL,'622f62e4-303a-49f2-bbe0-eb1e1714e37a','54ab0976-a6c0-45d8-89a4-d90d45bf9d96','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US','2023-05-31 03:52:48'),('308b4f41-1a18-4052-b89a-c054e75ce242','say',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','54ab0976-a6c0-45d8-89a4-d90d45bf9d96','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US','2023-05-31 03:52:48'),('ae026ab5-3029-47b4-9d7c-236e3a4b4ebe','transcribe account 2',NULL,'622f62e4-303a-49f2-bbe0-eb1e1714e37a','ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US','2023-05-31 03:52:48'),('baf9213b-5556-4c20-870c-586392ed246f','transcribe',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','293904c1-351b-4bca-8d58-1a29b853c7db',NULL,NULL,'google','en-US','en-US-Standard-C','google','en-US','2023-05-31 03:52:48');
 /*!40000 ALTER TABLE `applications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `beta_invite_codes`
+--
+
+DROP TABLE IF EXISTS `beta_invite_codes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `beta_invite_codes` (
+  `invite_code` char(6) NOT NULL,
+  `in_use` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`invite_code`),
+  UNIQUE KEY `invite_code` (`invite_code`),
+  KEY `invite_code_idx` (`invite_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `beta_invite_codes`
+--
+
+LOCK TABLES `beta_invite_codes` WRITE;
+/*!40000 ALTER TABLE `beta_invite_codes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `beta_invite_codes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -263,7 +365,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `call_routes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `call_routes` (
   `call_route_sid` char(36) NOT NULL,
   `priority` int(11) NOT NULL,
@@ -276,7 +378,9 @@ CREATE TABLE `call_routes` (
   KEY `account_sid_idxfk_1` (`account_sid`),
   KEY `application_sid_idxfk` (`application_sid`),
   CONSTRAINT `account_sid_idxfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
-  CONSTRAINT `application_sid_idxfk` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`)
+  CONSTRAINT `application_sid_idxfk` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`),
+  CONSTRAINT `call_routes_ibfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `call_routes_ibfk_2` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='a regex-based pattern match for call routing';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -295,7 +399,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `dns_records`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dns_records` (
   `dns_record_sid` char(36) NOT NULL,
   `account_sid` char(36) NOT NULL,
@@ -305,7 +409,8 @@ CREATE TABLE `dns_records` (
   UNIQUE KEY `dns_record_sid` (`dns_record_sid`),
   KEY `dns_record_sid_idx` (`dns_record_sid`),
   KEY `account_sid_idxfk_2` (`account_sid`),
-  CONSTRAINT `account_sid_idxfk_2` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`)
+  CONSTRAINT `account_sid_idxfk_2` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `dns_records_ibfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -319,12 +424,45 @@ LOCK TABLES `dns_records` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `lcr`
+--
+
+DROP TABLE IF EXISTS `lcr`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lcr` (
+  `lcr_sid` char(36) NOT NULL,
+  `name` varchar(64) DEFAULT NULL COMMENT 'User-assigned name for this LCR table',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `default_carrier_set_entry_sid` char(36) DEFAULT NULL COMMENT 'default carrier/route to use when no digit match based results are found.',
+  `service_provider_sid` char(36) DEFAULT NULL,
+  `account_sid` char(36) DEFAULT NULL,
+  PRIMARY KEY (`lcr_sid`),
+  UNIQUE KEY `lcr_sid` (`lcr_sid`),
+  KEY `lcr_sid_idx` (`lcr_sid`),
+  KEY `default_carrier_set_entry_sid_idxfk` (`default_carrier_set_entry_sid`),
+  KEY `service_provider_sid_idx` (`service_provider_sid`),
+  KEY `account_sid_idx` (`account_sid`),
+  CONSTRAINT `lcr_ibfk_1` FOREIGN KEY (`default_carrier_set_entry_sid`) REFERENCES `lcr_carrier_set_entry` (`lcr_carrier_set_entry_sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An LCR (least cost routing) table that is used by a service provider or account to make decisions about routing outbound calls when multiple carriers are available.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lcr`
+--
+
+LOCK TABLES `lcr` WRITE;
+/*!40000 ALTER TABLE `lcr` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lcr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `lcr_carrier_set_entry`
 --
 
 DROP TABLE IF EXISTS `lcr_carrier_set_entry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lcr_carrier_set_entry` (
   `lcr_carrier_set_entry_sid` char(36) NOT NULL,
   `workload` int(11) NOT NULL DEFAULT '1' COMMENT 'represents a proportion of traffic to send through the associated carrier; can be used for load balancing traffic across carriers with a common priority for a destination',
@@ -334,6 +472,8 @@ CREATE TABLE `lcr_carrier_set_entry` (
   PRIMARY KEY (`lcr_carrier_set_entry_sid`),
   KEY `lcr_route_sid_idxfk` (`lcr_route_sid`),
   KEY `voip_carrier_sid_idxfk_2` (`voip_carrier_sid`),
+  CONSTRAINT `lcr_carrier_set_entry_ibfk_1` FOREIGN KEY (`lcr_route_sid`) REFERENCES `lcr_routes` (`lcr_route_sid`),
+  CONSTRAINT `lcr_carrier_set_entry_ibfk_2` FOREIGN KEY (`voip_carrier_sid`) REFERENCES `voip_carriers` (`voip_carrier_sid`),
   CONSTRAINT `lcr_route_sid_idxfk` FOREIGN KEY (`lcr_route_sid`) REFERENCES `lcr_routes` (`lcr_route_sid`),
   CONSTRAINT `voip_carrier_sid_idxfk_2` FOREIGN KEY (`voip_carrier_sid`) REFERENCES `voip_carriers` (`voip_carrier_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An entry in the LCR routing list';
@@ -354,14 +494,17 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `lcr_routes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lcr_routes` (
   `lcr_route_sid` char(36) NOT NULL,
   `regex` varchar(32) NOT NULL COMMENT 'regex-based pattern match against dialed number, used for LCR routing of PSTN calls',
   `description` varchar(1024) DEFAULT NULL,
   `priority` int(11) NOT NULL COMMENT 'lower priority routes are attempted first',
+  `lcr_sid` char(36) NOT NULL,
   PRIMARY KEY (`lcr_route_sid`),
-  UNIQUE KEY `priority` (`priority`)
+  UNIQUE KEY `priority` (`priority`),
+  KEY `lcr_sid_idx` (`lcr_sid`),
+  CONSTRAINT `lcr_routes_ibfk_1` FOREIGN KEY (`lcr_sid`) REFERENCES `lcr` (`lcr_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Least cost routing table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -380,7 +523,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ms_teams_tenants`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ms_teams_tenants` (
   `ms_teams_tenant_sid` char(36) NOT NULL,
   `service_provider_sid` char(36) NOT NULL,
@@ -397,6 +540,9 @@ CREATE TABLE `ms_teams_tenants` (
   KEY `tenant_fqdn_idx` (`tenant_fqdn`),
   CONSTRAINT `account_sid_idxfk_5` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
   CONSTRAINT `application_sid_idxfk_1` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`),
+  CONSTRAINT `ms_teams_tenants_ibfk_1` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`),
+  CONSTRAINT `ms_teams_tenants_ibfk_2` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `ms_teams_tenants_ibfk_3` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`),
   CONSTRAINT `service_provider_sid_idxfk_1` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A Microsoft Teams customer tenant';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -411,12 +557,62 @@ LOCK TABLES `ms_teams_tenants` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `password_settings`
+--
+
+DROP TABLE IF EXISTS `password_settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `password_settings` (
+  `min_password_length` int(11) NOT NULL DEFAULT '8',
+  `require_digit` tinyint(1) NOT NULL DEFAULT '0',
+  `require_special_character` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_settings`
+--
+
+LOCK TABLES `password_settings` WRITE;
+/*!40000 ALTER TABLE `password_settings` DISABLE KEYS */;
+/*!40000 ALTER TABLE `password_settings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `permissions`
+--
+
+DROP TABLE IF EXISTS `permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `permissions` (
+  `permission_sid` char(36) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`permission_sid`),
+  UNIQUE KEY `permission_sid` (`permission_sid`),
+  UNIQUE KEY `name` (`name`),
+  KEY `permission_sid_idx` (`permission_sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `permissions`
+--
+
+LOCK TABLES `permissions` WRITE;
+/*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `phone_numbers`
 --
 
 DROP TABLE IF EXISTS `phone_numbers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `phone_numbers` (
   `phone_number_sid` char(36) NOT NULL,
   `number` varchar(32) NOT NULL,
@@ -435,6 +631,10 @@ CREATE TABLE `phone_numbers` (
   KEY `service_provider_sid_idx` (`service_provider_sid`),
   CONSTRAINT `account_sid_idxfk_9` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
   CONSTRAINT `application_sid_idxfk_3` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`),
+  CONSTRAINT `phone_numbers_ibfk_1` FOREIGN KEY (`voip_carrier_sid`) REFERENCES `voip_carriers` (`voip_carrier_sid`),
+  CONSTRAINT `phone_numbers_ibfk_2` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `phone_numbers_ibfk_3` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`),
+  CONSTRAINT `phone_numbers_ibfk_4` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`),
   CONSTRAINT `service_provider_sid_idxfk_4` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`),
   CONSTRAINT `voip_carrier_sid_idxfk` FOREIGN KEY (`voip_carrier_sid`) REFERENCES `voip_carriers` (`voip_carrier_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A phone number that has been assigned to an account';
@@ -446,15 +646,109 @@ CREATE TABLE `phone_numbers` (
 
 LOCK TABLES `phone_numbers` WRITE;
 /*!40000 ALTER TABLE `phone_numbers` DISABLE KEYS */;
-INSERT INTO `phone_numbers` VALUES ('4b439355-debc-40c7-9cfa-5be58c2bed6b','16174000000','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','0dddaabf-0a30-43e3-84e8-426873b1a78b', NULL);
-INSERT INTO `phone_numbers` VALUES ('9cc9e7fc-b7b0-4101-8f3c-9fe13ce5df0a','16174000001','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','308b4f41-1a18-4052-b89a-c054e75ce242', NULL);
-INSERT INTO `phone_numbers` VALUES ('e686a320-0725-418f-be65-532159bdc3ed','16174000002','5145b436-2f38-4029-8d4c-fd8c67831c7a','622f62e4-303a-49f2-bbe0-eb1e1714e37a','24d0f6af-e976-44dd-a2e8-41c7b55abe33', NULL);
-INSERT INTO `phone_numbers` VALUES ('05eeed62-b29b-4679-bf38-d7a4e318be44','16174000003','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','17461c69-56b5-4dab-ad83-1c43a0f93a3d', NULL);
-INSERT INTO `phone_numbers` VALUES ('f3c53863-b629-4cf6-9dcb-c7fb7072314b','16174000004','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','baf9213b-5556-4c20-870c-586392ed246f', NULL);
-INSERT INTO `phone_numbers` VALUES ('f6416c17-829a-4f11-9c32-f0d00e4a9ae9','16174000005','5145b436-2f38-4029-8d4c-fd8c67831c7a','622f62e4-303a-49f2-bbe0-eb1e1714e37a','ae026ab5-3029-47b4-9d7c-236e3a4b4ebe', NULL);
-INSERT INTO `phone_numbers` VALUES ('964d0581-9627-44cb-be20-8118050406b2','16174000006','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','195d9507-6a42-46a8-825f-f009e729d023', NULL);
-INSERT INTO `phone_numbers` VALUES ('964d0581-9627-44cb-be20-8118050406b3','16174000007','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','0dddaabf-0a30-43e3-84e8-426873b1a78c', NULL);
+INSERT INTO `phone_numbers` VALUES ('05eeed62-b29b-4679-bf38-d7a4e318be44','16174000003','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','17461c69-56b5-4dab-ad83-1c43a0f93a3d',NULL),('4b439355-debc-40c7-9cfa-5be58c2bed6b','16174000000','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','0dddaabf-0a30-43e3-84e8-426873b1a78b',NULL),('964d0581-9627-44cb-be20-8118050406b2','16174000006','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','195d9507-6a42-46a8-825f-f009e729d023',NULL),('964d0581-9627-44cb-be20-8118050406b3','16174000007','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','0dddaabf-0a30-43e3-84e8-426873b1a78c',NULL),('9cc9e7fc-b7b0-4101-8f3c-9fe13ce5df0a','16174000001','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','308b4f41-1a18-4052-b89a-c054e75ce242',NULL),('e686a320-0725-418f-be65-532159bdc3ed','16174000002','5145b436-2f38-4029-8d4c-fd8c67831c7a','622f62e4-303a-49f2-bbe0-eb1e1714e37a','24d0f6af-e976-44dd-a2e8-41c7b55abe33',NULL),('f3c53863-b629-4cf6-9dcb-c7fb7072314b','16174000004','5145b436-2f38-4029-8d4c-fd8c67831c7a','bb845d4b-83a9-4cde-a6e9-50f3743bab3f','baf9213b-5556-4c20-870c-586392ed246f',NULL),('f6416c17-829a-4f11-9c32-f0d00e4a9ae9','16174000005','5145b436-2f38-4029-8d4c-fd8c67831c7a','622f62e4-303a-49f2-bbe0-eb1e1714e37a','ae026ab5-3029-47b4-9d7c-236e3a4b4ebe',NULL);
 /*!40000 ALTER TABLE `phone_numbers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `predefined_carriers`
+--
+
+DROP TABLE IF EXISTS `predefined_carriers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `predefined_carriers` (
+  `predefined_carrier_sid` char(36) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `requires_static_ip` tinyint(1) NOT NULL DEFAULT '0',
+  `e164_leading_plus` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'if true, a leading plus should be prepended to outbound phone numbers',
+  `requires_register` tinyint(1) NOT NULL DEFAULT '0',
+  `register_username` varchar(64) DEFAULT NULL,
+  `register_sip_realm` varchar(64) DEFAULT NULL,
+  `register_password` varchar(64) DEFAULT NULL,
+  `tech_prefix` varchar(16) DEFAULT NULL COMMENT 'tech prefix to prepend to outbound calls to this carrier',
+  `inbound_auth_username` varchar(64) DEFAULT NULL,
+  `inbound_auth_password` varchar(64) DEFAULT NULL,
+  `diversion` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`predefined_carrier_sid`),
+  UNIQUE KEY `predefined_carrier_sid` (`predefined_carrier_sid`),
+  KEY `predefined_carrier_sid_idx` (`predefined_carrier_sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `predefined_carriers`
+--
+
+LOCK TABLES `predefined_carriers` WRITE;
+/*!40000 ALTER TABLE `predefined_carriers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `predefined_carriers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `predefined_sip_gateways`
+--
+
+DROP TABLE IF EXISTS `predefined_sip_gateways`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `predefined_sip_gateways` (
+  `predefined_sip_gateway_sid` char(36) NOT NULL,
+  `ipv4` varchar(128) NOT NULL COMMENT 'ip address or DNS name of the gateway.  For gateways providing inbound calling service, ip address is required.',
+  `port` int(11) NOT NULL DEFAULT '5060' COMMENT 'sip signaling port',
+  `inbound` tinyint(1) NOT NULL COMMENT 'if true, whitelist this IP to allow inbound calls from the gateway',
+  `outbound` tinyint(1) NOT NULL COMMENT 'if true, include in least-cost routing when placing calls to the PSTN',
+  `netmask` int(11) NOT NULL DEFAULT '32',
+  `predefined_carrier_sid` char(36) NOT NULL,
+  PRIMARY KEY (`predefined_sip_gateway_sid`),
+  UNIQUE KEY `predefined_sip_gateway_sid` (`predefined_sip_gateway_sid`),
+  KEY `predefined_sip_gateway_sid_idx` (`predefined_sip_gateway_sid`),
+  KEY `predefined_carrier_sid_idx` (`predefined_carrier_sid`),
+  CONSTRAINT `predefined_sip_gateways_ibfk_1` FOREIGN KEY (`predefined_carrier_sid`) REFERENCES `predefined_carriers` (`predefined_carrier_sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `predefined_sip_gateways`
+--
+
+LOCK TABLES `predefined_sip_gateways` WRITE;
+/*!40000 ALTER TABLE `predefined_sip_gateways` DISABLE KEYS */;
+/*!40000 ALTER TABLE `predefined_sip_gateways` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `predefined_smpp_gateways`
+--
+
+DROP TABLE IF EXISTS `predefined_smpp_gateways`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `predefined_smpp_gateways` (
+  `predefined_smpp_gateway_sid` char(36) NOT NULL,
+  `ipv4` varchar(128) NOT NULL COMMENT 'ip address or DNS name of the gateway. ',
+  `port` int(11) NOT NULL DEFAULT '2775' COMMENT 'smpp signaling port',
+  `inbound` tinyint(1) NOT NULL COMMENT 'if true, whitelist this IP to allow inbound SMS from the gateway',
+  `outbound` tinyint(1) NOT NULL COMMENT 'i',
+  `netmask` int(11) NOT NULL DEFAULT '32',
+  `is_primary` tinyint(1) NOT NULL DEFAULT '1',
+  `use_tls` tinyint(1) DEFAULT '0',
+  `predefined_carrier_sid` char(36) NOT NULL,
+  PRIMARY KEY (`predefined_smpp_gateway_sid`),
+  UNIQUE KEY `predefined_smpp_gateway_sid` (`predefined_smpp_gateway_sid`),
+  KEY `predefined_smpp_gateway_sid_idx` (`predefined_smpp_gateway_sid`),
+  KEY `predefined_carrier_sid_idx` (`predefined_carrier_sid`),
+  CONSTRAINT `predefined_smpp_gateways_ibfk_1` FOREIGN KEY (`predefined_carrier_sid`) REFERENCES `predefined_carriers` (`predefined_carrier_sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `predefined_smpp_gateways`
+--
+
+LOCK TABLES `predefined_smpp_gateways` WRITE;
+/*!40000 ALTER TABLE `predefined_smpp_gateways` DISABLE KEYS */;
+/*!40000 ALTER TABLE `predefined_smpp_gateways` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -463,7 +757,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `products` (
   `product_sid` char(36) NOT NULL,
   `name` varchar(32) NOT NULL,
@@ -490,17 +784,21 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sbc_addresses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sbc_addresses` (
   `sbc_address_sid` char(36) NOT NULL,
   `ipv4` varchar(255) NOT NULL,
   `port` int(11) NOT NULL DEFAULT '5060',
   `service_provider_sid` char(36) DEFAULT NULL,
+  `tls_port` int(11) DEFAULT NULL,
+  `wss_port` int(11) DEFAULT NULL,
+  `last_updated` datetime DEFAULT NULL,
   PRIMARY KEY (`sbc_address_sid`),
   UNIQUE KEY `sbc_address_sid` (`sbc_address_sid`),
   KEY `sbc_addresses_idx_host_port` (`ipv4`,`port`),
   KEY `sbc_address_sid_idx` (`sbc_address_sid`),
   KEY `service_provider_sid_idx` (`service_provider_sid`),
+  CONSTRAINT `sbc_addresses_ibfk_1` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`),
   CONSTRAINT `service_provider_sid_idxfk_2` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -511,8 +809,58 @@ CREATE TABLE `sbc_addresses` (
 
 LOCK TABLES `sbc_addresses` WRITE;
 /*!40000 ALTER TABLE `sbc_addresses` DISABLE KEYS */;
-INSERT INTO `sbc_addresses` VALUES ('8d6d0fda-4550-41ab-8e2f-60761d81fe7d','3.39.45.30',5060,NULL);
+INSERT INTO `sbc_addresses` VALUES ('8d6d0fda-4550-41ab-8e2f-60761d81fe7d','3.39.45.30',5060,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `sbc_addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `schema_version`
+--
+
+DROP TABLE IF EXISTS `schema_version`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `schema_version` (
+  `version` varchar(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `schema_version`
+--
+
+LOCK TABLES `schema_version` WRITE;
+/*!40000 ALTER TABLE `schema_version` DISABLE KEYS */;
+INSERT INTO `schema_version` VALUES ('0.8.3');
+/*!40000 ALTER TABLE `schema_version` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `service_provider_limits`
+--
+
+DROP TABLE IF EXISTS `service_provider_limits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `service_provider_limits` (
+  `service_provider_limits_sid` char(36) NOT NULL,
+  `service_provider_sid` char(36) NOT NULL,
+  `category` enum('api_rate','voice_call_session','device','voice_call_minutes','voice_call_session_license','voice_call_minutes_license') NOT NULL,
+  `quantity` int(11) NOT NULL,
+  PRIMARY KEY (`service_provider_limits_sid`),
+  UNIQUE KEY `service_provider_limits_sid` (`service_provider_limits_sid`),
+  KEY `service_provider_sid_idx` (`service_provider_sid`),
+  CONSTRAINT `service_provider_limits_ibfk_1` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `service_provider_limits`
+--
+
+LOCK TABLES `service_provider_limits` WRITE;
+/*!40000 ALTER TABLE `service_provider_limits` DISABLE KEYS */;
+/*!40000 ALTER TABLE `service_provider_limits` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -521,7 +869,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `service_providers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `service_providers` (
   `service_provider_sid` char(36) NOT NULL,
   `name` varchar(64) NOT NULL,
@@ -537,7 +885,8 @@ CREATE TABLE `service_providers` (
   KEY `name_idx` (`name`),
   KEY `root_domain_idx` (`root_domain`),
   KEY `registration_hook_sid_idxfk` (`registration_hook_sid`),
-  CONSTRAINT `registration_hook_sid_idxfk` FOREIGN KEY (`registration_hook_sid`) REFERENCES `webhooks` (`webhook_sid`)
+  CONSTRAINT `registration_hook_sid_idxfk` FOREIGN KEY (`registration_hook_sid`) REFERENCES `webhooks` (`webhook_sid`),
+  CONSTRAINT `service_providers_ibfk_1` FOREIGN KEY (`registration_hook_sid`) REFERENCES `webhooks` (`webhook_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A partition of the platform used by one service provider';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -552,23 +901,51 @@ INSERT INTO `service_providers` VALUES ('2708b1b3-2736-40ea-b502-c53d8396247f','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `signup_history`
+--
+
+DROP TABLE IF EXISTS `signup_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `signup_history` (
+  `email` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `signed_up_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`email`),
+  KEY `email_idx` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `signup_history`
+--
+
+LOCK TABLES `signup_history` WRITE;
+/*!40000 ALTER TABLE `signup_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `signup_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sip_gateways`
 --
 
 DROP TABLE IF EXISTS `sip_gateways`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sip_gateways` (
   `sip_gateway_sid` char(36) NOT NULL,
   `ipv4` varchar(128) NOT NULL COMMENT 'ip address or DNS name of the gateway.  For gateways providing inbound calling service, ip address is required.',
+  `netmask` int(11) NOT NULL DEFAULT '32',
   `port` int(11) NOT NULL DEFAULT '5060' COMMENT 'sip signaling port',
   `inbound` tinyint(1) NOT NULL COMMENT 'if true, whitelist this IP to allow inbound calls from the gateway',
   `outbound` tinyint(1) NOT NULL COMMENT 'if true, include in least-cost routing when placing calls to the PSTN',
   `voip_carrier_sid` char(36) NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `protocol` enum('udp','tcp','tls','tls/srtp') DEFAULT 'udp' COMMENT 'Outbound call protocol',
   PRIMARY KEY (`sip_gateway_sid`),
   KEY `sip_gateway_idx_hostport` (`ipv4`,`port`),
   KEY `voip_carrier_sid_idx` (`voip_carrier_sid`),
+  CONSTRAINT `sip_gateways_ibfk_1` FOREIGN KEY (`voip_carrier_sid`) REFERENCES `voip_carriers` (`voip_carrier_sid`),
   CONSTRAINT `voip_carrier_sid_idxfk_1` FOREIGN KEY (`voip_carrier_sid`) REFERENCES `voip_carriers` (`voip_carrier_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A whitelisted sip gateway used for origination/termination';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -579,8 +956,73 @@ CREATE TABLE `sip_gateways` (
 
 LOCK TABLES `sip_gateways` WRITE;
 /*!40000 ALTER TABLE `sip_gateways` DISABLE KEYS */;
-INSERT INTO `sip_gateways` VALUES ('46b727eb-c7dc-44fa-b063-96e48d408e4a','3.3.3.3',5060,1,1,'5145b436-2f38-4029-8d4c-fd8c67831c7a',1),('81629182-6904-4588-8c72-a78d70053fb9','54.172.60.1',5060,1,1,'df0aefbf-ca7b-4d48-9fbf-3c66fef72060',1);
+INSERT INTO `sip_gateways` VALUES ('46b727eb-c7dc-44fa-b063-96e48d408e4a','3.3.3.3',32,5060,1,1,'5145b436-2f38-4029-8d4c-fd8c67831c7a',1,'udp'),('81629182-6904-4588-8c72-a78d70053fb9','54.172.60.1',32,5060,1,1,'df0aefbf-ca7b-4d48-9fbf-3c66fef72060',1,'udp');
 /*!40000 ALTER TABLE `sip_gateways` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `smpp_addresses`
+--
+
+DROP TABLE IF EXISTS `smpp_addresses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `smpp_addresses` (
+  `smpp_address_sid` char(36) NOT NULL,
+  `ipv4` varchar(255) NOT NULL,
+  `port` int(11) NOT NULL DEFAULT '5060',
+  `use_tls` tinyint(1) NOT NULL DEFAULT '0',
+  `is_primary` tinyint(1) NOT NULL DEFAULT '1',
+  `service_provider_sid` char(36) DEFAULT NULL,
+  PRIMARY KEY (`smpp_address_sid`),
+  UNIQUE KEY `smpp_address_sid` (`smpp_address_sid`),
+  KEY `smpp_address_sid_idx` (`smpp_address_sid`),
+  KEY `service_provider_sid_idx` (`service_provider_sid`),
+  CONSTRAINT `smpp_addresses_ibfk_1` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `smpp_addresses`
+--
+
+LOCK TABLES `smpp_addresses` WRITE;
+/*!40000 ALTER TABLE `smpp_addresses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `smpp_addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `smpp_gateways`
+--
+
+DROP TABLE IF EXISTS `smpp_gateways`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `smpp_gateways` (
+  `smpp_gateway_sid` char(36) NOT NULL,
+  `ipv4` varchar(128) NOT NULL,
+  `port` int(11) NOT NULL DEFAULT '2775',
+  `netmask` int(11) NOT NULL DEFAULT '32',
+  `is_primary` tinyint(1) NOT NULL DEFAULT '1',
+  `inbound` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'if true, whitelist this IP to allow inbound calls from the gateway',
+  `outbound` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'if true, include in least-cost routing when placing calls to the PSTN',
+  `use_tls` tinyint(1) DEFAULT '0',
+  `voip_carrier_sid` char(36) NOT NULL,
+  PRIMARY KEY (`smpp_gateway_sid`),
+  UNIQUE KEY `smpp_gateway_sid` (`smpp_gateway_sid`),
+  KEY `smpp_gateway_sid_idx` (`smpp_gateway_sid`),
+  KEY `voip_carrier_sid_idx` (`voip_carrier_sid`),
+  CONSTRAINT `smpp_gateways_ibfk_1` FOREIGN KEY (`voip_carrier_sid`) REFERENCES `voip_carriers` (`voip_carrier_sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `smpp_gateways`
+--
+
+LOCK TABLES `smpp_gateways` WRITE;
+/*!40000 ALTER TABLE `smpp_gateways` DISABLE KEYS */;
+/*!40000 ALTER TABLE `smpp_gateways` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -589,25 +1031,29 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `speech_credentials`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `speech_credentials` (
   `speech_credential_sid` char(36) NOT NULL,
- `service_provider_sid` CHAR(36),
- `account_sid` char(36) NOT NULL,
+  `service_provider_sid` char(36) DEFAULT NULL,
+  `account_sid` char(36) NOT NULL,
   `vendor` varchar(255) NOT NULL,
-  `credential` VARCHAR(8192) NOT NULL,
+  `credential` varchar(8192) NOT NULL,
   `use_for_tts` tinyint(1) DEFAULT '1',
   `use_for_stt` tinyint(1) DEFAULT '1',
   `last_used` datetime DEFAULT NULL,
   `last_tested` datetime DEFAULT NULL,
   `tts_tested_ok` tinyint(1) DEFAULT NULL,
   `stt_tested_ok` tinyint(1) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`speech_credential_sid`),
   UNIQUE KEY `speech_credential_sid` (`speech_credential_sid`),
   UNIQUE KEY `speech_credentials_idx_1` (`vendor`,`account_sid`),
   KEY `speech_credential_sid_idx` (`speech_credential_sid`),
   KEY `account_sid_idx` (`account_sid`),
-  CONSTRAINT `account_sid_idxfk_6` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`)
+  KEY `service_provider_sid_idx` (`service_provider_sid`),
+  CONSTRAINT `account_sid_idxfk_6` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `speech_credentials_ibfk_1` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`),
+  CONSTRAINT `speech_credentials_ibfk_2` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -617,11 +1063,61 @@ CREATE TABLE `speech_credentials` (
 
 LOCK TABLES `speech_credentials` WRITE;
 /*!40000 ALTER TABLE `speech_credentials` DISABLE KEYS */;
-INSERT INTO `speech_credentials` VALUES 
-('2add163c-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','google','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1),
-('2add347f-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','microsoft','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1),
-('84154212-5c99-4c94-8993-bc2a46288daa',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','aws','credential-goes-here',1,1,NULL,NULL,NULL,NULL);
+INSERT INTO `speech_credentials` VALUES ('2add163c-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','google','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21'),('2add347f-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','microsoft','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21'),('84154212-5c99-4c94-8993-bc2a46288daa',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','aws','credential-goes-here',1,1,NULL,NULL,NULL,NULL,'2023-05-31 03:44:21');
 /*!40000 ALTER TABLE `speech_credentials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `system_information`
+--
+
+DROP TABLE IF EXISTS `system_information`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `system_information` (
+  `domain_name` varchar(255) DEFAULT NULL,
+  `sip_domain_name` varchar(255) DEFAULT NULL,
+  `monitoring_domain_name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `system_information`
+--
+
+LOCK TABLES `system_information` WRITE;
+/*!40000 ALTER TABLE `system_information` DISABLE KEYS */;
+/*!40000 ALTER TABLE `system_information` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_permissions`
+--
+
+DROP TABLE IF EXISTS `user_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_permissions` (
+  `user_permissions_sid` char(36) NOT NULL,
+  `user_sid` char(36) NOT NULL,
+  `permission_sid` char(36) NOT NULL,
+  PRIMARY KEY (`user_permissions_sid`),
+  UNIQUE KEY `user_permissions_sid` (`user_permissions_sid`),
+  KEY `user_permissions_sid_idx` (`user_permissions_sid`),
+  KEY `user_sid_idx` (`user_sid`),
+  KEY `permission_sid_idxfk` (`permission_sid`),
+  CONSTRAINT `user_permissions_ibfk_1` FOREIGN KEY (`user_sid`) REFERENCES `users` (`user_sid`) ON DELETE CASCADE,
+  CONSTRAINT `user_permissions_ibfk_2` FOREIGN KEY (`permission_sid`) REFERENCES `permissions` (`permission_sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_permissions`
+--
+
+LOCK TABLES `user_permissions` WRITE;
+/*!40000 ALTER TABLE `user_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -630,7 +1126,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `user_sid` char(36) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -650,6 +1146,7 @@ CREATE TABLE `users` (
   `email_validated` tinyint(1) NOT NULL DEFAULT '0',
   `phone_validated` tinyint(1) NOT NULL DEFAULT '0',
   `email_content_opt_out` tinyint(1) NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`user_sid`),
   UNIQUE KEY `user_sid` (`user_sid`),
   UNIQUE KEY `phone` (`phone`),
@@ -660,7 +1157,9 @@ CREATE TABLE `users` (
   KEY `service_provider_sid_idx` (`service_provider_sid`),
   KEY `email_activation_code_idx` (`email_activation_code`),
   CONSTRAINT `account_sid_idxfk_7` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
-  CONSTRAINT `service_provider_sid_idxfk_3` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`)
+  CONSTRAINT `service_provider_sid_idxfk_3` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `users_ibfk_2` FOREIGN KEY (`service_provider_sid`) REFERENCES `service_providers` (`service_provider_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -670,7 +1169,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('d9cdf199-78d1-4f92-b717-5f9dbdf56565','Dave Horton','daveh@drachtio.org',NULL,NULL,NULL,NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f',NULL,0,'github','davehorton','read-write',NULL,NULL,1,0,0);
+INSERT INTO `users` VALUES ('d9cdf199-78d1-4f92-b717-5f9dbdf56565','Dave Horton','daveh@drachtio.org',NULL,NULL,NULL,NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f',NULL,0,'github','davehorton','read-write',NULL,NULL,1,0,0,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -680,7 +1179,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `voip_carriers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `voip_carriers` (
   `voip_carrier_sid` char(36) NOT NULL,
   `name` varchar(64) NOT NULL,
@@ -693,13 +1192,29 @@ CREATE TABLE `voip_carriers` (
   `register_sip_realm` varchar(64) DEFAULT NULL,
   `register_password` varchar(64) DEFAULT NULL,
   `tech_prefix` varchar(16) DEFAULT NULL COMMENT 'tech prefix to prepend to outbound calls to this carrier',
+  `inbound_auth_username` varchar(64) DEFAULT NULL,
+  `inbound_auth_password` varchar(64) DEFAULT NULL,
+  `diversion` varchar(32) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `smpp_system_id` varchar(255) DEFAULT NULL,
+  `smpp_password` varchar(64) DEFAULT NULL,
+  `smpp_enquire_link_interval` int(11) DEFAULT '0',
+  `smpp_inbound_system_id` varchar(255) DEFAULT NULL,
+  `smpp_inbound_password` varchar(64) DEFAULT NULL,
+  `register_from_user` varchar(128) DEFAULT NULL,
+  `register_from_domain` varchar(255) DEFAULT NULL,
+  `register_public_ip_in_contact` tinyint(1) NOT NULL DEFAULT '0',
+  `register_status` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`voip_carrier_sid`),
   UNIQUE KEY `voip_carrier_sid` (`voip_carrier_sid`),
   KEY `voip_carrier_sid_idx` (`voip_carrier_sid`),
   KEY `account_sid_idx` (`account_sid`),
   KEY `application_sid_idxfk_2` (`application_sid`),
   CONSTRAINT `account_sid_idxfk_8` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
-  CONSTRAINT `application_sid_idxfk_2` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`)
+  CONSTRAINT `application_sid_idxfk_2` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`),
+  CONSTRAINT `voip_carriers_ibfk_1` FOREIGN KEY (`account_sid`) REFERENCES `accounts` (`account_sid`),
+  CONSTRAINT `voip_carriers_ibfk_2` FOREIGN KEY (`application_sid`) REFERENCES `applications` (`application_sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A Carrier or customer PBX that can send or receive calls';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -709,7 +1224,7 @@ CREATE TABLE `voip_carriers` (
 
 LOCK TABLES `voip_carriers` WRITE;
 /*!40000 ALTER TABLE `voip_carriers` DISABLE KEYS */;
-INSERT INTO `voip_carriers` VALUES ('5145b436-2f38-4029-8d4c-fd8c67831c7a','my test carrier',NULL,NULL,NULL,0,0,NULL,NULL,NULL,NULL),('df0aefbf-ca7b-4d48-9fbf-3c66fef72060','my test carrier',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f',NULL,0,0,NULL,NULL,NULL,NULL);
+INSERT INTO `voip_carriers` VALUES ('5145b436-2f38-4029-8d4c-fd8c67831c7a','my test carrier',NULL,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'2023-05-31 03:48:04',NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL),('df0aefbf-ca7b-4d48-9fbf-3c66fef72060','my test carrier',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f',NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'2023-05-31 03:48:04',NULL,NULL,0,NULL,NULL,NULL,NULL,0,NULL);
 /*!40000 ALTER TABLE `voip_carriers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -719,7 +1234,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `webhooks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `webhooks` (
   `webhook_sid` char(36) NOT NULL,
   `url` varchar(1024) NOT NULL,
@@ -738,13 +1253,7 @@ CREATE TABLE `webhooks` (
 
 LOCK TABLES `webhooks` WRITE;
 /*!40000 ALTER TABLE `webhooks` DISABLE KEYS */;
-INSERT INTO `webhooks` VALUES ('6ac36aeb-6bd0-428a-80a1-aed95640a296','https://flows.jambonz.us/callStatus','POST',NULL,NULL),('d9c205c6-a129-443e-a9c0-d1bb437d4bb7','https://flows.jambonz.us/testCall','POST',NULL,NULL);
-INSERT INTO `webhooks` VALUES ('293904c1-351b-4bca-8d58-1a29b853c7db','http://127.0.0.1:3100/callStatus','POST',NULL,NULL);
-INSERT INTO `webhooks` VALUES ('c71e79db-24f2-4866-a3ee-febb0f97b341','http://127.0.0.1:3100/','POST',NULL,NULL);
-INSERT INTO `webhooks` VALUES ('54ab0976-a6c0-45d8-89a4-d90d45bf9d96','http://127.0.0.1:3101/','POST',NULL,NULL);
-INSERT INTO `webhooks` VALUES ('10692465-a511-4277-9807-b7157e4f81e1','http://127.0.0.1:3102/','POST',NULL,NULL);
-INSERT INTO `webhooks` VALUES ('ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','http://127.0.0.1:3103/','POST',NULL,NULL);
-INSERT INTO `webhooks` VALUES ('c9113e7a-741f-48b9-96c1-f2f78176eeb3','http://127.0.0.1:3104/','POST',NULL,NULL);
+INSERT INTO `webhooks` VALUES ('10692465-a511-4277-9807-b7157e4f81e1','http://127.0.0.1:3102/','POST',NULL,NULL),('293904c1-351b-4bca-8d58-1a29b853c7db','http://127.0.0.1:3100/callStatus','POST',NULL,NULL),('54ab0976-a6c0-45d8-89a4-d90d45bf9d96','http://127.0.0.1:3101/','POST',NULL,NULL),('6ac36aeb-6bd0-428a-80a1-aed95640a296','https://flows.jambonz.us/callStatus','POST',NULL,NULL),('c71e79db-24f2-4866-a3ee-febb0f97b341','http://127.0.0.1:3100/','POST',NULL,NULL),('c9113e7a-741f-48b9-96c1-f2f78176eeb3','http://127.0.0.1:3104/','POST',NULL,NULL),('d9c205c6-a129-443e-a9c0-d1bb437d4bb7','https://flows.jambonz.us/testCall','POST',NULL,NULL),('ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','http://127.0.0.1:3103/','POST',NULL,NULL);
 /*!40000 ALTER TABLE `webhooks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -757,4 +1266,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-03 11:50:25
+-- Dump completed on 2023-05-31  4:01:27

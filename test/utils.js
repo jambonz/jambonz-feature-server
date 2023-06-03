@@ -6,31 +6,40 @@ const bent = require('bent');
 * The function help testcase to register desired jambonz json response for an application call
 * When a call has From number match the registered hook event, the desired jambonz json will be responded.
 */
-const provisionCallHook = (from, verbs) => {
+const provisionCallHook = async (from, verbs) => {
   const mapping = {
     from,
     data: JSON.stringify(verbs)
   };
   const post = bent('http://127.0.0.1:3100', 'POST', 'string', 200);
-  post('/appMapping', mapping);
+  await post('/appMapping', mapping);
 }
 
-const provisionCustomHook = (from, verbs) => {
+const provisionCustomHook = async(from, verbs) => {
   const mapping = {
     from,
     data: JSON.stringify(verbs)
   };
   const post = bent('http://127.0.0.1:3100', 'POST', 'string', 200);
-  post(`/customHookMapping`, mapping);
+  await post(`/customHookMapping`, mapping);
 }
 
-const provisionActionHook = (from, verbs) => {
+const provisionActionHook = async(from, verbs) => {
   const mapping = {
     from,
     data: JSON.stringify(verbs)
   };
   const post = bent('http://127.0.0.1:3100', 'POST', 'string', 200);
-  post(`/actionHook`, mapping);
+  await post(`/actionHook`, mapping);
 }
 
-module.exports = { provisionCallHook, provisionCustomHook, provisionActionHook}
+const provisionAnyHook = async(key, verbs) => {
+  const mapping = {
+    key,
+    data: JSON.stringify(verbs)
+  };
+  const post = bent('http://127.0.0.1:3100', 'POST', 'string', 200);
+  await post(`/anyHookMapping`, mapping);
+}
+
+module.exports = { provisionCallHook, provisionCustomHook, provisionActionHook, provisionAnyHook}

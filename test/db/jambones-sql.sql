@@ -1,5 +1,4 @@
 /* SQLEditor (MySQL (2))*/
-
 SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS account_static_ips;
@@ -15,6 +14,8 @@ DROP TABLE IF EXISTS beta_invite_codes;
 DROP TABLE IF EXISTS call_routes;
 
 DROP TABLE IF EXISTS dns_records;
+
+DROP TABLE IF EXISTS lcr;
 
 DROP TABLE IF EXISTS lcr_carrier_set_entry;
 
@@ -51,6 +52,8 @@ DROP TABLE IF EXISTS signup_history;
 DROP TABLE IF EXISTS smpp_addresses;
 
 DROP TABLE IF EXISTS speech_credentials;
+
+DROP TABLE IF EXISTS system_information;
 
 DROP TABLE IF EXISTS users;
 
@@ -136,11 +139,23 @@ PRIMARY KEY (dns_record_sid)
 CREATE TABLE lcr_routes
 (
 lcr_route_sid CHAR(36),
+lcr_sid CHAR(36) NOT NULL,
 regex VARCHAR(32) NOT NULL COMMENT 'regex-based pattern match against dialed number, used for LCR routing of PSTN calls',
 description VARCHAR(1024),
-priority INTEGER NOT NULL UNIQUE  COMMENT 'lower priority routes are attempted first',
+priority INTEGER NOT NULL COMMENT 'lower priority routes are attempted first',
 PRIMARY KEY (lcr_route_sid)
-) COMMENT='Least cost routing table';
+) COMMENT='An ordered list of  digit patterns in an LCR table.  The patterns are tested in sequence until one matches';
+
+CREATE TABLE lcr
+(
+lcr_sid CHAR(36) NOT NULL UNIQUE ,
+name VARCHAR(64) COMMENT 'User-assigned name for this LCR table',
+is_active BOOLEAN NOT NULL DEFAULT 1,
+default_carrier_set_entry_sid CHAR(36) COMMENT 'default carrier/route to use when no digit match based results are found.',
+service_provider_sid CHAR(36),
+account_sid CHAR(36),
+PRIMARY KEY (lcr_sid)
+) COMMENT='An LCR (least cost routing) table that is used by a service provider or account to make decisions about routing outbound calls when multiple carriers are available.';
 
 CREATE TABLE password_settings
 (
@@ -248,7 +263,10 @@ CREATE TABLE sbc_addresses
 sbc_address_sid CHAR(36) NOT NULL UNIQUE ,
 ipv4 VARCHAR(255) NOT NULL,
 port INTEGER NOT NULL DEFAULT 5060,
+tls_port INTEGER,
+wss_port INTEGER,
 service_provider_sid CHAR(36),
+last_updated DATETIME,
 PRIMARY KEY (sbc_address_sid)
 );
 
@@ -307,6 +325,13 @@ created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (speech_credential_sid)
 );
 
+CREATE TABLE system_information
+(
+domain_name VARCHAR(255),
+sip_domain_name VARCHAR(255),
+monitoring_domain_name VARCHAR(255)
+);
+
 CREATE TABLE users
 (
 user_sid CHAR(36) NOT NULL UNIQUE ,
@@ -357,6 +382,7 @@ smpp_inbound_password VARCHAR(64),
 register_from_user VARCHAR(128),
 register_from_domain VARCHAR(255),
 register_public_ip_in_contact BOOLEAN NOT NULL DEFAULT false,
+register_status VARCHAR(4096),
 PRIMARY KEY (voip_carrier_sid)
 ) COMMENT='A Carrier or customer PBX that can send or receive calls';
 
@@ -403,6 +429,7 @@ inbound BOOLEAN NOT NULL COMMENT 'if true, whitelist this IP to allow inbound ca
 outbound BOOLEAN NOT NULL COMMENT 'if true, include in least-cost routing when placing calls to the PSTN',
 voip_carrier_sid CHAR(36) NOT NULL,
 is_active BOOLEAN NOT NULL DEFAULT 1,
+protocol ENUM('udp','tcp','tls', 'tls/srtp') DEFAULT 'udp' COMMENT 'Outbound call protocol',
 PRIMARY KEY (sip_gateway_sid)
 ) COMMENT='A whitelisted sip gateway used for origination/termination';
 
@@ -435,7 +462,7 @@ account_sid CHAR(36) COMMENT 'account that this application belongs to (if null,
 call_hook_sid CHAR(36) COMMENT 'webhook to call for inbound calls ',
 call_status_hook_sid CHAR(36) COMMENT 'webhook to call for call status events',
 messaging_hook_sid CHAR(36) COMMENT 'webhook to call for inbound SMS/MMS ',
-app_json VARCHAR(16384),
+app_json TEXT,
 speech_synthesis_vendor VARCHAR(64) NOT NULL DEFAULT 'google',
 speech_synthesis_language VARCHAR(12) NOT NULL DEFAULT 'en-US',
 speech_synthesis_voice VARCHAR(64),
@@ -502,6 +529,14 @@ ALTER TABLE call_routes ADD FOREIGN KEY application_sid_idxfk (application_sid) 
 CREATE INDEX dns_record_sid_idx ON dns_records (dns_record_sid);
 ALTER TABLE dns_records ADD FOREIGN KEY account_sid_idxfk_4 (account_sid) REFERENCES accounts (account_sid);
 
+CREATE INDEX lcr_sid_idx ON lcr_routes (lcr_sid);
+ALTER TABLE lcr_routes ADD FOREIGN KEY lcr_sid_idxfk (lcr_sid) REFERENCES lcr (lcr_sid);
+
+CREATE INDEX lcr_sid_idx ON lcr (lcr_sid);
+ALTER TABLE lcr ADD FOREIGN KEY default_carrier_set_entry_sid_idxfk (default_carrier_set_entry_sid) REFERENCES lcr_carrier_set_entry (lcr_carrier_set_entry_sid);
+
+CREATE INDEX service_provider_sid_idx ON lcr (service_provider_sid);
+CREATE INDEX account_sid_idx ON lcr (account_sid);
 CREATE INDEX permission_sid_idx ON permissions (permission_sid);
 CREATE INDEX predefined_carrier_sid_idx ON predefined_carriers (predefined_carrier_sid);
 CREATE INDEX predefined_sip_gateway_sid_idx ON predefined_sip_gateways (predefined_sip_gateway_sid);

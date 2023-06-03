@@ -50,7 +50,7 @@ test('\'gather\' test - google', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -86,7 +86,7 @@ test('\'gather\' test - default (google)', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -133,7 +133,7 @@ test('\'config\' test - reset to app defaults', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -173,7 +173,7 @@ test('\'gather\' test - microsoft', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -213,7 +213,7 @@ test('\'gather\' test - aws', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -256,7 +256,7 @@ test('\'gather\' test - deepgram', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
@@ -298,7 +298,7 @@ test('\'gather\' test - soniox', async(t) => {
       }
     ];
     let from = "gather_success";
-    provisionCallHook(from, verbs);
+    await provisionCallHook(from, verbs);
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
