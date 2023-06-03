@@ -12,12 +12,6 @@ require('./sip-request-tests');
 require('./create-call-test');
 require('./play-tests');
 require('./sip-refer-tests');
-require('./remove-test-db');
-require('./docker_stop');
-
-// Split testcases
-require('./docker_start');
-require('./create-test-db');
 require('./listen-tests');
 require('./config-test');
 require('./queue-test');
