@@ -83,6 +83,7 @@ test('\'listen-maxLength\'', async(t) => {
     t.ok(30000 <= obj.count, 'listen: success maxLength incoming call audio');
 
     obj = await getJSON(`http://127.0.0.1:3100/ws_metadata/${from}`);
+    console.log(obj);
     t.ok(obj.metadata.from === from && obj.metadata.sampleRate === 8000, 'listen: success maxLength metadata');
 
     disconnect();
