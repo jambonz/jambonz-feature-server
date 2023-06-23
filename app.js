@@ -120,9 +120,14 @@ function handle(signal) {
   srf.locals.disabled = true;
   logger.info(`got signal ${signal}`);
   const setName = `${(JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
+  const fsServiceUrlSetName = `${(JAMBONES_CLUSTER_ID || 'default')}:fs-service-url`;
   if (setName && srf.locals.localSipAddress) {
     logger.info(`got signal ${signal}, removing ${srf.locals.localSipAddress} from set ${setName}`);
     removeFromSet(setName, srf.locals.localSipAddress);
+  }
+  if (fsServiceUrlSetName && srf.locals.serviceUrl) {
+    logger.info(`got signal ${signal}, removing ${srf.locals.serviceUrl} from set ${fsServiceUrlSetName}`);
+    removeFromSet(fsServiceUrlSetName, srf.locals.serviceUrl);
   }
   removeFromSet(FS_UUID_SET_NAME, srf.locals.fsUUID);
   if (K8S) {
