@@ -5,6 +5,8 @@ const getJSON = bent('json')
 const clearModule = require('clear-module');
 const {provisionCallHook} = require('./utils')
 
+const sleepFor = (ms) => new Promise((r) => setTimeout(r, ms));
+
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
 });
@@ -47,6 +49,7 @@ test('\'dial-phone\'', async(t) => {
 
     // THEN
     const p = sippUac('uas-dial.xml', '172.38.0.10', undefined, undefined, 2);
+    await sleepFor(1000);
 
     let account_sid = '622f62e4-303a-49f2-bbe0-eb1e1714e37a';
     let post = bent('http://127.0.0.1:3000/', 'POST', 'json', 201);
@@ -84,7 +87,7 @@ test('\'dial-sip\'', async(t) => {
     try {
       await connect(srf);
       // wait for fs connected to drachtio server.
-      await new Promise(r => setTimeout(r, 1000));
+      await sleepFor(1000);
       // GIVEN
       const from = "dial_sip";
       let verbs = [
