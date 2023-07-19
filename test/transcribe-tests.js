@@ -217,3 +217,41 @@ test('\'transcribe\' test - soniox', async(t) => {
     t.error(err);
   }
 });
+
+test('\'transcribe\' test - google with asrTimeout', async(t) => {
+  if (!GCP_JSON_KEY) {
+    t.pass('skipping google tests');
+    return t.end();
+  }
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+    // GIVEN
+    let verbs = [
+      {
+        "verb": "transcribe",
+        "recognizer": {
+          "vendor": "google",
+          "hints": ["customer support", "sales", "human resources", "HR"],
+          "asrTimeout": 4
+        },
+        "transcriptionHook": "/transcriptionHook"
+      }
+    ];
+    let from = "gather_success";
+    await provisionCallHook(from, verbs);
+    // THEN
+    await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
+      'transcribe: succeeds when using google credentials');
+
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
