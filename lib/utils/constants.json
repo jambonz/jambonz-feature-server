@@ -31,12 +31,11 @@
   },
   "AllowedSipRecVerbs": ["config", "gather", "transcribe", "listen"],
   "CallStatus": {
-    "Queued": "queued",
     "Trying": "trying",
     "Ringing": "ringing",
     "EarlyMedia": "early-media",
     "InProgress": "in-progress",
-    
+    "Queued": "queued",
     "Failed": "failed",
     "Busy": "busy",
     "NoAnswer": "no-answer",
