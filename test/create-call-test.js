@@ -32,6 +32,7 @@ test('test create-call timeout', async(t) => {
 
     // GIVEN
     let account_sid = '622f62e4-303a-49f2-bbe0-eb1e1714e37a';
+    const from = "restdialtimeout";
     const post = bent('http://127.0.0.1:3000/', 'POST', 'json', 201);
     post('v1/createCall', {
       'account_sid':account_sid,
@@ -40,13 +41,22 @@ test('test create-call timeout', async(t) => {
         "url": "https://public-apps.jambonz.us/hello-world",
         "method": "POST"
       },
-      "from": "15083718299",
+      "call_status_hook": {
+        "url": "http://127.0.0.1:3100/callStatus",
+        "method": "POST"
+      },
+      from,
       "to": {
         "type": "phone",
         "number": "15583084809"
       }});
     //THEN
     await p;
+
+    let obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_callStatus`);
+    t.ok(obj.body.sip_reason = 'Request Terminated',
+      'create-call timeout: status callback successfully executed');
+
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
