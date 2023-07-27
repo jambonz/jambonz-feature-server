@@ -80,6 +80,15 @@ test('test create-call call-hook basic authentication', async(t) => {
         "username": "username",
         "password": "password"
       },
+      "tag": {
+        "callCount": 10,
+        "env": "DEVELOPMENT",
+        "processId": "processId",
+        "Customer": "Customer",
+        "Vehicle": "Vehicle",
+        "Event_Camel": "Event_Camel",
+        "CamelCase": "CamelCase"
+      },
       "from": from,
       "to": {
         "type": "phone",
@@ -96,9 +105,12 @@ test('test create-call call-hook basic authentication', async(t) => {
     //THEN
     await p;
 
-    let obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}`)
+    let obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}`);
+    console.log(obj);
     t.ok(obj.headers.Authorization = 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=',
       'create-call: call-hook contains basic authentication header');
+    t.ok(obj.body.customerdata.callCount = 10,
+      'create-call: call-hook contains correct format for customerData');
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
