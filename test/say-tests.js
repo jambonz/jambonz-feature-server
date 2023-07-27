@@ -2,6 +2,8 @@ const test = require('tape');
 const { sippUac } = require('./sipp')('test_fs');
 const clearModule = require('clear-module');
 const {provisionCallHook} = require('./utils')
+const bent = require('bent');
+const getJSON = bent('json')
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
@@ -27,6 +29,18 @@ test('\'say\' tests', async(t) => {
       {
         verb: 'say',
         text: 'hello'
+      },
+      {
+        verb: "tag",
+        data: {
+          callCount: 10,
+          env: "DEVELOPMENT",
+          processId: "processId",
+          Customer: "Customer",
+          Vehicle: "Vehicle",
+          Event_Camel: "Event_Camel",
+          CamelCase: "CamelCase"
+        }
       }
     ];
 
@@ -36,6 +50,10 @@ test('\'say\' tests', async(t) => {
     // THEN
     await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
     t.pass('say: succeeds when using using account credentials');
+    let obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_callStatus`);
+    console.log(obj);
+    t.ok(obj.body.customerdata.callCount === 10,
+      'create-call: call-hook contains correct format for customerData');
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);

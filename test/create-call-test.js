@@ -80,6 +80,10 @@ test('test create-call call-hook basic authentication', async(t) => {
         "username": "username",
         "password": "password"
       },
+      "call_status_hook": {
+        "url": "http://127.0.0.1:3100/callStatus",
+        "method": "POST"
+      },
       "tag": {
         "callCount": 10,
         "env": "DEVELOPMENT",
@@ -106,11 +110,14 @@ test('test create-call call-hook basic authentication', async(t) => {
     await p;
 
     let obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}`);
-    console.log(obj);
     t.ok(obj.headers.Authorization = 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=',
       'create-call: call-hook contains basic authentication header');
-    t.ok(obj.body.customerdata.callCount = 10,
+    t.ok(obj.body.customerdata.callCount === 10,
       'create-call: call-hook contains correct format for customerData');
+
+      obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_callStatus`);
+      t.ok(obj.body.customerdata.callCount === 10,
+        'create-call: call-hook contains correct format for customerData');
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
