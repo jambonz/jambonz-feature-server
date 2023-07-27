@@ -114,10 +114,14 @@ test('test create-call call-hook basic authentication', async(t) => {
       'create-call: call-hook contains basic authentication header');
     t.ok(obj.body.customerdata.callCount === 10,
       'create-call: call-hook contains correct format for customerData');
+      t.ok(obj.body.customerData.callCount === 10,
+        'create-call: call-hook contains correct format for customerData');
 
       obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_callStatus`);
       t.ok(obj.body.customerdata.callCount === 10,
-        'create-call: call-hook contains correct format for customerData');
+        'create-call: status-hook contains correct format for customerData');
+        t.ok(obj.body.customerData.callCount === 10,
+          'create-call: status-hook contains correct format for customerData');
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
