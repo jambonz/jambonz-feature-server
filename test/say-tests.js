@@ -53,7 +53,9 @@ test('\'say\' tests', async(t) => {
     let obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_callStatus`);
     console.log(obj);
     t.ok(obj.body.customerdata.callCount === 10,
-      'create-call: call-hook contains correct format for customerData');
+      'create-call: status-hook contains correct format for customerData');
+      t.ok(obj.body.customerData.callCount === 10,
+        'create-call: status-hook contains correct format for customerData');
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
