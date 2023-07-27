@@ -15,5 +15,6 @@ require('./sip-refer-tests');
 require('./listen-tests');
 require('./config-test');
 require('./queue-test');
+require('./sip-decline-test');
 require('./remove-test-db');
 require('./docker_stop');
