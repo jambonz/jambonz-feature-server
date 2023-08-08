@@ -20,8 +20,11 @@ const tracer = require('./tracer')(JAMBONES_OTEL_SERVICE_NAME);
 const api = require('@opentelemetry/api');
 srf.locals = {...srf.locals, otel: {tracer, api}};
 
+const opts = {
+  level: JAMBONES_LOGLEVEL
+};
 const pino = require('pino');
-const logger = pino({level: JAMBONES_LOGLEVEL || 'info'});
+const logger = pino(opts, pino.destination({sync: false}));
 const {LifeCycleEvents, FS_UUID_SET_NAME} = require('./lib/utils/constants');
 const installSrfLocals = require('./lib/utils/install-srf-locals');
 installSrfLocals(srf, logger);
