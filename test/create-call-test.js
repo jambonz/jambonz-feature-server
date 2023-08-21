@@ -37,7 +37,7 @@ test('test create-call timeout', async(t) => {
       'account_sid':account_sid,
       'timeout': 1,
       "call_hook": {
-        "url": "https://public-apps.jambonz.us/hello-world",
+        "url": "https://public-apps.jambonz.cloud/hello-world",
         "method": "POST"
       },
       "from": "15083718299",
