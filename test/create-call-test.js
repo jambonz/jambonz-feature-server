@@ -88,8 +88,8 @@ test('test create-call call-hook basic authentication', async(t) => {
 
     let verbs = [
       {
-        "verb": "say",
-        "text": "hello"
+        "verb": "pause",
+        "length": 1
       }
     ];
     await provisionCallHook(from, verbs);
