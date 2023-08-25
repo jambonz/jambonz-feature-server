@@ -896,7 +896,7 @@ CREATE TABLE `service_providers` (
 
 LOCK TABLES `service_providers` WRITE;
 /*!40000 ALTER TABLE `service_providers` DISABLE KEYS */;
-INSERT INTO `service_providers` VALUES ('2708b1b3-2736-40ea-b502-c53d8396247f','jambonz.us','jambonz.us service provider','yakeeda.com',NULL,NULL);
+INSERT INTO `service_providers` VALUES ('2708b1b3-2736-40ea-b502-c53d8396247f','jambonz.cloud','jambonz.cloud service provider','yakeeda.com',NULL,NULL);
 /*!40000 ALTER TABLE `service_providers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1063,7 +1063,7 @@ CREATE TABLE `speech_credentials` (
 
 LOCK TABLES `speech_credentials` WRITE;
 /*!40000 ALTER TABLE `speech_credentials` DISABLE KEYS */;
-INSERT INTO `speech_credentials` VALUES ('2add163c-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','google','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21'),('2add347f-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','microsoft','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21'),('84154212-5c99-4c94-8993-bc2a46288daa',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','aws','credential-goes-here',1,1,NULL,NULL,NULL,NULL,'2023-05-31 03:44:21');
+INSERT INTO `speech_credentials` VALUES ('2add163c-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','google','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21'),('2add347f-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','microsoft','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21'),('84154212-5c99-4c94-8993-bc2a46288daa',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','aws','credential-goes-here',1,1,NULL,NULL,1,1,'2023-05-31 03:44:21');
 /*!40000 ALTER TABLE `speech_credentials` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1253,7 +1253,7 @@ CREATE TABLE `webhooks` (
 
 LOCK TABLES `webhooks` WRITE;
 /*!40000 ALTER TABLE `webhooks` DISABLE KEYS */;
-INSERT INTO `webhooks` VALUES ('10692465-a511-4277-9807-b7157e4f81e1','http://127.0.0.1:3102/','POST',NULL,NULL),('293904c1-351b-4bca-8d58-1a29b853c7db','http://127.0.0.1:3100/callStatus','POST',NULL,NULL),('54ab0976-a6c0-45d8-89a4-d90d45bf9d96','http://127.0.0.1:3101/','POST',NULL,NULL),('6ac36aeb-6bd0-428a-80a1-aed95640a296','https://flows.jambonz.us/callStatus','POST',NULL,NULL),('c71e79db-24f2-4866-a3ee-febb0f97b341','http://127.0.0.1:3100/','POST',NULL,NULL),('c9113e7a-741f-48b9-96c1-f2f78176eeb3','http://127.0.0.1:3104/','POST',NULL,NULL),('d9c205c6-a129-443e-a9c0-d1bb437d4bb7','https://flows.jambonz.us/testCall','POST',NULL,NULL),('ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','http://127.0.0.1:3103/','POST',NULL,NULL);
+INSERT INTO `webhooks` VALUES ('10692465-a511-4277-9807-b7157e4f81e1','http://127.0.0.1:3102/','POST',NULL,NULL),('293904c1-351b-4bca-8d58-1a29b853c7db','http://127.0.0.1:3100/callStatus','POST',NULL,NULL),('54ab0976-a6c0-45d8-89a4-d90d45bf9d96','http://127.0.0.1:3101/','POST',NULL,NULL),('6ac36aeb-6bd0-428a-80a1-aed95640a296','https://flows.jambonz.cloud/callStatus','POST',NULL,NULL),('c71e79db-24f2-4866-a3ee-febb0f97b341','http://127.0.0.1:3100/','POST',NULL,NULL),('c9113e7a-741f-48b9-96c1-f2f78176eeb3','http://127.0.0.1:3104/','POST',NULL,NULL),('d9c205c6-a129-443e-a9c0-d1bb437d4bb7','https://flows.jambonz.cloud/testCall','POST',NULL,NULL),('ecb67a8f-f7ce-4919-abf0-bbc69c1001e5','http://127.0.0.1:3103/','POST',NULL,NULL);
 /*!40000 ALTER TABLE `webhooks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
