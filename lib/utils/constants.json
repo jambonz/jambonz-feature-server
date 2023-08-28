@@ -51,6 +51,11 @@
     "Silence": "silence",
     "Resume": "resume"
   },
+  "TranscribeStatus": {
+    "Pause": "pause",
+    "Silence": "silence",
+    "Resume": "resume"
+  },
   "TaskPreconditions": {
     "None": "none",
     "Endpoint": "endpoint",
