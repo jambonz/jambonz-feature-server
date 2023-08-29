@@ -95,6 +95,10 @@
     "Transcription": "soniox_transcribe::transcription",
     "Error": "soniox_transcribe::error"
   },
+  "CobaltTranscriptionEvents": {
+    "Transcription": "cobalt_transcribe::transcription",
+    "Error": "cobalt_transcribe::error"
+  },
   "IbmTranscriptionEvents": {
     "Transcription": "ibm_transcribe::transcription",
     "ConnectFailure": "ibm_transcribe::connect_failed",
