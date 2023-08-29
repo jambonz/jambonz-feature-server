@@ -1045,6 +1045,7 @@ CREATE TABLE `speech_credentials` (
   `tts_tested_ok` tinyint(1) DEFAULT NULL,
   `stt_tested_ok` tinyint(1) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `label` VARCHAR(64),
   PRIMARY KEY (`speech_credential_sid`),
   UNIQUE KEY `speech_credential_sid` (`speech_credential_sid`),
   UNIQUE KEY `speech_credentials_idx_1` (`vendor`,`account_sid`),
@@ -1063,7 +1064,7 @@ CREATE TABLE `speech_credentials` (
 
 LOCK TABLES `speech_credentials` WRITE;
 /*!40000 ALTER TABLE `speech_credentials` DISABLE KEYS */;
-INSERT INTO `speech_credentials` VALUES ('2add163c-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','google','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21'),('2add347f-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','microsoft','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21'),('84154212-5c99-4c94-8993-bc2a46288daa',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','aws','credential-goes-here',1,1,NULL,NULL,1,1,'2023-05-31 03:44:21');
+INSERT INTO `speech_credentials` VALUES ('2add163c-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','google','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21', NULL),('2add347f-34f2-45c6-a016-f955d218ffb6',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','microsoft','credential-goes-here',1,1,NULL,'2021-04-03 15:42:10',1,1,'2023-05-31 03:44:21', NULL),('84154212-5c99-4c94-8993-bc2a46288daa',NULL,'bb845d4b-83a9-4cde-a6e9-50f3743bab3f','aws','credential-goes-here',1,1,NULL,NULL,1,1,'2023-05-31 03:44:21', NULL);
 /*!40000 ALTER TABLE `speech_credentials` ENABLE KEYS */;
 UNLOCK TABLES;
 
