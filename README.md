@@ -37,6 +37,9 @@ Configuration is provided via environment variables:
 |STATS_PORT| listening port for metrics host|no|
 |STATS_PROTOCOL| 'tcp' or 'udp'|no|
 |STATS_TELEGRAF| if 1, metrics will be generated in telegraf format|no|
+|JAMBONZ_RECORD_WS_BASE_URL| recording websocket URL to send the recording audio|no|
+|JAMBONZ_RECORD_WS_USERNAME| recording websocket username|no|
+|JAMBONZ_RECORD_WS_PASSWORD| recording websocket password|no|
 
 ### running under pm2
 Typically, this application runs under [pm2](https://pm2.io) using an [ecosystem.config.js](https://pm2.keymetrics.io/docs/usage/application-declaration/) file similar to this:
