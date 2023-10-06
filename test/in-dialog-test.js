@@ -29,7 +29,7 @@ test('\'sip Indialog\' test Info', async(t) => {
     const verbs = [
       {
         verb: 'config',
-        sipIndialogActionHook: '/customHook'
+        sipRequestWithinDialogHook: '/customHook'
       },
       {
         verb: 'play',
@@ -52,10 +52,10 @@ test('\'sip Indialog\' test Info', async(t) => {
     await sippUac('uac-success-info-received-bye.xml', '172.38.0.10', from);
     t.pass('sip Info: success send Info');
 
-    // Make sure that sipIndialogActionHook is called and success
+    // Make sure that sipRequestWithinDialogHook is called and success
     const json = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_customHook`)
-    t.pass(json.body.sip_method === 'INFO', 'sipIndialogActionHook contains sip_method')
-    t.pass(json.body.sip_body === 'hello jambonz\r\n', 'sipIndialogActionHook contains sip_method')
+    t.pass(json.body.sip_method === 'INFO', 'sipRequestWithinDialogHook contains sip_method')
+    t.pass(json.body.sip_body === 'hello jambonz\r\n', 'sipRequestWithinDialogHook contains sip_method')
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
