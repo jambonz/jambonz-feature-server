@@ -18,7 +18,7 @@ function connect(connectable) {
 }
 
 
-test('\'play\' tests single link in plain text', async(t) => {
+test('\'sip Indialog\' test Info', async(t) => {
   clearModule.all();
   const {srf, disconnect} = require('../app');
 

@@ -67,6 +67,8 @@
     ]]>
   </send>
 
+   <pause milliseconds="2000"/>
+
   <!-- Send an INFO message -->
   <send>
     <![CDATA[
