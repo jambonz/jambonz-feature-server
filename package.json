@@ -30,7 +30,7 @@
     "@jambonz/db-helpers": "^0.9.1",
     "@jambonz/http-health-check": "^0.0.1",
     "@jambonz/realtimedb-helpers": "^0.8.6",
-    "@jambonz/speech-utils": "^0.0.21",
+    "@jambonz/speech-utils": "^0.0.22",
     "@jambonz/stats-collector": "^0.1.9",
     "@jambonz/time-series": "^0.2.8",
     "@jambonz/verb-specifications": "^0.0.37",
