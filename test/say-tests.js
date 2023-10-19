@@ -66,7 +66,7 @@ test('\'config\' reset synthesizer tests', async(t) => {
       },
       {
         verb: 'say',
-        text: 'hello'
+        text: ['hello', 'https://samplelib.com/lib/preview/mp3/sample-3s.mp3']
       }
     ];
 
