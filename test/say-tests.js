@@ -66,6 +66,46 @@ test('\'config\' reset synthesizer tests', async(t) => {
       },
       {
         verb: 'say',
+        text: 'hello'
+      }
+    ];
+
+    const from = 'say_test_success';
+    await provisionCallHook(from, verbs)
+
+    // THEN
+    await sippUac('uac-success-received-bye.xml', '172.38.0.10', from);
+    t.pass('say: succeeds when using using account credentials');
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
+test('Say verb array test', async(t) => {
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+
+    // GIVEN
+    const verbs = [
+      {
+        "verb": "config",
+        "synthesizer": {
+          "vendor": "microsft",
+          "voice": "foobar"
+        },
+      },
+      {
+        "verb": "config",
+        "reset": 'synthesizer',
+      },
+      {
+        verb: 'say',
         text: ['hello', 'https://samplelib.com/lib/preview/mp3/sample-3s.mp3']
       }
     ];
