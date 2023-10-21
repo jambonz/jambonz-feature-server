@@ -92,3 +92,13 @@ services:
     networks:
       fs:
         ipv4_address: 172.38.0.90
+
+  squid:
+    image: ubuntu/squid:edge
+    ports:
+      - "3128:3128"
+    volumes:
+      - ./configuration/squid.conf:/etc/squid/squid.conf
+    networks:
+      fs:
+        ipv4_address: 172.38.0.91
