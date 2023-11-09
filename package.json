@@ -1,6 +1,6 @@
 {
   "name": "jambonz-feature-server",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "main": "app.js",
   "engines": {
     "node": ">= 10.16.0"
