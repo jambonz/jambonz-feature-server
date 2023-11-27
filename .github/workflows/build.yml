@@ -3,7 +3,25 @@ name: CI
 on: [push, pull_request]
 
 jobs:
+  manual-approval:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: Wait for manual approval
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.warning('This pull request is from a fork and requires manual approval to run the build job with secrets.');
+            const issueComment = await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🛑 Manual approval is required to run the build job. Repository maintainers, please review the changes.'
+            });
+
   build:
+    needs: manual-approval
+    if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
