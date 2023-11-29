@@ -1,17 +1,17 @@
 const test = require('tape');
-const {opusFirst, isOpusFirst} = require('../lib/utils/sdp-utils');
+const {makeOpusFirst, isOpusFirst} = require('../lib/utils/sdp-utils');
 const sdpTransform = require('sdp-transform');
 
 test('test opus first', (t) => {
     const sdp = 'v=0\r\no=- 3348584794228993675 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS caca8b77-5ae5-4e73-a4d5-de1fce930335\r\nm=audio 57088 UDP/TLS/RTP/SAVPF 111 63 9 0 8 13 110 126\r\nc=IN IP4 14.238.89.50\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=candidate:1401281302 1 udp 2122260223 10.231.36.146 57088 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:2173263513 1 udp 1686052607 14.238.89.50 57088 typ srflx raddr 10.231.36.146 rport 57088 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:k5nc\r\na=ice-pwd:J0qwMs6HrIcFNZbDG5m8Kqpk\r\na=ice-options:trickle\r\na=fingerprint:sha-256 66:DE:9A:76:CE:11:2D:65:C4:08:C7:87:B4:90:7E:F1:8D:07:B9:F4:FF:E3:81:D7:E7:7D:C6:56:47:01:6E:55\r\na=setup:actpass\r\na=mid:0\r\na=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level\r\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\r\na=sendrecv\r\na=msid:caca8b77-5ae5-4e73-a4d5-de1fce930335 52ad01f1-b1df-4b8e-a208-9201e98b6f7b\r\na=rtcp-mux\r\na=rtcp-fb:111 transport-cc\r\na=fmtp:111 minptime=10;useinbandfec=1\r\na=rtpmap:63 red/48000/2\r\na=fmtp:63 111/111\r\na=rtpmap:9 G722/8000\r\na=rtpmap:0 PCMU/8000\r\na=rtpmap:8 PCMA/8000\r\na=rtpmap:13 CN/8000\r\na=rtpmap:111 opus/48000/2\r\na=rtpmap:110 telephone-event/48000\r\na=rtpmap:126 telephone-event/8000\r\na=ssrc:3207459321 cname:4nyPJ6KXvseBUIhu\r\na=ssrc:3207459321 msid:caca8b77-5ae5-4e73-a4d5-de1fce930335 52ad01f1-b1df-4b8e-a208-9201e98b6f7b\r\n';
-    const opusSdp = opusFirst(sdp);
+    const opusSdp = makeOpusFirst(sdp);
     const parsedSdp = sdpTransform.parse(opusSdp);
     const opusIndex = parsedSdp.media[0].rtp.findIndex((entry) => entry.codec === 'opus');
     t.ok(opusIndex === 0, 'succesffuly move opus to be first offer')
     t.end();
 });
 
-test('test opus first', (t) => {
+test('test is opus first', (t) => {
 
     const sdp = 'v=0\r\no=- 3348584794228993675 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS caca8b77-5ae5-4e73-a4d5-de1fce930335\r\nm=audio 57088 UDP/TLS/RTP/SAVPF 111 63 9 0 8 13 110 126\r\nc=IN IP4 14.238.89.50\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=candidate:1401281302 1 udp 2122260223 10.231.36.146 57088 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:2173263513 1 udp 1686052607 14.238.89.50 57088 typ srflx raddr 10.231.36.146 rport 57088 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:k5nc\r\na=ice-pwd:J0qwMs6HrIcFNZbDG5m8Kqpk\r\na=ice-options:trickle\r\na=fingerprint:sha-256 66:DE:9A:76:CE:11:2D:65:C4:08:C7:87:B4:90:7E:F1:8D:07:B9:F4:FF:E3:81:D7:E7:7D:C6:56:47:01:6E:55\r\na=setup:actpass\r\na=mid:0\r\na=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level\r\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\r\na=sendrecv\r\na=msid:caca8b77-5ae5-4e73-a4d5-de1fce930335 52ad01f1-b1df-4b8e-a208-9201e98b6f7b\r\na=rtcp-mux\r\na=rtpmap:111 opus/48000/2\r\na=rtcp-fb:111 transport-cc\r\na=fmtp:111 minptime=10;useinbandfec=1\r\na=rtpmap:63 red/48000/2\r\na=fmtp:63 111/111\r\na=rtpmap:9 G722/8000\r\na=rtpmap:0 PCMU/8000\r\na=rtpmap:8 PCMA/8000\r\na=rtpmap:13 CN/8000\r\na=rtpmap:110 telephone-event/48000\r\na=rtpmap:126 telephone-event/8000\r\na=ssrc:3207459321 cname:4nyPJ6KXvseBUIhu\r\na=ssrc:3207459321 msid:caca8b77-5ae5-4e73-a4d5-de1fce930335 52ad01f1-b1df-4b8e-a208-9201e98b6f7b\r\n';
     t.ok(isOpusFirst(sdp), "opus is first offer");
