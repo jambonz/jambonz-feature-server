@@ -155,6 +155,9 @@ test('\'transcribe\' test - deepgram config options', async(t) => {
         "recognizer": {
           "vendor": "deepgram",
           "language": "en-US",
+          "altLanguages": [
+            "en-US"
+          ],
           "deepgramOptions": {
             "model": "2-ea",
             "tier": "nova",
@@ -172,6 +175,9 @@ test('\'transcribe\' test - deepgram config options', async(t) => {
         "transcriptionHook": "/transcriptionHook",
         "recognizer": {
           "vendor": "deepgram",
+          "altLanguages": [
+            "en-AU"
+          ],
           "hints": ["customer support", "sales", "human resources", "HR"],
           "deepgramOptions": {
             "apiKey": DEEPGRAM_API_KEY,
