@@ -109,7 +109,7 @@ const disconnect = () => {
     httpServer?.on('close', resolve);
     httpServer?.close();
     srf.disconnect();
-    srf.locals.mediaservers.forEach((ms) => ms.disconnect());
+    srf.locals.mediaservers?.forEach((ms) => ms.disconnect());
   });
 };
 

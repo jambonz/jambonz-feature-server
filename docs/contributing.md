@@ -45,7 +45,7 @@ The GCP credential is the JSON service key in stringified format.
 
 #### Install Docker
 
-The test suite ralso equires [Docker](https://www.docker.com/) and docker-compose to be installed on your laptop.  Docker is used to set up a network with all of the elements required to test the jambonz-feature-server in a black-box type of fashion.
+The test suite also requires [Docker](https://www.docker.com/) and docker-compose to be installed on your laptop.  Docker is used to set up a network with all of the elements required to test the jambonz-feature-server in a black-box type of fashion.
 
 Once you have docker installed, you can optionally make sure everything Docker-wise is working properly by running this command from the project folder:
 

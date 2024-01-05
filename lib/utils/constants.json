@@ -126,6 +126,12 @@
     "Connect": "jambonz_transcribe::connect",
     "Error": "jambonz_transcribe::error"
   },
+  "AssemblyAiTranscriptionEvents": {
+    "Transcription": "assemblyai_transcribe::transcription",
+    "Error": "assemblyai_transcribe::error",
+    "ConnectFailure": "assemblyai_transcribe::connect_failed",
+    "Connect": "assemblyai_transcribe::connect"
+  },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",
     "ConnectFailure": "mod_audio_fork::connect_failed",
