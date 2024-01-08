@@ -16,6 +16,8 @@ require('./listen-tests');
 require('./config-test');
 require('./queue-test');
 require('./in-dialog-test');
+require('./hangup-test');
+require('./sdp-utils-test');
 require('./http-proxy-test');
 require('./remove-test-db');
 require('./docker_stop');
