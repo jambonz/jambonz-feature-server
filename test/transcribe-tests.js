@@ -52,6 +52,7 @@ test('\'transcribe\' test - google', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    //console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
       'transcribe: succeeds when using google credentials');
 
@@ -89,6 +90,7 @@ test('\'transcribe\' test - microsoft', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    //console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
       'transcribe: succeeds when using  microsoft credentials');
 
@@ -126,8 +128,74 @@ test('\'transcribe\' test - aws', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    //console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
       'transcribe: succeeds when using aws credentials');
+
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
+
+test('\'transcribe\' test - deepgram config options', async(t) => {
+  if (!DEEPGRAM_API_KEY ) {
+    t.pass('skipping deepgram tests');
+    return t.end();
+  }
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+    // GIVEN
+    let verbs = [
+      {
+        "verb": "config",
+        "recognizer": {
+          "vendor": "deepgram",
+          "language": "en-US",
+          "altLanguages": [
+            "en-US"
+          ],
+          "deepgramOptions": {
+            "model": "2-ea",
+            "tier": "nova",
+            "numerals": true,
+            "ner": true,
+            "vadTurnoff": 10,
+            "keywords": [
+              "CPT"
+            ]
+          }
+        }
+      },
+      {
+        "verb": "transcribe",
+        "transcriptionHook": "/transcriptionHook",
+        "recognizer": {
+          "vendor": "deepgram",
+          "altLanguages": [
+            "en-AU"
+          ],
+          "hints": ["customer support", "sales", "human resources", "HR"],
+          "deepgramOptions": {
+            "apiKey": DEEPGRAM_API_KEY,
+          }
+        }
+      }
+    ];
+    let from = "gather_success";
+    await provisionCallHook(from, verbs);
+    // THEN
+    await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    //console.log(JSON.stringify(obj));
+    t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().includes('like to speak to customer support'),
+      'transcribe: succeeds when using deepgram credentials');
 
     disconnect();
   } catch (err) {
@@ -166,6 +234,7 @@ test('\'transcribe\' test - deepgram', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    //console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().includes('like to speak to customer support'),
       'transcribe: succeeds when using deepgram credentials');
 
@@ -245,8 +314,132 @@ test('\'transcribe\' test - google with asrTimeout', async(t) => {
     // THEN
     await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
     let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    //console.log(JSON.stringify(obj));
     t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().startsWith('i\'d like to speak to customer support'),
       'transcribe: succeeds when using google credentials');
+
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
+test('\'transcribe\' test - deepgram config options altLanguages', async(t) => {
+  if (!DEEPGRAM_API_KEY ) {
+    t.pass('skipping deepgram tests');
+    return t.end();
+  }
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+    // GIVEN
+    let verbs = [
+      {
+        "verb": "config",
+        "recognizer": {
+          "vendor": "deepgram",
+          "language": "en-US",
+          "altLanguages": [
+            "en-US"
+          ],
+          "deepgramOptions": {
+            "model": "2-ea",
+            "tier": "nova",
+            "numerals": true,
+            "ner": true,
+            "vadTurnoff": 10,
+            "keywords": [
+              "CPT"
+            ]
+          }
+        }
+      },
+      {
+        "verb": "transcribe",
+        "transcriptionHook": "/transcriptionHook",
+        "recognizer": {
+          "vendor": "deepgram",
+          "hints": ["customer support", "sales", "human resources", "HR"],
+          "deepgramOptions": {
+            "apiKey": DEEPGRAM_API_KEY,
+          }
+        }
+      }
+    ];
+    let from = "gather_success_no_altLanguages";
+    await provisionCallHook(from, verbs);
+    // THEN
+    await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    //console.log(JSON.stringify(obj));
+    t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().includes('like to speak to customer support'),
+      'transcribe: succeeds when using deepgram credentials');
+
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
+test('\'transcribe\' test - deepgram config options altLanguages', async(t) => {
+  if (!DEEPGRAM_API_KEY ) {
+    t.pass('skipping deepgram tests');
+    return t.end();
+  }
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+    // GIVEN
+    let verbs = [
+      {
+        "verb": "config",
+        "recognizer": {
+          "vendor": "deepgram",
+          "language": "en-US",
+          "altLanguages": [
+            "en-US"
+          ],
+          "deepgramOptions": {
+            "model": "2-ea",
+            "tier": "nova",
+            "numerals": true,
+            "ner": true,
+            "vadTurnoff": 10,
+            "keywords": [
+              "CPT"
+            ]
+          }
+        }
+      },
+      {
+        "verb": "transcribe",
+        "transcriptionHook": "/transcriptionHook",
+        "recognizer": {
+          "vendor": "deepgram",
+          "hints": ["customer support", "sales", "human resources", "HR"],
+          "altLanguages": [],
+          "deepgramOptions": {
+            "apiKey": DEEPGRAM_API_KEY,
+          }
+        }
+      }
+    ];
+    let from = "gather_success_has_altLanguages";
+    await provisionCallHook(from, verbs);
+    // THEN
+    await sippUac('uac-gather-account-creds-success.xml', '172.38.0.10', from);
+    let obj = await getJSON(`http://127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    //console.log(JSON.stringify(obj));
+    t.ok(obj.body.speech.alternatives[0].transcript.toLowerCase().includes('like to speak to customer support'),
+      'transcribe: succeeds when using deepgram credentials');
 
     disconnect();
   } catch (err) {

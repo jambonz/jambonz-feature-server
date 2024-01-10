@@ -188,7 +188,7 @@ test('\'play\' tests with seekOffset and actionHook', async(t) => {
     const seconds = parseInt(obj.body.playback_seconds);
     const milliseconds = parseInt(obj.body.playback_milliseconds);
     const lastOffsetPos = parseInt(obj.body.playback_last_offset_pos);
-    //console.log({obj}, 'lastRequest');
+    console.log({obj}, 'lastRequest');
     t.ok(obj.body.reason === "playCompleted", "play: actionHook success received");
     t.ok(seconds === 2, "playback_seconds: actionHook success received");
     t.ok(milliseconds === 2048, "playback_milliseconds: actionHook success received");
