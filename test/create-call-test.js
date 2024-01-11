@@ -99,6 +99,8 @@ test('test create-call call-hook basic authentication', async(t) => {
     let obj = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}`)
     t.ok(obj.headers.Authorization = 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=',
       'create-call: call-hook contains basic authentication header');
+    t.ok(obj.headers['user-agent'] = 'jambonz',
+    'create-call: call-hook contains user-agent header');
     disconnect();
   } catch (err) {
     console.log(`error received: ${err}`);
