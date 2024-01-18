@@ -27,7 +27,7 @@
   "dependencies": {
     "@aws-sdk/client-auto-scaling": "^3.360.0",
     "@aws-sdk/client-sns": "^3.360.0",
-    "@jambonz/db-helpers": "^0.9.1",
+    "@jambonz/db-helpers": "^0.9.3",
     "@jambonz/http-health-check": "^0.0.1",
     "@jambonz/mw-registrar": "^0.2.4",
     "@jambonz/realtimedb-helpers": "^0.8.7",
