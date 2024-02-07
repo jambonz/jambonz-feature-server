@@ -1,6 +1,6 @@
 {
   "name": "jambonz-feature-server",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "main": "app.js",
   "engines": {
     "node": ">= 18.x"
@@ -34,7 +34,7 @@
     "@jambonz/speech-utils": "^0.0.38",
     "@jambonz/stats-collector": "^0.1.9",
     "@jambonz/time-series": "^0.2.8",
-    "@jambonz/verb-specifications": "^0.0.50",
+    "@jambonz/verb-specifications": "^0.0.52",
     "@opentelemetry/api": "^1.4.0",
     "@opentelemetry/exporter-jaeger": "^1.9.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.35.0",
