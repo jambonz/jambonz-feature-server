@@ -347,8 +347,7 @@ test('\'transcribe\' test - deepgram config options altLanguages', async(t) => {
             "en-US"
           ],
           "deepgramOptions": {
-            "model": "2-ea",
-            "tier": "nova",
+            "model": "nova-2",
             "numerals": true,
             "ner": true,
             "vadTurnoff": 10,
@@ -408,8 +407,7 @@ test('\'transcribe\' test - deepgram config options altLanguages', async(t) => {
             "en-US"
           ],
           "deepgramOptions": {
-            "model": "2-ea",
-            "tier": "nova",
+            "model": "nova-2",
             "numerals": true,
             "ner": true,
             "vadTurnoff": 10,
