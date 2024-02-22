@@ -42,7 +42,7 @@ services:
         ipv4_address: 172.38.0.7
 
   drachtio:
-    image: drachtio/drachtio-server:0.8.24
+    image: drachtio/drachtio-server:0.8.25-rc8
     restart: always
     command: drachtio --contact "sip:*;transport=udp" --mtu 4096 --address 0.0.0.0 --port 9022
     ports:
@@ -57,7 +57,7 @@ services:
         condition: service_healthy
 
   freeswitch:
-    image: drachtio/drachtio-freeswitch-mrf:0.6.1
+    image: drachtio/drachtio-freeswitch-mrf:0.6.2
     restart: always
     command: freeswitch --rtp-range-start 20000 --rtp-range-end 20100
     environment:
