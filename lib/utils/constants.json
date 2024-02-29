@@ -30,6 +30,7 @@
     "Transcribe": "transcribe"
   },
   "AllowedSipRecVerbs": ["config", "gather", "transcribe", "listen", "tag"],
+  "AllowedConfirmSessionVerbs": ["config", "gather", "plays", "say", "tag"],
   "CallStatus": {
     "Trying": "trying",
     "Ringing": "ringing",
