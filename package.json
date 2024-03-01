@@ -35,10 +35,14 @@
     "@jambonz/stats-collector": "^0.1.9",
     "@jambonz/time-series": "^0.2.8",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@jambonz/verb-specifications": "^0.0.63",
 =======
     "@jambonz/verb-specifications": "^0.0.55",
 >>>>>>> 60e8a28 (wip)
+=======
+    "@jambonz/verb-specifications": "^0.0.56",
+>>>>>>> f92d22f (updates to rename option to dub)
     "@opentelemetry/api": "^1.4.0",
     "@opentelemetry/exporter-jaeger": "^1.9.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.35.0",
