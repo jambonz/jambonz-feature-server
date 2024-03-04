@@ -7,6 +7,7 @@
     "Dial": "dial",
     "Dialogflow": "dialogflow",
     "Dtmf": "dtmf",
+    "Dub": "dub",
     "Enqueue": "enqueue",
     "Gather": "gather",
     "Hangup": "hangup",
