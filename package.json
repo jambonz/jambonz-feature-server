@@ -36,6 +36,7 @@
     "@jambonz/time-series": "^0.2.8",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@jambonz/verb-specifications": "^0.0.63",
 =======
     "@jambonz/verb-specifications": "^0.0.55",
@@ -43,6 +44,9 @@
 =======
     "@jambonz/verb-specifications": "^0.0.56",
 >>>>>>> f92d22f (updates to rename option to dub)
+=======
+    "@jambonz/verb-specifications": "^0.0.57",
+>>>>>>> 0615adb (update verb-specs)
     "@opentelemetry/api": "^1.4.0",
     "@opentelemetry/exporter-jaeger": "^1.9.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.35.0",
