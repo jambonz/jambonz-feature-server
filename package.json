@@ -38,6 +38,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@jambonz/verb-specifications": "^0.0.63",
 =======
     "@jambonz/verb-specifications": "^0.0.55",
@@ -51,6 +52,9 @@
 =======
     "@jambonz/verb-specifications": "^0.0.59",
 >>>>>>> 7819f98 (add option to boost audio signal in main channel)
+=======
+    "@jambonz/verb-specifications": "^0.0.60",
+>>>>>>> 2faee9c (add support for filler noise)
     "@opentelemetry/api": "^1.4.0",
     "@opentelemetry/exporter-jaeger": "^1.9.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.35.0",
