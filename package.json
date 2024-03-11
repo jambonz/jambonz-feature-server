@@ -34,35 +34,7 @@
     "@jambonz/speech-utils": "^0.0.43",
     "@jambonz/stats-collector": "^0.1.9",
     "@jambonz/time-series": "^0.2.8",
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     "@jambonz/verb-specifications": "^0.0.63",
-=======
-    "@jambonz/verb-specifications": "^0.0.55",
->>>>>>> 60e8a28 (wip)
-=======
-    "@jambonz/verb-specifications": "^0.0.56",
->>>>>>> f92d22f (updates to rename option to dub)
-=======
-    "@jambonz/verb-specifications": "^0.0.57",
->>>>>>> 0615adb (update verb-specs)
-=======
-    "@jambonz/verb-specifications": "^0.0.59",
->>>>>>> 7819f98 (add option to boost audio signal in main channel)
-=======
-    "@jambonz/verb-specifications": "^0.0.60",
->>>>>>> 2faee9c (add support for filler noise)
-=======
-    "@jambonz/verb-specifications": "^0.0.61",
->>>>>>> d8882e7 (allow transcribe of b leg only on dial verb)
-=======
-    "@jambonz/verb-specifications": "^0.0.62",
->>>>>>> ab2992a (dub.say can either be text or object like say verb with text and synthesizer)
     "@opentelemetry/api": "^1.4.0",
     "@opentelemetry/exporter-jaeger": "^1.9.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.35.0",
