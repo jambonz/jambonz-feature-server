@@ -1,12 +1,13 @@
 {
   "TaskName": {
-    "Cognigy": "cognigy",
+    "Answer": "answer",
     "Conference": "conference",
     "Config": "config",
     "Dequeue": "dequeue",
     "Dial": "dial",
     "Dialogflow": "dialogflow",
     "Dtmf": "dtmf",
+    "Dub": "dub",
     "Enqueue": "enqueue",
     "Gather": "gather",
     "Hangup": "hangup",
@@ -29,7 +30,7 @@
     "Tag": "tag",
     "Transcribe": "transcribe"
   },
-  "AllowedSipRecVerbs": ["config", "gather", "transcribe", "listen", "tag"],
+  "AllowedSipRecVerbs": ["answer", "config", "gather", "transcribe", "listen", "tag"],
   "AllowedConfirmSessionVerbs": ["config", "gather", "plays", "say", "tag"],
   "CallStatus": {
     "Trying": "trying",
