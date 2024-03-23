@@ -42,3 +42,4 @@ ecosystem.config.js
 test/credentials/*.json
 run-tests.sh
 run-coverage.sh
+.vscode
