@@ -171,6 +171,7 @@
     "session:new",
     "session:reconnect",
     "session:redirect",
+    "session:adulting",
     "call:status",
     "queue:status",
     "dial:confirm",
