@@ -49,7 +49,7 @@
     "deepcopy": "^2.1.0",
     "drachtio-fsmrf": "^3.0.40",
     "drachtio-srf": "^4.5.31",
-    "express": "^4.18.2",
+    "express": "^4.19.2",
     "express-validator": "^7.0.1",
     "ip": "^1.1.9",
     "moment": "^2.29.4",
