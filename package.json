@@ -32,7 +32,7 @@
     "@jambonz/mw-registrar": "^0.2.7",
     "@jambonz/realtimedb-helpers": "^0.8.8",
     "@jambonz/speech-utils": "^0.1.0",
-    "@jambonz/stats-collector": "^0.1.9",
+    "@jambonz/stats-collector": "^0.1.10",
     "@jambonz/time-series": "^0.2.8",
     "@jambonz/verb-specifications": "^0.0.69",
     "@opentelemetry/api": "^1.8.0",
