@@ -91,22 +91,26 @@
   "DeepgramTranscriptionEvents": {
     "Transcription": "deepgram_transcribe::transcription",
     "ConnectFailure": "deepgram_transcribe::connect_failed",
-    "Connect": "deepgram_transcribe::connect"
+    "Connect": "deepgram_transcribe::connect",
+    "VadDetected": "deepgram_transcribe::vad_detected"
   },
   "SonioxTranscriptionEvents": {
     "Transcription": "soniox_transcribe::transcription",
-    "Error": "soniox_transcribe::error"
+    "Error": "soniox_transcribe::error",
+    "VadDetected": "soniox_transcribe::vad_detected"
   },
   "CobaltTranscriptionEvents": {
     "Transcription": "cobalt_speech::transcription",
     "CompileContext": "cobalt_speech::compile_context_response",
-    "Error": "cobalt_speech::error"
+    "Error": "cobalt_speech::error",
+    "VadDetected": "cobalt_speech::vad_detected"
   },
   "IbmTranscriptionEvents": {
     "Transcription": "ibm_transcribe::transcription",
     "ConnectFailure": "ibm_transcribe::connect_failed",
     "Connect": "ibm_transcribe::connect",
-    "Error": "ibm_transcribe::error"
+    "Error": "ibm_transcribe::error",
+    "VadDetected": "ibm_transcribe::vad_detected"
   },
   "AwsTranscriptionEvents": {
     "Transcription": "aws_transcribe::transcription",
@@ -126,13 +130,15 @@
     "Transcription": "jambonz_transcribe::transcription",
     "ConnectFailure": "jambonz_transcribe::connect_failed",
     "Connect": "jambonz_transcribe::connect",
-    "Error": "jambonz_transcribe::error"
+    "Error": "jambonz_transcribe::error",
+    "VadDetected": "jambonz_transcribe::vad_detected"
   },
   "AssemblyAiTranscriptionEvents": {
     "Transcription": "assemblyai_transcribe::transcription",
     "Error": "assemblyai_transcribe::error",
     "ConnectFailure": "assemblyai_transcribe::connect_failed",
-    "Connect": "assemblyai_transcribe::connect"
+    "Connect": "assemblyai_transcribe::connect",
+    "VadDetected": "assemblyai_transcribe::vad_detected"
   },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",
