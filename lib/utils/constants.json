@@ -97,6 +97,10 @@
     "Transcription": "soniox_transcribe::transcription",
     "Error": "soniox_transcribe::error"
   },
+  "VerbioTranscriptionEvents": {
+    "Transcription": "verbio_transcribe::transcription",
+    "Error": "verbio_transcribe::error"
+  },
   "CobaltTranscriptionEvents": {
     "Transcription": "cobalt_speech::transcription",
     "CompileContext": "cobalt_speech::compile_context_response",
