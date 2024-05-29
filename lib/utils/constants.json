@@ -134,6 +134,9 @@
     "ConnectFailure": "assemblyai_transcribe::connect_failed",
     "Connect": "assemblyai_transcribe::connect"
   },
+  "VadDetection": {
+    "Detection": "vad_detect:detection"
+  },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",
     "ConnectFailure": "mod_audio_fork::connect_failed",
