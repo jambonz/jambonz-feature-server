@@ -34,7 +34,7 @@
     "@jambonz/speech-utils": "^0.1.3",
     "@jambonz/stats-collector": "^0.1.10",
     "@jambonz/time-series": "^0.2.8",
-    "@jambonz/verb-specifications": "^0.0.69",
+    "@jambonz/verb-specifications": "^0.0.71",
     "@opentelemetry/api": "^1.8.0",
     "@opentelemetry/exporter-jaeger": "^1.23.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.50.0",
