@@ -21,6 +21,7 @@ Configuration is provided via environment variables:
 |ENCRYPTION_SECRET| secret for credential encryption(JWT_SECRET is deprecated) |yes|
 |GOOGLE_APPLICATION_CREDENTIALS| path to gcp service key file|yes|
 |HTTP_PORT| tcp port to listen on for API requests from jambonz-api-server|yes|
+|HTTP_IP| IP Address for API requests from jambonz-api-server |no|
 |JAMBONES_GATHER_EARLY_HINTS_MATCH| if true and hints are provided, gather will opportunistically review interim transcripts if possible to reduce ASR latency |no|
 |JAMBONES_FREESWITCH| IP:port:secret for Freeswitch server (e.g. '127.0.0.1:8021:JambonzR0ck$'|yes|
 |JAMBONES_LOGLEVEL| log level for application, 'info' or 'debug'|no|
