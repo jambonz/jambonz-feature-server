@@ -47,7 +47,7 @@
     "bent": "^7.3.12",
     "debug": "^4.3.4",
     "deepcopy": "^2.1.0",
-    "drachtio-fsmrf": "^3.0.43",
+    "drachtio-fsmrf": "^3.0.45",
     "drachtio-srf": "^4.5.35",
     "express": "^4.19.2",
     "express-validator": "^7.0.1",
@@ -61,10 +61,10 @@
     "short-uuid": "^5.1.0",
     "sinon": "^17.0.1",
     "to-snake-case": "^1.0.0",
-    "undici": "^6.19.2",
+    "undici": "^6.19.4",
     "uuid-random": "^1.3.2",
     "verify-aws-sns-signature": "^0.1.0",
-    "ws": "^8.17.1",
+    "ws": "^8.18.0",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
