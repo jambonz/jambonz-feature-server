@@ -14,6 +14,7 @@
     "Leave": "leave",
     "Lex": "lex",
     "Listen": "listen",
+    "Llm": "llm",
     "Message": "message",
     "Pause": "pause",
     "Play": "play",
@@ -165,6 +166,13 @@
     "ScaleIn": "scale-in",
     "StandbyEnter": "standby-enter",
     "StandbyExit": "standby-exit"
+  },
+  "LlmEvents_OpenAI": {
+    "Error": "error",
+    "Connect": "openai_s2s::connect",
+    "ConnectFailure": "openai_s2s::connect_failed",
+    "Disconnect": "openai_s2s::disconnect",
+    "ServerEvent": "openai_s2s::server_event"
   },
   "QueueResults": {
     "Bridged": "bridged",
