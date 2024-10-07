@@ -1,4 +1,5 @@
 /* SQLEditor (MySQL (2))*/
+
 SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS account_static_ips;
@@ -52,6 +53,8 @@ DROP TABLE IF EXISTS service_provider_limits;
 DROP TABLE IF EXISTS signup_history;
 
 DROP TABLE IF EXISTS smpp_addresses;
+
+DROP TABLE IF EXISTS google_custom_voices;
 
 DROP TABLE IF EXISTS speech_credentials;
 
@@ -136,6 +139,9 @@ account_sid CHAR(36) NOT NULL,
 is_active BOOLEAN NOT NULL DEFAULT 1,
 username VARCHAR(64),
 password VARCHAR(1024),
+allow_direct_app_calling BOOLEAN NOT NULL DEFAULT 1,
+allow_direct_queue_calling BOOLEAN NOT NULL DEFAULT 1,
+allow_direct_user_calling BOOLEAN NOT NULL DEFAULT 1,
 PRIMARY KEY (client_sid)
 );
 
@@ -338,11 +344,23 @@ label VARCHAR(64),
 PRIMARY KEY (speech_credential_sid)
 );
 
+CREATE TABLE google_custom_voices
+(
+google_custom_voice_sid CHAR(36) NOT NULL UNIQUE ,
+speech_credential_sid CHAR(36) NOT NULL,
+model VARCHAR(512) NOT NULL,
+reported_usage ENUM('REPORTED_USAGE_UNSPECIFIED','REALTIME','OFFLINE') DEFAULT 'REALTIME',
+name VARCHAR(64) NOT NULL,
+PRIMARY KEY (google_custom_voice_sid)
+);
+
 CREATE TABLE system_information
 (
 domain_name VARCHAR(255),
 sip_domain_name VARCHAR(255),
-monitoring_domain_name VARCHAR(255)
+monitoring_domain_name VARCHAR(255),
+private_network_cidr VARCHAR(8192),
+log_level ENUM('info', 'debug') NOT NULL DEFAULT 'info'
 );
 
 CREATE TABLE users
@@ -437,11 +455,14 @@ CREATE TABLE sip_gateways
 sip_gateway_sid CHAR(36),
 ipv4 VARCHAR(128) NOT NULL COMMENT 'ip address or DNS name of the gateway.  For gateways providing inbound calling service, ip address is required.',
 netmask INTEGER NOT NULL DEFAULT 32,
-port INTEGER NOT NULL DEFAULT 5060 COMMENT 'sip signaling port',
+port INTEGER COMMENT 'sip signaling port',
 inbound BOOLEAN NOT NULL COMMENT 'if true, whitelist this IP to allow inbound calls from the gateway',
 outbound BOOLEAN NOT NULL COMMENT 'if true, include in least-cost routing when placing calls to the PSTN',
 voip_carrier_sid CHAR(36) NOT NULL,
 is_active BOOLEAN NOT NULL DEFAULT 1,
+send_options_ping BOOLEAN NOT NULL DEFAULT 0,
+use_sips_scheme BOOLEAN NOT NULL DEFAULT 0,
+pad_crypto BOOLEAN NOT NULL DEFAULT 0,
 protocol ENUM('udp','tcp','tls', 'tls/srtp') DEFAULT 'udp' COMMENT 'Outbound call protocol',
 PRIMARY KEY (sip_gateway_sid)
 ) COMMENT='A whitelisted sip gateway used for origination/termination';
@@ -478,11 +499,19 @@ messaging_hook_sid CHAR(36) COMMENT 'webhook to call for inbound SMS/MMS ',
 app_json TEXT,
 speech_synthesis_vendor VARCHAR(64) NOT NULL DEFAULT 'google',
 speech_synthesis_language VARCHAR(12) NOT NULL DEFAULT 'en-US',
-speech_synthesis_voice VARCHAR(64),
+speech_synthesis_voice VARCHAR(256),
 speech_synthesis_label VARCHAR(64),
 speech_recognizer_vendor VARCHAR(64) NOT NULL DEFAULT 'google',
 speech_recognizer_language VARCHAR(64) NOT NULL DEFAULT 'en-US',
 speech_recognizer_label VARCHAR(64),
+use_for_fallback_speech BOOLEAN DEFAULT false,
+fallback_speech_synthesis_vendor VARCHAR(64),
+fallback_speech_synthesis_language VARCHAR(12),
+fallback_speech_synthesis_voice VARCHAR(256),
+fallback_speech_synthesis_label VARCHAR(64),
+fallback_speech_recognizer_vendor VARCHAR(64),
+fallback_speech_recognizer_language VARCHAR(64),
+fallback_speech_recognizer_label VARCHAR(64),
 created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 record_all_calls BOOLEAN NOT NULL DEFAULT false,
 PRIMARY KEY (application_sid)
@@ -525,6 +554,7 @@ siprec_hook_sid CHAR(36),
 record_all_calls BOOLEAN NOT NULL DEFAULT false,
 record_format VARCHAR(16) NOT NULL DEFAULT 'mp3',
 bucket_credential VARCHAR(8192) COMMENT 'credential used to authenticate with storage service',
+enable_debug_log BOOLEAN NOT NULL DEFAULT false,
 PRIMARY KEY (account_sid)
 ) COMMENT='An enterprise that uses the platform for comm services';
 
@@ -619,6 +649,10 @@ ALTER TABLE speech_credentials ADD FOREIGN KEY service_provider_sid_idxfk_5 (ser
 CREATE INDEX account_sid_idx ON speech_credentials (account_sid);
 ALTER TABLE speech_credentials ADD FOREIGN KEY account_sid_idxfk_8 (account_sid) REFERENCES accounts (account_sid);
 
+CREATE INDEX google_custom_voice_sid_idx ON google_custom_voices (google_custom_voice_sid);
+CREATE INDEX speech_credential_sid_idx ON google_custom_voices (speech_credential_sid);
+ALTER TABLE google_custom_voices ADD FOREIGN KEY speech_credential_sid_idxfk (speech_credential_sid) REFERENCES speech_credentials (speech_credential_sid) ON DELETE CASCADE;
+
 CREATE INDEX user_sid_idx ON users (user_sid);
 CREATE INDEX email_idx ON users (email);
 CREATE INDEX phone_idx ON users (phone);
@@ -704,4 +738,5 @@ ALTER TABLE accounts ADD FOREIGN KEY queue_event_hook_sid_idxfk (queue_event_hoo
 ALTER TABLE accounts ADD FOREIGN KEY device_calling_application_sid_idxfk (device_calling_application_sid) REFERENCES applications (application_sid);
 
 ALTER TABLE accounts ADD FOREIGN KEY siprec_hook_sid_idxfk (siprec_hook_sid) REFERENCES applications (application_sid);
+
 SET FOREIGN_KEY_CHECKS=1;
