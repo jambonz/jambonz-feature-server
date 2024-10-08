@@ -100,8 +100,13 @@ createHttpListener(logger, srf)
   });
 
 
-setInterval(() => {
+setInterval(async() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
+  // Checking system log level
+  const systemInformation = await srf.locals.dbHelpers.lookupSystemInformation();
+  if (systemInformation && systemInformation.log_level) {
+    logger.level = systemInformation.log_level;
+  }
 }, 20000);
 
 const disconnect = () => {
