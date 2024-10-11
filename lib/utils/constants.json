@@ -200,6 +200,8 @@
     "dial:confirm",
     "verb:hook",
     "verb:status",
+    "llm:event",
+    "llm:tool-call",
     "jambonz:error"
   ],
   "RecordState": {
