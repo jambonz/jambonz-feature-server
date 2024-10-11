@@ -126,6 +126,12 @@
     "NoSpeechDetected": "azure_transcribe::no_speech_detected",
     "VadDetected": "azure_transcribe::vad_detected"
   },
+  "SpeechmaticsTranscriptionEvents": {
+    "Transcription": "speechmatics_transcribe::transcription",
+    "ConnectFailure": "speechmatics_transcribe::connect_failed",
+    "Connect": "speechmatics_transcribe::connect",
+    "Error": "speechmatics_transcribe::error"
+  },
   "JambonzTranscriptionEvents": {
     "Transcription": "jambonz_transcribe::transcription",
     "ConnectFailure": "jambonz_transcribe::connect_failed",
