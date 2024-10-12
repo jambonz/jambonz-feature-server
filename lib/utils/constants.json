@@ -128,6 +128,8 @@
   },
   "SpeechmaticsTranscriptionEvents": {
     "Transcription": "speechmatics_transcribe::transcription",
+    "Info": "speechmatics_transcribe::info",
+    "RecognitionStarted": "speechmatics_transcribe::recognition_started",
     "ConnectFailure": "speechmatics_transcribe::connect_failed",
     "Connect": "speechmatics_transcribe::connect",
     "Error": "speechmatics_transcribe::error"
