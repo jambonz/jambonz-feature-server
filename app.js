@@ -29,6 +29,18 @@ const {LifeCycleEvents, FS_UUID_SET_NAME} = require('./lib/utils/constants');
 const installSrfLocals = require('./lib/utils/install-srf-locals');
 installSrfLocals(srf, logger);
 
+const writeSystemAlerts = srf.locals?.writeSystemAlerts;
+if (writeSystemAlerts) {
+  writeSystemAlerts({
+    'system_category': 'feature-server',
+    'fields' : {
+      'status': 'STARTED',
+      'detail': `feature-server with process_id ${process.pid} started`,
+      'host': srf.locals?.ipv4
+    }
+  });
+}
+
 const {
   initLocals,
   createRootSpan,
@@ -117,13 +129,25 @@ const disconnect = () => {
     srf.locals.mediaservers?.forEach((ms) => ms.disconnect());
   });
 };
-
 process.on('SIGTERM', handle);
+process.on('SIGINT', handle);
 
-function handle(signal) {
+async function handle(signal) {
   const {removeFromSet} = srf.locals.dbHelpers;
   srf.locals.disabled = true;
   logger.info(`got signal ${signal}`);
+  const writeSystemAlerts = srf.locals?.writeSystemAlerts;
+  if (writeSystemAlerts) {
+    // it has to be synchronous call, or else by the time system saves the app terminates
+    await writeSystemAlerts({
+      'system_category': 'feature-server',
+      'fields' : {
+        'status': 'STOPPED',
+        'detail': `feature-server with process_id ${process.pid} stopped, signal ${signal}`,
+        'host': srf.locals?.ipv4
+      }
+    });
+  }
   const setName = `${(JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
   const fsServiceUrlSetName = `${(JAMBONES_CLUSTER_ID || 'default')}:fs-service-url`;
   if (setName && srf.locals.localSipAddress) {
