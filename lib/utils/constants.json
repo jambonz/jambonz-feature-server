@@ -14,6 +14,7 @@
     "Leave": "leave",
     "Lex": "lex",
     "Listen": "listen",
+    "Llm": "llm",
     "Message": "message",
     "Pause": "pause",
     "Play": "play",
@@ -126,6 +127,14 @@
     "NoSpeechDetected": "azure_transcribe::no_speech_detected",
     "VadDetected": "azure_transcribe::vad_detected"
   },
+  "SpeechmaticsTranscriptionEvents": {
+    "Transcription": "speechmatics_transcribe::transcription",
+    "Info": "speechmatics_transcribe::info",
+    "RecognitionStarted": "speechmatics_transcribe::recognition_started",
+    "ConnectFailure": "speechmatics_transcribe::connect_failed",
+    "Connect": "speechmatics_transcribe::connect",
+    "Error": "speechmatics_transcribe::error"
+  },
   "JambonzTranscriptionEvents": {
     "Transcription": "jambonz_transcribe::transcription",
     "ConnectFailure": "jambonz_transcribe::connect_failed",
@@ -158,6 +167,13 @@
     "StandbyEnter": "standby-enter",
     "StandbyExit": "standby-exit"
   },
+  "LlmEvents_OpenAI": {
+    "Error": "error",
+    "Connect": "openai_s2s::connect",
+    "ConnectFailure": "openai_s2s::connect_failed",
+    "Disconnect": "openai_s2s::disconnect",
+    "ServerEvent": "openai_s2s::server_event"
+  },
   "QueueResults": {
     "Bridged": "bridged",
     "Error": "error",
@@ -184,6 +200,8 @@
     "dial:confirm",
     "verb:hook",
     "verb:status",
+    "llm:event",
+    "llm:tool-call",
     "jambonz:error"
   ],
   "RecordState": {
