@@ -25,18 +25,18 @@ const opts = {
 };
 const pino = require('pino');
 const logger = pino(opts, pino.destination({sync: false}));
-const {LifeCycleEvents, FS_UUID_SET_NAME, SystemStatusEvents, FEATURE_SERVER} = require('./lib/utils/constants');
+const {LifeCycleEvents, FS_UUID_SET_NAME, SystemState, FEATURE_SERVER} = require('./lib/utils/constants');
 const installSrfLocals = require('./lib/utils/install-srf-locals');
 installSrfLocals(srf, logger);
 
 const writeSystemAlerts = srf.locals?.writeSystemAlerts;
 if (writeSystemAlerts) {
   writeSystemAlerts({
-    'system_component': FEATURE_SERVER,
-    'state' : SystemStatusEvents.Online,
-    'fields' : {
-      'detail': `feature-server with process_id ${process.pid} started`,
-      'host': srf.locals?.ipv4
+    system_component: FEATURE_SERVER,
+    state : SystemState.Online,
+    fields : {
+      detail: `feature-server with process_id ${process.pid} started`,
+      host: srf.locals?.ipv4
     }
   });
 }
@@ -140,11 +140,11 @@ async function handle(signal) {
   if (writeSystemAlerts) {
     // it has to be synchronous call, or else by the time system saves the app terminates
     await writeSystemAlerts({
-      'system_component': FEATURE_SERVER,
-      'state' : SystemStatusEvents.Offline,
-      'fields' : {
-        'detail': `feature-server with process_id ${process.pid} stopped, signal ${signal}`,
-        'host': srf.locals?.ipv4
+      system_component: FEATURE_SERVER,
+      state : SystemState.Offline,
+      fields : {
+        detail: `feature-server with process_id ${process.pid} stopped, signal ${signal}`,
+        host: srf.locals?.ipv4
       }
     });
   }
