@@ -57,7 +57,7 @@ services:
         condition: service_healthy
 
   freeswitch:
-    image: drachtio/drachtio-freeswitch-mrf:latest
+    image: drachtio/drachtio-freeswitch-mrf:0.9.2-4
     restart: always
     command: freeswitch --rtp-range-start 20000 --rtp-range-end 20100
     environment:
