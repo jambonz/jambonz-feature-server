@@ -25,29 +25,38 @@ module.exports = (serviceName) => {
       }),
     });
 
-    let exporter;
+    let exporters = [];
+
     if (OTEL_EXPORTER_JAEGER_AGENT_HOST  || OTEL_EXPORTER_JAEGER_ENDPOINT) {
-      exporter = new JaegerExporter();
-    }
-    else if (OTEL_EXPORTER_ZIPKIN_URL) {
-      exporter = new ZipkinExporter({url:OTEL_EXPORTER_ZIPKIN_URL});
-    }
-    else {
-      exporter = new OTLPTraceExporter({
-        url: OTEL_EXPORTER_COLLECTOR_URL
-      });
+      exporters.push(new JaegerExporter());
     }
 
-    provider.addSpanProcessor(new BatchSpanProcessor(exporter, {
-      // The maximum queue size. After the size is reached spans are dropped.
-      maxQueueSize: 100,
-      // The maximum batch size of every export. It must be smaller or equal to maxQueueSize.
-      maxExportBatchSize: 10,
-      // The interval between two consecutive exports
-      scheduledDelayMillis: 500,
-      // How long the export can run before it is cancelled
-      exportTimeoutMillis: 30000,
-    }));
+    if (OTEL_EXPORTER_ZIPKIN_URL) {
+      exporters.push(new ZipkinExporter({url:OTEL_EXPORTER_ZIPKIN_URL}));
+    }
+
+    if (OTEL_EXPORTER_ZIPKIN_URL) {
+      exporters.push(new ZipkinExporter({url:OTEL_EXPORTER_ZIPKIN_URL}));
+    }
+
+    if (OTEL_EXPORTER_COLLECTOR_URL) {
+      exporters.push(new OTLPTraceExporter({
+        url: OTEL_EXPORTER_COLLECTOR_URL
+      }));
+    }
+
+    exporters.forEach(element => {
+      provider.addSpanProcessor(new BatchSpanProcessor(element, {
+        // The maximum queue size. After the size is reached spans are dropped.
+        maxQueueSize: 100,
+        // The maximum batch size of every export. It must be smaller or equal to maxQueueSize.
+        maxExportBatchSize: 10,
+        // The interval between two consecutive exports
+        scheduledDelayMillis: 500,
+        // How long the export can run before it is cancelled
+        exportTimeoutMillis: 30000,
+      }));
+    });
 
     // Initialize the OpenTelemetry APIs to use the NodeTracerProvider bindings
     provider.register();
