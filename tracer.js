@@ -25,7 +25,7 @@ module.exports = (serviceName) => {
       }),
     });
 
-    let exporters = [];
+    const exporters = [];
 
     if (OTEL_EXPORTER_JAEGER_AGENT_HOST  || OTEL_EXPORTER_JAEGER_ENDPOINT) {
       exporters.push(new JaegerExporter());
@@ -45,7 +45,7 @@ module.exports = (serviceName) => {
       }));
     }
 
-    exporters.forEach(element => {
+    exporters.forEach((element) => {
       provider.addSpanProcessor(new BatchSpanProcessor(element, {
         // The maximum queue size. After the size is reached spans are dropped.
         maxQueueSize: 100,
