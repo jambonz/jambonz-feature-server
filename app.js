@@ -108,8 +108,9 @@ const monInterval = setInterval(async() => {
       logger.level = systemInformation.log_level;
     }
   } catch (err) {
-    if (err.code === 'ER_NO_SUCH_TABLE' && process.env.NODE_ENV === 'test') {
+    if (process.env.NODE_ENV === 'test') {
       clearInterval(monInterval);
+      logger.error('all tests complete');
     }
     else logger.error({err}, 'Error checking system log level in database');
   }
