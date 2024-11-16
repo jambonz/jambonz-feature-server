@@ -100,7 +100,7 @@ createHttpListener(logger, srf)
   });
 
 
-setInterval(async() => {
+const monInterval = setInterval(async() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
   // Checking system log level
   const systemInformation = await srf.locals.dbHelpers.lookupSystemInformation();
@@ -124,6 +124,7 @@ function handle(signal) {
   const {removeFromSet} = srf.locals.dbHelpers;
   srf.locals.disabled = true;
   logger.info(`got signal ${signal}`);
+  clearInterval(monInterval);
   const setName = `${(JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
   const fsServiceUrlSetName = `${(JAMBONES_CLUSTER_ID || 'default')}:fs-service-url`;
   if (setName && srf.locals.localSipAddress) {
