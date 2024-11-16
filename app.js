@@ -89,6 +89,7 @@ const healthCheck = require('@jambonz/http-health-check');
 let httpServer;
 
 const createHttpListener = require('./lib/utils/http-listener');
+const { clearInterval } = require('sinon/pkg/sinon.js');
 createHttpListener(logger, srf)
   .then(({server, app}) => {
     httpServer = server;
@@ -108,7 +109,10 @@ const monInterval = setInterval(async() => {
       logger.level = systemInformation.log_level;
     }
   } catch (err) {
-    logger.error({err}, 'Error checking system log level in database');
+    if (err.code !== 'ER_NO_SUCH_TABLE' && process.env.NODE_ENV === 'test') {
+      clearInterval(monInterval);
+    }
+    else logger.error({err}, 'Error checking system log level in database');
   }
 }, 20000);
 
@@ -126,8 +130,7 @@ process.on('SIGTERM', handle);
 function handle(signal) {
   const {removeFromSet} = srf.locals.dbHelpers;
   srf.locals.disabled = true;
-  logger.error(`got signal ${signal}`);
-  clearInterval(monInterval);
+  logger.info(`got signal ${signal}`);
   const setName = `${(JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
   const fsServiceUrlSetName = `${(JAMBONES_CLUSTER_ID || 'default')}:fs-service-url`;
   if (setName && srf.locals.localSipAddress) {
