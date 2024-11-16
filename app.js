@@ -89,7 +89,6 @@ const healthCheck = require('@jambonz/http-health-check');
 let httpServer;
 
 const createHttpListener = require('./lib/utils/http-listener');
-const { clearInterval } = require('sinon/pkg/sinon.js');
 createHttpListener(logger, srf)
   .then(({server, app}) => {
     httpServer = server;
