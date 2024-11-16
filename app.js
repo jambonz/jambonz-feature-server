@@ -102,10 +102,13 @@ createHttpListener(logger, srf)
 
 const monInterval = setInterval(async() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
-  // Checking system log level
-  const systemInformation = await srf.locals.dbHelpers.lookupSystemInformation();
-  if (systemInformation && systemInformation.log_level) {
-    logger.level = systemInformation.log_level;
+  try {
+    const systemInformation = await srf.locals.dbHelpers.lookupSystemInformation();
+    if (systemInformation && systemInformation.log_level) {
+      logger.level = systemInformation.log_level;
+    }
+  } catch (err) {
+    logger.error({err}, 'Error checking system log level in database');
   }
 }, 20000);
 
@@ -123,7 +126,7 @@ process.on('SIGTERM', handle);
 function handle(signal) {
   const {removeFromSet} = srf.locals.dbHelpers;
   srf.locals.disabled = true;
-  logger.info(`got signal ${signal}`);
+  logger.error(`got signal ${signal}`);
   clearInterval(monInterval);
   const setName = `${(JAMBONES_CLUSTER_ID || 'default')}:active-fs`;
   const fsServiceUrlSetName = `${(JAMBONES_CLUSTER_ID || 'default')}:fs-service-url`;
