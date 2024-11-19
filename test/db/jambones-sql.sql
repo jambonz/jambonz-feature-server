@@ -351,6 +351,8 @@ speech_credential_sid CHAR(36) NOT NULL,
 model VARCHAR(512) NOT NULL,
 reported_usage ENUM('REPORTED_USAGE_UNSPECIFIED','REALTIME','OFFLINE') DEFAULT 'REALTIME',
 name VARCHAR(64) NOT NULL,
+voice_cloning_key MEDIUMTEXT,
+use_voice_cloning_key BOOLEAN DEFAULT false,
 PRIMARY KEY (google_custom_voice_sid)
 );
 
