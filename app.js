@@ -112,12 +112,19 @@ createHttpListener(logger, srf)
   });
 
 
-setInterval(async() => {
+const monInterval = setInterval(async() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
-  // Checking system log level
-  const systemInformation = await srf.locals.dbHelpers.lookupSystemInformation();
-  if (systemInformation && systemInformation.log_level) {
-    logger.level = systemInformation.log_level;
+  try {
+    const systemInformation = await srf.locals.dbHelpers.lookupSystemInformation();
+    if (systemInformation && systemInformation.log_level) {
+      logger.level = systemInformation.log_level;
+    }
+  } catch (err) {
+    if (process.env.NODE_ENV === 'test') {
+      clearInterval(monInterval);
+      logger.error('all tests complete');
+    }
+    else logger.error({err}, 'Error checking system log level in database');
   }
 }, 20000);
 

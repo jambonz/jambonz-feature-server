@@ -129,6 +129,7 @@
   },
   "SpeechmaticsTranscriptionEvents": {
     "Transcription": "speechmatics_transcribe::transcription",
+    "Translation": "speechmatics_transcribe::translation",
     "Info": "speechmatics_transcribe::info",
     "RecognitionStarted": "speechmatics_transcribe::recognition_started",
     "ConnectFailure": "speechmatics_transcribe::connect_failed",
@@ -219,6 +220,11 @@
     "ToneDetected": "amd_tone_detected",
     "ToneTimeout": "amd_tone_timeout",
     "Stopped": "amd_stopped"
+  },
+  "MediaPath": {
+    "NoMedia": "no-media",
+    "PartialMedia": "partial-media",
+    "FullMedia": "full-media"
   },
   "MAX_SIMRINGS": 10,
   "BONG_TONE": "tone_stream://v=-7;%(100,0,941.0,1477.0);v=-7;>=2;+=.1;%(1400,0,350,440)",
