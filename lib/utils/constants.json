@@ -228,5 +228,11 @@
   },
   "MAX_SIMRINGS": 10,
   "BONG_TONE": "tone_stream://v=-7;%(100,0,941.0,1477.0);v=-7;>=2;+=.1;%(1400,0,350,440)",
-  "FS_UUID_SET_NAME": "fsUUIDs"
+  "FS_UUID_SET_NAME": "fsUUIDs",
+  "SystemState" : {
+    "Online": "ONLINE",
+    "Offline": "OFFLINE",
+    "GracefulShutdownInProgress":"SHUTDOWN_IN_PROGRESS"
+  },
+  "FEATURE_SERVER" : "feature-server"
 }
