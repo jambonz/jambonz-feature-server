@@ -239,6 +239,15 @@
     "Resume": "tts_streaming::resume",
     "ConnectFailure": "tts_streaming::connect_failed"
   },
+  "DeepgramTtsStreamingEvents": {
+    "Empty": "deepgram_tts_streaming::empty",
+    "ConnectFailure": "dedeepgram_tts_streaming::connect_failed",
+    "Connect": "deepgram_tts_streaming::connect"
+  },
+  "TtsStreamingEvents": {
+    "Empty": "tts_streaming::empty",
+    "ConnectFailure": "tts_streaming::connect_failed"
+  },
   "MAX_SIMRINGS": 10,
   "BONG_TONE": "tone_stream://v=-7;%(100,0,941.0,1477.0);v=-7;>=2;+=.1;%(1400,0,350,440)",
   "FS_UUID_SET_NAME": "fsUUIDs",
