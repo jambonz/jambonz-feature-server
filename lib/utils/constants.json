@@ -203,6 +203,8 @@
     "verb:status",
     "llm:event",
     "llm:tool-call",
+    "tts:tokens-result",
+    "tts:streaming-event",
     "jambonz:error"
   ],
   "RecordState": {
@@ -225,6 +227,17 @@
     "NoMedia": "no-media",
     "PartialMedia": "partial-media",
     "FullMedia": "full-media"
+  },
+  "DeepgramTtsStreamingEvents": {
+    "Empty": "deepgram_tts_streaming::empty",
+    "ConnectFailure": "dedeepgram_tts_streaming::connect_failed",
+    "Connect": "deepgram_tts_streaming::connect"
+  },
+  "TtsStreamingEvents": {
+    "Empty": "tts_streaming::empty",
+    "Pause": "tts_streaming::pause",
+    "Resume": "tts_streaming::resume",
+    "ConnectFailure": "tts_streaming::connect_failed"
   },
   "DeepgramTtsStreamingEvents": {
     "Empty": "deepgram_tts_streaming::empty",
