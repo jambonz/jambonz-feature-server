@@ -189,7 +189,8 @@
   },
   "KillReason": {
     "Hangup": "hangup",
-    "Replaced": "replaced"
+    "Replaced": "replaced",
+    "MediaTimeout": "media_timeout"
   },
   "HookMsgTypes": [
     "session:new",
