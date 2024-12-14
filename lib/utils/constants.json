@@ -237,8 +237,18 @@
   },
   "DeepgramTtsStreamingEvents": {
     "Empty": "deepgram_tts_streaming::empty",
-    "ConnectFailure": "dedeepgram_tts_streaming::connect_failed",
+    "ConnectFailure": "deepgram_tts_streaming::connect_failed",
     "Connect": "deepgram_tts_streaming::connect"
+  },
+  "CartesiaTtsStreamingEvents": {
+    "Empty": "cartesia_tts_streaming::empty",
+    "ConnectFailure": "cartesia_tts_streaming::connect_failed",
+    "Connect": "cartesia_tts_streaming::connect"
+  },
+  "ElevenlabsTtsStreamingEvents": {
+    "Empty": "elevenlabs_tts_streaming::empty",
+    "ConnectFailure": "elevenlabs_tts_streaming::connect_failed",
+    "Connect": "elevenlabs_tts_streaming::connect"
   },
   "TtsStreamingEvents": {
     "Empty": "tts_streaming::empty",
