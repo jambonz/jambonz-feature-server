@@ -210,6 +210,8 @@
     "verb:status",
     "llm:event",
     "llm:tool-call",
+    "tts:tokens-result",
+    "tts:streaming-event",
     "jambonz:error"
   ],
   "RecordState": {
@@ -232,6 +234,33 @@
     "NoMedia": "no-media",
     "PartialMedia": "partial-media",
     "FullMedia": "full-media"
+  },
+  "DeepgramTtsStreamingEvents": {
+    "Empty": "deepgram_tts_streaming::empty",
+    "ConnectFailure": "deepgram_tts_streaming::connect_failed",
+    "Connect": "deepgram_tts_streaming::connect"
+  },
+  "CartesiaTtsStreamingEvents": {
+    "Empty": "cartesia_tts_streaming::empty",
+    "ConnectFailure": "cartesia_tts_streaming::connect_failed",
+    "Connect": "cartesia_tts_streaming::connect"
+  },
+  "ElevenlabsTtsStreamingEvents": {
+    "Empty": "elevenlabs_tts_streaming::empty",
+    "ConnectFailure": "elevenlabs_tts_streaming::connect_failed",
+    "Connect": "elevenlabs_tts_streaming::connect"
+  },
+  "TtsStreamingEvents": {
+    "Empty": "tts_streaming::empty",
+    "Pause": "tts_streaming::pause",
+    "Resume": "tts_streaming::resume",
+    "ConnectFailure": "tts_streaming::connect_failed"
+  },
+  "TtsStreamingConnectionStatus": {
+    "NotConnected": "not_connected",
+    "Connected": "connected",
+    "Connecting": "connecting",
+    "Failed": "failed"
   },
   "MAX_SIMRINGS": 10,
   "BONG_TONE": "tone_stream://v=-7;%(100,0,941.0,1477.0);v=-7;>=2;+=.1;%(1400,0,350,440)",
