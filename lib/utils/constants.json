@@ -251,6 +251,11 @@
     "ConnectFailure": "elevenlabs_tts_streaming::connect_failed",
     "Connect": "elevenlabs_tts_streaming::connect"
   },
+  "CustomTtsStreamingEvents": {
+    "Empty": "custom_tts_streaming::empty",
+    "ConnectFailure": "custom_tts_streaming::connect_failed",
+    "Connect": "custom_tts_streaming::connect"
+  },
   "TtsStreamingEvents": {
     "Empty": "tts_streaming::empty",
     "Pause": "tts_streaming::pause",
