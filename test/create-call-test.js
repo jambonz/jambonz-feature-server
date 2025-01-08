@@ -222,3 +222,62 @@ test('test create-call app_json', async(t) => {
     t.error(err);
   }
 });
+
+test('test create-call timeLimit', async(t) => {
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+
+
+    // GIVEN
+    let from = 'create-call-app-json';
+    let account_sid = 'bb845d4b-83a9-4cde-a6e9-50f3743bab3f';
+
+    // Give UAS app time to come up
+    const p = sippUac('uas.xml', '172.38.0.10', from);
+    await waitFor(1000);
+
+    const startTime = Date.now();
+
+    const app_json = `[
+      {
+        "verb": "pause",
+        "length": 7
+      }
+    ]`;
+
+    const post = bent('http://127.0.0.1:3000/', 'POST', 'json', 201);
+    post('v1/createCall', {
+      'account_sid':account_sid,
+      "call_hook": {
+        "url": "http://127.0.0.1:3100/",
+        "method": "POST",
+        "username": "username",
+        "password": "password"
+      },
+      app_json,
+      "from": from,
+      "to": {
+        "type": "phone",
+        "number": "15583084809"
+      },
+      "timeLimit": 1,
+      "speech_recognizer_vendor": "google",
+      "speech_recognizer_language": "en"
+    });
+
+    //THEN
+    await p;
+    const endTime = Date.now();
+
+    t.ok(endTime - startTime < 2000, 'create-call: timeLimit is respected');
+
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
