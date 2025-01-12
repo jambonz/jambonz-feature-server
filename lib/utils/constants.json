@@ -182,6 +182,13 @@
     "Disconnect": "voice_agent_s2s::disconnect",
     "ServerEvent": "voice_agent_s2s::server_event"
   },
+  "LlmEvents_Ultravox": {
+    "Error": "error",
+    "Connect": "ultravox_s2s::connect",
+    "ConnectFailure": "ultravox_s2s::connect_failed",
+    "Disconnect": "ultravox_s2s::disconnect",
+    "ServerEvent": "ultravox_s2s::server_event"
+  },
   "QueueResults": {
     "Bridged": "bridged",
     "Error": "error",
