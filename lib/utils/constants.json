@@ -28,6 +28,7 @@
     "SipRedirect": "sip:redirect",
     "Say": "say",
     "SayLegacy": "say:legacy",
+    "Stream": "stream",
     "Tag": "tag",
     "Transcribe": "transcribe"
   },
