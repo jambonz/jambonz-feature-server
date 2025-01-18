@@ -28,6 +28,7 @@
     "SipRedirect": "sip:redirect",
     "Say": "say",
     "SayLegacy": "say:legacy",
+    "Stream": "stream",
     "Tag": "tag",
     "Transcribe": "transcribe"
   },
@@ -288,5 +289,9 @@
     "Offline": "OFFLINE",
     "GracefulShutdownInProgress":"SHUTDOWN_IN_PROGRESS"
   },
-  "FEATURE_SERVER" : "feature-server"
+  "FEATURE_SERVER" : "feature-server",
+  "WS_CLOSE_CODES": {
+    "NormalClosure": 1000,
+    "GoingAway": 1001
+  }
 }
