@@ -176,6 +176,13 @@
     "Disconnect": "openai_s2s::disconnect",
     "ServerEvent": "openai_s2s::server_event"
   },
+  "LlmEvents_Elevenlabs": {
+    "Error": "error",
+    "Connect": "elevenlabs_s2s::connect",
+    "ConnectFailure": "elevenlabs_s2s::connect_failed",
+    "Disconnect": "elevenlabs_s2s::disconnect",
+    "ServerEvent": "elevenlabs_s2s::server_event"
+  },
   "LlmEvents_VoiceAgent": {
     "Error": "error",
     "Connect": "voice_agent_s2s::connect",
