@@ -149,6 +149,12 @@
     "ConnectFailure": "assemblyai_transcribe::connect_failed",
     "Connect": "assemblyai_transcribe::connect"
   },
+  "VoxistTranscriptionEvents": {
+    "Transcription": "voxist_transcribe::transcription",
+    "Error": "voxist_transcribe::error",
+    "ConnectFailure": "voxist_transcribe::connect_failed",
+    "Connect": "voxist_transcribe::connect"
+  },
   "VadDetection": {
     "Detection": "vad_detect:detection"
   },
