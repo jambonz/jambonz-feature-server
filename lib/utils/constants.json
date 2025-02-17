@@ -203,6 +203,13 @@
     "Disconnect": "ultravox_s2s::disconnect",
     "ServerEvent": "ultravox_s2s::server_event"
   },
+  "LlmEvents_Playht": {
+    "Error": "error",
+    "Connect": "playht_s2s::connect",
+    "ConnectFailure": "playht_s2s::connect_failed",
+    "Disconnect": "playht_s2s::disconnect",
+    "ServerEvent": "playht_s2s::server_event"
+  },
   "QueueResults": {
     "Bridged": "bridged",
     "Error": "error",
