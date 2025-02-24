@@ -13,7 +13,7 @@ Configuration is provided via environment variables:
 |AWS_ACCESS_KEY_ID| aws access key id, used for TTS/STT as well SNS notifications|no|
 |AWS_REGION| aws region| no|
 |AWS_SECRET_ACCESS_KEY| aws secret access key, used per above|no|
-|AWS_SNS_TOPIC_ARM| aws sns topic arn that scale-in lifecycle notifications will be published to|no|
+|AWS_SNS_TOPIC_ARN| aws sns topic arn that scale-in lifecycle notifications will be published to|no|
 |DRACHTIO_HOST| ip address of drachtio server (typically '127.0.0.1')|yes|
 |DRACHTIO_PORT| listening port of drachtio server for control connections (typically 9022)|yes|
 |DRACHTIO_SECRET| shared secret|yes|
@@ -72,7 +72,7 @@ module.exports = {
       STATS_PORT: 8125,
       STATS_PROTOCOL: 'tcp',
       STATS_TELEGRAF: 1,
-      AWS_SNS_TOPIC_ARM: 'arn:aws:sns:us-west-1:xxxxxxxxxxx:terraform-20201107200347128600000002',
+      AWS_SNS_TOPIC_ARN: 'arn:aws:sns:us-west-1:xxxxxxxxxxx:terraform-20201107200347128600000002',
       JAMBONES_NETWORK_CIDR: '172.31.0.0/16',
       JAMBONES_MYSQL_HOST: 'aurora-cluster-jambonz.cluster-yyyyyyyyyyy.us-west-1.rds.amazonaws.com',
       JAMBONES_MYSQL_USER: 'admin',
