@@ -149,6 +149,12 @@
     "ConnectFailure": "assemblyai_transcribe::connect_failed",
     "Connect": "assemblyai_transcribe::connect"
   },
+  "VoxistTranscriptionEvents": {
+    "Transcription": "voxist_transcribe::transcription",
+    "Error": "voxist_transcribe::error",
+    "ConnectFailure": "voxist_transcribe::connect_failed",
+    "Connect": "voxist_transcribe::connect"
+  },
   "VadDetection": {
     "Detection": "vad_detect:detection"
   },
@@ -175,6 +181,13 @@
     "ConnectFailure": "openai_s2s::connect_failed",
     "Disconnect": "openai_s2s::disconnect",
     "ServerEvent": "openai_s2s::server_event"
+  },
+  "LlmEvents_Elevenlabs": {
+    "Error": "error",
+    "Connect": "elevenlabs_s2s::connect",
+    "ConnectFailure": "elevenlabs_s2s::connect_failed",
+    "Disconnect": "elevenlabs_s2s::disconnect",
+    "ServerEvent": "elevenlabs_s2s::server_event"
   },
   "LlmEvents_VoiceAgent": {
     "Error": "error",
