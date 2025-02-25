@@ -3,9 +3,8 @@ const { sippUac } = require('./sipp')('test_fs');
 const clearModule = require('clear-module');
 const {provisionCallHook, provisionCustomHook, provisionActionHook} = require('./utils')
 const bent = require('bent');
+const { sleepFor } = require('../lib/utils/jambonz');
 const getJSON = bent('json')
-
-const sleepFor = async(ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
