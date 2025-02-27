@@ -4,7 +4,7 @@ const bent = require('bent');
 const getJSON = bent('json')
 const clearModule = require('clear-module');
 const {provisionCallHook} = require('./utils');
-const { sleepFor } = require('../lib/utils/jambonz');
+const { sleepFor } = require('../lib/utils/helpers');
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);

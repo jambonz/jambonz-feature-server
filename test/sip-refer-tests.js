@@ -3,7 +3,7 @@ const { sippUac } = require('./sipp')('test_fs');
 const clearModule = require('clear-module');
 const {provisionCallHook, provisionCustomHook, provisionActionHook} = require('./utils')
 const bent = require('bent');
-const { sleepFor } = require('../lib/utils/jambonz');
+const { sleepFor } = require('../lib/utils/helpers');
 const getJSON = bent('json')
 
 process.on('unhandledRejection', (reason, p) => {
