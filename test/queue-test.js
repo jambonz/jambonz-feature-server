@@ -3,6 +3,7 @@ const { sippUac } = require('./sipp')('test_fs');
 const clearModule = require('clear-module');
 const {provisionCallHook, provisionActionHook, provisionAnyHook} = require('./utils');
 const bent = require('bent');
+const { sleepFor } = require('../lib/utils/helpers');
 const getJSON = bent('json');
 
 process.on('unhandledRejection', (reason, p) => {
@@ -16,8 +17,6 @@ function connect(connectable) {
     });
   });
 }
-
-const sleepFor = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 test('\'enqueue-dequeue\' tests', async(t) => {
 
