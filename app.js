@@ -27,8 +27,42 @@ const pino = require('pino');
 const logger = pino(opts, pino.destination({sync: false}));
 const {LifeCycleEvents, FS_UUID_SET_NAME, SystemState, FEATURE_SERVER} = require('./lib/utils/constants');
 const installSrfLocals = require('./lib/utils/install-srf-locals');
-installSrfLocals(srf, logger);
 
+// Install the srf locals
+installSrfLocals(srf, logger, {
+  onFreeswitchConnect: (wraper) => {
+    // Only connect to drachtio if freeswitch is connected
+    logger.info(`connected to freeswitch at ${wraper.ms.address}, start drachtio server`);
+    if (DRACHTIO_HOST) {
+      srf.connect({host: DRACHTIO_HOST, port: DRACHTIO_PORT, secret: DRACHTIO_SECRET });
+      srf.on('connect', (err, hp) => {
+        const arr = /^(.*)\/(.*)$/.exec(hp.split(',').pop());
+        srf.locals.localSipAddress = `${arr[2]}`;
+        logger.info(`connected to drachtio listening on ${hp}, local sip address is ${srf.locals.localSipAddress}`);
+      });
+    }
+    else {
+      logger.info(`listening for drachtio requests on port ${DRACHTIO_PORT}`);
+      srf.listen({port: DRACHTIO_PORT, secret: DRACHTIO_SECRET});
+    }
+  },
+  onFreeswitchDisconnect: (wraper) => {
+    // check if all freeswitch connections are lost, disconnect drachtio server
+    logger.info(`lost connection to freeswitch at ${wraper.ms.address}`);
+    const ms = srf.locals.getFreeswitch();
+    if (!ms) {
+      logger.info('no freeswitch connections, stopping drachtio server');
+      disconnect();
+    }
+  }
+});
+if (NODE_ENV === 'test') {
+  srf.on('error', (err) => {
+    logger.info(err, 'Error connecting to drachtio');
+  });
+}
+
+// Init services
 const writeSystemAlerts = srf.locals?.writeSystemAlerts;
 if (writeSystemAlerts) {
   writeSystemAlerts({
@@ -53,24 +87,6 @@ const {
 
 const InboundCallSession = require('./lib/session/inbound-call-session');
 const SipRecCallSession = require('./lib/session/siprec-call-session');
-
-if (DRACHTIO_HOST) {
-  srf.connect({host: DRACHTIO_HOST, port: DRACHTIO_PORT, secret: DRACHTIO_SECRET });
-  srf.on('connect', (err, hp) => {
-    const arr = /^(.*)\/(.*)$/.exec(hp.split(',').pop());
-    srf.locals.localSipAddress = `${arr[2]}`;
-    logger.info(`connected to drachtio listening on ${hp}, local sip address is ${srf.locals.localSipAddress}`);
-  });
-}
-else {
-  logger.info(`listening for drachtio requests on port ${DRACHTIO_PORT}`);
-  srf.listen({port: DRACHTIO_PORT, secret: DRACHTIO_SECRET});
-}
-if (NODE_ENV === 'test') {
-  srf.on('error', (err) => {
-    logger.info(err, 'Error connecting to drachtio');
-  });
-}
 
 srf.use('invite', [
   initLocals,
@@ -133,6 +149,7 @@ const disconnect = () => {
     httpServer?.on('close', resolve);
     httpServer?.close();
     srf.disconnect();
+    srf.removeAllListeners();
     srf.locals.mediaservers?.forEach((ms) => ms.disconnect());
   });
 };
