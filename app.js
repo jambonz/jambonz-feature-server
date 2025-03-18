@@ -27,6 +27,8 @@ const pino = require('pino');
 const logger = pino(opts, pino.destination({sync: false}));
 const {LifeCycleEvents, FS_UUID_SET_NAME, SystemState, FEATURE_SERVER} = require('./lib/utils/constants');
 const installSrfLocals = require('./lib/utils/install-srf-locals');
+const createHttpListener = require('./lib/utils/http-listener');
+const healthCheck = require('@jambonz/http-health-check');
 
 // Install the srf locals
 installSrfLocals(srf, logger, {
@@ -45,6 +47,16 @@ installSrfLocals(srf, logger, {
       logger.info(`listening for drachtio requests on port ${DRACHTIO_PORT}`);
       srf.listen({port: DRACHTIO_PORT, secret: DRACHTIO_SECRET});
     }
+    // Start Http server
+    createHttpListener(logger, srf)
+      .then(({server, app}) => {
+        httpServer = server;
+        healthCheck({app, logger, path: '/', fn: getCount});
+        return {server, app};
+      })
+      .catch((err) => {
+        logger.error(err, 'Error creating http listener');
+      });
   },
   onFreeswitchDisconnect: (wraper) => {
     // check if all freeswitch connections are lost, disconnect drachtio server
@@ -113,20 +125,8 @@ sessionTracker.on('idle', () => {
   }
 });
 const getCount = () => sessionTracker.count;
-const healthCheck = require('@jambonz/http-health-check');
+
 let httpServer;
-
-const createHttpListener = require('./lib/utils/http-listener');
-createHttpListener(logger, srf)
-  .then(({server, app}) => {
-    httpServer = server;
-    healthCheck({app, logger, path: '/', fn: getCount});
-    return {server, app};
-  })
-  .catch((err) => {
-    logger.error(err, 'Error creating http listener');
-  });
-
 
 const monInterval = setInterval(async() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
