@@ -142,6 +142,7 @@
     "Translation": "openai_transcribe::translation",
     "SpeechStarted": "openai_transcribe::speech_started",
     "SpeechStopped": "openai_transcribe::speech_stopped",
+    "PartialTranscript": "openai_transcribe::partial_transcript",
     "Info": "openai_transcribe::info",
     "RecognitionStarted": "openai_transcribe::recognition_started",
     "ConnectFailure": "openai_transcribe::connect_failed",
