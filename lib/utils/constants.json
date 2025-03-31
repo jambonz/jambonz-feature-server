@@ -137,6 +137,18 @@
     "Connect": "speechmatics_transcribe::connect",
     "Error": "speechmatics_transcribe::error"
   },
+  "OpenAITranscriptionEvents": {
+    "Transcription": "openai_transcribe::transcription",
+    "Translation": "openai_transcribe::translation",
+    "SpeechStarted": "openai_transcribe::speech_started",
+    "SpeechStopped": "openai_transcribe::speech_stopped",
+    "PartialTranscript": "openai_transcribe::partial_transcript",
+    "Info": "openai_transcribe::info",
+    "RecognitionStarted": "openai_transcribe::recognition_started",
+    "ConnectFailure": "openai_transcribe::connect_failed",
+    "Connect": "openai_transcribe::connect",
+    "Error": "openai_transcribe::error"
+  },
   "JambonzTranscriptionEvents": {
     "Transcription": "jambonz_transcribe::transcription",
     "ConnectFailure": "jambonz_transcribe::connect_failed",
