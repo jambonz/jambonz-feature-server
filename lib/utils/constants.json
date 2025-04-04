@@ -32,7 +32,7 @@
     "Tag": "tag",
     "Transcribe": "transcribe"
   },
-  "AllowedSipRecVerbs": ["answer", "config", "gather", "transcribe", "listen", "tag"],
+  "AllowedSipRecVerbs": ["answer", "config", "gather", "transcribe", "listen", "tag", "hangup", "sip:decline"],
   "AllowedConfirmSessionVerbs": ["config", "gather", "plays", "say", "tag"],
   "CallStatus": {
     "Trying": "trying",
