@@ -30,6 +30,13 @@ const installSrfLocals = require('./lib/utils/install-srf-locals');
 const createHttpListener = require('./lib/utils/http-listener');
 const healthCheck = require('@jambonz/http-health-check');
 
+logger.on('level-change', (lvl, _val, prevLvl, _prevVal, instance) => {
+  if (logger !== instance) {
+    return;
+  }
+  logger.info('system log level %s was changed to %s', prevLvl, lvl);
+});
+
 // Install the srf locals
 installSrfLocals(srf, logger, {
   onFreeswitchConnect: (wraper) => {
@@ -133,7 +140,12 @@ const monInterval = setInterval(async() => {
   try {
     const systemInformation = await srf.locals.dbHelpers.lookupSystemInformation();
     if (systemInformation && systemInformation.log_level) {
-      logger.level = systemInformation.log_level;
+      const envLogLevel = logger.levels.values[JAMBONES_LOGLEVEL.toLowerCase()];
+      const dbLogLevel = logger.levels.values[systemInformation.log_level];
+      const appliedLogLevel = Math.min(envLogLevel, dbLogLevel);
+      if (logger.levelVal !== appliedLogLevel) {
+        logger.level = logger.levels.labels[Math.min(envLogLevel, dbLogLevel)];
+      }
     }
   } catch (err) {
     if (process.env.NODE_ENV === 'test') {
