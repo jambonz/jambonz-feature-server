@@ -194,6 +194,13 @@
     "Disconnect": "openai_s2s::disconnect",
     "ServerEvent": "openai_s2s::server_event"
   },
+  "LlmEvents_Google": {
+    "Error": "error",
+    "Connect": "google_s2s::connect",
+    "ConnectFailure": "google_s2s::connect_failed",
+    "Disconnect": "google_s2s::disconnect",
+    "ServerEvent": "google_s2s::server_event"
+  },
   "LlmEvents_Elevenlabs": {
     "Error": "error",
     "Connect": "elevenlabs_s2s::connect",

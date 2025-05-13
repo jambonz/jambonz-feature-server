@@ -27,8 +27,61 @@ const pino = require('pino');
 const logger = pino(opts, pino.destination({sync: false}));
 const {LifeCycleEvents, FS_UUID_SET_NAME, SystemState, FEATURE_SERVER} = require('./lib/utils/constants');
 const installSrfLocals = require('./lib/utils/install-srf-locals');
-installSrfLocals(srf, logger);
+const createHttpListener = require('./lib/utils/http-listener');
+const healthCheck = require('@jambonz/http-health-check');
 
+logger.on('level-change', (lvl, _val, prevLvl, _prevVal, instance) => {
+  if (logger !== instance) {
+    return;
+  }
+  logger.info('system log level %s was changed to %s', prevLvl, lvl);
+});
+
+// Install the srf locals
+installSrfLocals(srf, logger, {
+  onFreeswitchConnect: (wraper) => {
+    // Only connect to drachtio if freeswitch is connected
+    logger.info(`connected to freeswitch at ${wraper.ms.address}, start drachtio server`);
+    if (DRACHTIO_HOST) {
+      srf.connect({host: DRACHTIO_HOST, port: DRACHTIO_PORT, secret: DRACHTIO_SECRET });
+      srf.on('connect', (err, hp) => {
+        const arr = /^(.*)\/(.*)$/.exec(hp.split(',').pop());
+        srf.locals.localSipAddress = `${arr[2]}`;
+        logger.info(`connected to drachtio listening on ${hp}, local sip address is ${srf.locals.localSipAddress}`);
+      });
+    }
+    else {
+      logger.info(`listening for drachtio requests on port ${DRACHTIO_PORT}`);
+      srf.listen({port: DRACHTIO_PORT, secret: DRACHTIO_SECRET});
+    }
+    // Start Http server
+    createHttpListener(logger, srf)
+      .then(({server, app}) => {
+        httpServer = server;
+        healthCheck({app, logger, path: '/', fn: getCount});
+        return {server, app};
+      })
+      .catch((err) => {
+        logger.error(err, 'Error creating http listener');
+      });
+  },
+  onFreeswitchDisconnect: (wraper) => {
+    // check if all freeswitch connections are lost, disconnect drachtio server
+    logger.info(`lost connection to freeswitch at ${wraper.ms.address}`);
+    const ms = srf.locals.getFreeswitch();
+    if (!ms) {
+      logger.info('no freeswitch connections, stopping drachtio server');
+      disconnect();
+    }
+  }
+});
+if (NODE_ENV === 'test') {
+  srf.on('error', (err) => {
+    logger.info(err, 'Error connecting to drachtio');
+  });
+}
+
+// Init services
 const writeSystemAlerts = srf.locals?.writeSystemAlerts;
 if (writeSystemAlerts) {
   writeSystemAlerts({
@@ -53,24 +106,6 @@ const {
 
 const InboundCallSession = require('./lib/session/inbound-call-session');
 const SipRecCallSession = require('./lib/session/siprec-call-session');
-
-if (DRACHTIO_HOST) {
-  srf.connect({host: DRACHTIO_HOST, port: DRACHTIO_PORT, secret: DRACHTIO_SECRET });
-  srf.on('connect', (err, hp) => {
-    const arr = /^(.*)\/(.*)$/.exec(hp.split(',').pop());
-    srf.locals.localSipAddress = `${arr[2]}`;
-    logger.info(`connected to drachtio listening on ${hp}, local sip address is ${srf.locals.localSipAddress}`);
-  });
-}
-else {
-  logger.info(`listening for drachtio requests on port ${DRACHTIO_PORT}`);
-  srf.listen({port: DRACHTIO_PORT, secret: DRACHTIO_SECRET});
-}
-if (NODE_ENV === 'test') {
-  srf.on('error', (err) => {
-    logger.info(err, 'Error connecting to drachtio');
-  });
-}
 
 srf.use('invite', [
   initLocals,
@@ -97,27 +132,20 @@ sessionTracker.on('idle', () => {
   }
 });
 const getCount = () => sessionTracker.count;
-const healthCheck = require('@jambonz/http-health-check');
+
 let httpServer;
-
-const createHttpListener = require('./lib/utils/http-listener');
-createHttpListener(logger, srf)
-  .then(({server, app}) => {
-    httpServer = server;
-    healthCheck({app, logger, path: '/', fn: getCount});
-    return {server, app};
-  })
-  .catch((err) => {
-    logger.error(err, 'Error creating http listener');
-  });
-
 
 const monInterval = setInterval(async() => {
   srf.locals.stats.gauge('fs.sip.calls.count', sessionTracker.count);
   try {
     const systemInformation = await srf.locals.dbHelpers.lookupSystemInformation();
     if (systemInformation && systemInformation.log_level) {
-      logger.level = systemInformation.log_level;
+      const envLogLevel = logger.levels.values[JAMBONES_LOGLEVEL.toLowerCase()];
+      const dbLogLevel = logger.levels.values[systemInformation.log_level];
+      const appliedLogLevel = Math.min(envLogLevel, dbLogLevel);
+      if (logger.levelVal !== appliedLogLevel) {
+        logger.level = logger.levels.labels[Math.min(envLogLevel, dbLogLevel)];
+      }
     }
   } catch (err) {
     if (process.env.NODE_ENV === 'test') {
@@ -133,6 +161,7 @@ const disconnect = () => {
     httpServer?.on('close', resolve);
     httpServer?.close();
     srf.disconnect();
+    srf.removeAllListeners();
     srf.locals.mediaservers?.forEach((ms) => ms.disconnect());
   });
 };
