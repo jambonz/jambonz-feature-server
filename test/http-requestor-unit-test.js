@@ -1,119 +1,17 @@
-// Patch require to return mocks (MUST be at the very top, before any other require)
-const Module = require('module');
-const originalRequire = Module.prototype.require;
-Module.prototype.require = function(path) {
-  if (path === '../../') {
-    return { 
-      srf: { 
-        locals: { 
-          stats: { histogram: () => {} }
-        } 
-      } 
-    };
-  }
-  if (path === '@jambonz/time-series') {
-    return () => ({
-      writeAlerts: async () => {},
-      AlertType: {
-        WEBHOOK_CONNECTION_FAILURE: 'WEBHOOK_CONNECTION_FAILURE',
-        WEBHOOK_STATUS_FAILURE: 'WEBHOOK_STATUS_FAILURE'
-      }
-    });
-  }
-  if (path === 'mysql2/promise') {
-    return {
-      createConnection: () => Promise.resolve({
-        connect: () => {},
-        on: () => {},
-        query: (sql, cb) => {
-          if (typeof cb === 'function') cb(null, []);
-          return { stream: () => ({ on: () => {} }) };
-        },
-        end: () => {}
-      })
-    };
-  }
-  if (path === 'mysql2') {
-    return {
-      createConnection: () => ({
-        connect: () => {},
-        on: () => {},
-        query: (sql, cb) => {
-          if (typeof cb === 'function') cb(null, []);
-          return { stream: () => ({ on: () => {} }) };
-        },
-        end: () => {}
-      })
-    };
-  }
-  if (path === '@jambonz/db-helpers') {
-    return {
-      pool: {
-        getConnection: () => Promise.resolve({
-          connect: () => {},
-          on: () => {},
-          query: (sql, cb) => {
-            if (typeof cb === 'function') cb(null, []);
-            return { stream: () => ({ on: () => {} }) };
-          },
-          end: () => {}
-        }),
-        query: (...args) => {
-          const cb = args[args.length - 1];
-          if (typeof cb === 'function') cb(null, []);
-          return Promise.resolve([]);
-        }
-      },
-      camelize: (obj) => obj
-    };
-  }
-  return originalRequire.apply(this, arguments);
-};
-
-// Now require everything else
 const test = require('tape');
 const sinon = require('sinon');
+const { createMockedRequestors } = require('./utils/test-mocks');
 
-// Mocks
-class MockLogger {
-  debug() {}
-  info() {}
-  error() {}
-}
+// Use the shared mocks and helpers
+const {
+  HttpRequestor,
+  setupRequestor,
+  cleanup
+} = createMockedRequestors();
 
-// Setup function to create a clean requestor for each test
-const BaseRequestor = require('../lib/utils/base-requestor');
-const HttpRequestor = require('../lib/utils/http-requestor');
+// All prototype overrides and setup are now handled in test-mocks.js
 
-BaseRequestor.prototype._isAbsoluteUrl = function(url) { return url.startsWith('http'); };
-BaseRequestor.prototype._isRelativeUrl = function(url) { return !url.startsWith('http'); };
-BaseRequestor.prototype._generateSigHeader = function() { return { 'X-Signature': 'test-signature' }; };
-BaseRequestor.prototype._roundTrip = function() { return 10; };
-Object.defineProperty(BaseRequestor.prototype, 'baseUrl', { get: function() { return 'http://localhost'; } });
-Object.defineProperty(BaseRequestor.prototype, 'Alerter', { 
-  get: function() { 
-    return { 
-      AlertType: { 
-        WEBHOOK_CONNECTION_FAILURE: 'WEBHOOK_CONNECTION_FAILURE', 
-        WEBHOOK_STATUS_FAILURE: 'WEBHOOK_STATUS_FAILURE' 
-      }, 
-      writeAlerts: async () => {} 
-    }; 
-  } 
-});
-
-const setupRequestor = () => {
-  const logger = new MockLogger();
-  const hook = { url: 'http://localhost/test', method: 'POST' };
-  const secret = 'testsecret';
-  return new HttpRequestor(logger, 'AC123', hook, secret);
-};
-
-const cleanup = (requestor) => {
-  sinon.restore();
-  if (requestor && requestor.close) requestor.close();
-};
-
+// --- TESTS ---
 test('HttpRequestor: constructor sets up properties correctly', (t) => {
   const requestor = setupRequestor();
   t.equal(requestor.method, 'POST', 'method should be POST');
@@ -124,9 +22,10 @@ test('HttpRequestor: constructor sets up properties correctly', (t) => {
 });
 
 test('HttpRequestor: constructor with username/password sets auth header', (t) => {
-  const logger = new MockLogger();
-  const hook = { 
-    url: 'http://localhost/test', 
+  const { mocks, HttpRequestor } = createMockedRequestors();
+  const logger = mocks.logger;
+  const hook = {
+    url: 'http://localhost/test',
     method: 'POST',
     username: 'user',
     password: 'pass'
@@ -142,20 +41,20 @@ test('HttpRequestor: request should return JSON on 200 response', async (t) => {
   const requestor = setupRequestor();
   const expectedResponse = { success: true, data: [1, 2, 3] };
   const fakeBody = { json: async () => expectedResponse };
-  sinon.stub(requestor.client, 'request').resolves({ 
-    statusCode: 200, 
-    headers: { 'content-type': 'application/json' }, 
-    body: fakeBody 
+  sinon.stub(requestor.client, 'request').resolves({
+    statusCode: 200,
+    headers: { 'content-type': 'application/json' },
+    body: fakeBody
   });
   try {
     const hook = { url: 'http://localhost/test', method: 'POST' };
     const result = await requestor.request('verb:hook', hook, { foo: 'bar' });
     t.deepEqual(result, expectedResponse, 'Should return parsed JSON');
     const requestCall = requestor.client.request.getCall(0);
-    t.equal(requestCall.args[0], 'http://localhost', 'baseUrl should be passed');
-    t.equal(requestCall.args[1].method, 'POST', 'method should be POST');
-    t.ok(requestCall.args[1].headers['X-Signature'], 'Should include signature header');
-    t.ok(requestCall.args[1].body, 'Should include request body');
+    const opts = requestCall.args[0];
+    t.equal(opts.method, 'POST', 'method should be POST');
+    t.ok(opts.headers['X-Signature'], 'Should include signature header');
+    t.ok(opts.body, 'Should include request body');
   } catch (err) {
     t.fail(err);
   }
@@ -165,10 +64,10 @@ test('HttpRequestor: request should return JSON on 200 response', async (t) => {
 
 test('HttpRequestor: request should handle non-200 responses', async (t) => {
   const requestor = setupRequestor();
-  sinon.stub(requestor.client, 'request').resolves({ 
-    statusCode: 404, 
-    headers: {}, 
-    body: {} 
+  sinon.stub(requestor.client, 'request').resolves({
+    statusCode: 404,
+    headers: {},
+    body: {}
   });
   try {
     const hook = { url: 'http://localhost/test', method: 'POST' };
@@ -212,10 +111,10 @@ test('HttpRequestor: request should skip jambonz:error type', async (t) => {
 test('HttpRequestor: request should handle array response', async (t) => {
   const requestor = setupRequestor();
   const fakeBody = { json: async () => [{ id: 1 }, { id: 2 }] };
-  sinon.stub(requestor.client, 'request').resolves({ 
-    statusCode: 200, 
-    headers: { 'content-type': 'application/json' }, 
-    body: fakeBody 
+  sinon.stub(requestor.client, 'request').resolves({
+    statusCode: 200,
+    headers: { 'content-type': 'application/json' },
+    body: fakeBody
   });
   try {
     const hook = { url: 'http://localhost/test', method: 'POST' };
@@ -232,10 +131,10 @@ test('HttpRequestor: request should handle array response', async (t) => {
 test('HttpRequestor: request should handle llm:tool-call type', async (t) => {
   const requestor = setupRequestor();
   const fakeBody = { json: async () => ({ result: 'tool output' }) };
-  sinon.stub(requestor.client, 'request').resolves({ 
-    statusCode: 200, 
-    headers: { 'content-type': 'application/json' }, 
-    body: fakeBody 
+  sinon.stub(requestor.client, 'request').resolves({
+    statusCode: 200,
+    headers: { 'content-type': 'application/json' },
+    body: fakeBody
   });
   try {
     const hook = { url: 'http://localhost/test', method: 'POST' };
@@ -252,24 +151,29 @@ test('HttpRequestor: close should close the client if not using pools', (t) => {
   // Ensure HTTP_POOL is set to false to disable pool usage
   const oldHttpPool = process.env.HTTP_POOL;
   process.env.HTTP_POOL = '0';
-  
+
   const requestor = setupRequestor();
   // Make sure _usePools is false
   requestor._usePools = false;
-  
-  // Spy on the actual close method after construction
-  const originalClose = requestor.client.close;
+
+  // Replace the client.close with a spy function
   const closeSpy = sinon.spy();
   requestor.client.close = closeSpy;
+
+  // Set client.closed to false to ensure the condition is met
   requestor.client.closed = false;
+
+  // Call close
   requestor.close();
+
+  // Check if the spy was called
   t.ok(closeSpy.calledOnce, 'Should call client.close');
-  // Restore original close method
-  requestor.client.close = originalClose;
-  
+
   // Restore HTTP_POOL
   process.env.HTTP_POOL = oldHttpPool;
-  cleanup(requestor);
+
+  // Don't call cleanup(requestor) as it would try to call client.close again
+  sinon.restore();
   t.end();
 });
 
@@ -279,9 +183,9 @@ test('HttpRequestor: request should handle URLs with fragments', async (t) => {
   const urlWithFragment = 'http://localhost?param1=value1#rc=5&rp=4xx,5xx,ct';
   const expectedResponse = { status: 'success' };
   const fakeBody = { json: async () => expectedResponse };
-  
+
   // Stub the request method
-  const requestStub = sinon.stub(requestor.client, 'request').callsFake((url, opts) => {
+  const requestStub = sinon.stub(requestor.client, 'request').callsFake((opts) => {
     return Promise.resolve({
       statusCode: 200,
       headers: { 'content-type': 'application/json' },
@@ -293,14 +197,18 @@ test('HttpRequestor: request should handle URLs with fragments', async (t) => {
     const result = await requestor.request('verb:hook', hook, null);
     t.deepEqual(result, expectedResponse, 'Should return the parsed JSON response');
     const requestCall = requestStub.getCall(0);
-    t.equal(requestCall.args[0], 'http://localhost', 'baseUrl should be passed');
-    const requestOptions = requestCall.args[1];
-    t.ok(requestOptions.query && requestOptions.query.param1 === 'value1', 'Query parameters should be parsed');
-    t.equal(requestOptions.path, '/', 'Path should be extracted from URL');
-    t.notOk(requestOptions.query && requestOptions.query.rc, 'Fragment should not be included in query parameters');
+    const opts = requestCall.args[0];
+    t.ok(opts.query && opts.query.param1 === 'value1', 'Query parameters should be parsed');
+    t.equal(opts.path, '/', 'Path should be extracted from URL');
+    t.notOk(opts.query && opts.query.rc, 'Fragment should not be included in query parameters');
   } catch (err) {
     t.fail(err);
   }
   cleanup(requestor);
   t.end();
 });
+
+// test('HttpRequestor: request should handle URLs with query parameters', async (t) => {
+//   t.pass('Restored original require function');
+//   t.end();
+// });

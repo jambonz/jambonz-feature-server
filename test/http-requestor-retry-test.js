@@ -1,42 +1,60 @@
 // Test for HttpRequestor retry functionality
 const test = require('tape');
 const sinon = require('sinon');
-const HttpRequestor = require('../lib/utils/http-requestor');
+const proxyquire = require('proxyquire').noCallThru();
+const { createMocks, setupBaseRequestorMocks } = require('./utils/mock-helper');
 
-// Mock dependencies
-const MockLogger = {
-  debug: () => {},
-  info: () => {},
-  error: () => {}
+// Create mocks
+const mocks = createMocks();
+
+// Mock timeSeries module
+const timeSeriesMock = sinon.stub().returns(mocks.MockAlerter);
+
+// Mock the config with required properties
+const configMock = {
+  HTTP_POOL: '0',
+  HTTP_POOLSIZE: '10',
+  HTTP_PIPELINING: '1',
+  HTTP_TIMEOUT: 5000,
+  HTTP_PROXY_IP: null,
+  HTTP_PROXY_PORT: null,
+  HTTP_PROXY_PROTOCOL: null,
+  NODE_ENV: 'test',
+  HTTP_USER_AGENT_HEADER: 'test-agent'
 };
+
+// Mock db-helpers
+const dbHelpersMock = mocks.MockDbHelpers;
+
+// Require HttpRequestor with mocked dependencies
+const BaseRequestor = proxyquire('../lib/utils/base-requestor', {
+  '@jambonz/time-series': timeSeriesMock,
+  '../config': configMock,
+  '../../': { srf: { locals: { stats: mocks.MockStats } } }
+});
+
+// Setup BaseRequestor mocks
+setupBaseRequestorMocks(BaseRequestor);
+
+// Require HttpRequestor with mocked dependencies
+const HttpRequestor = proxyquire('../lib/utils/http-requestor', {
+  './base-requestor': BaseRequestor,
+  '../config': configMock,
+  '@jambonz/db-helpers': dbHelpersMock
+});
 
 // Setup utility function
 const setupRequestor = () => {
-  const stats = { histogram: () => {} };
   const hook = { url: 'http://localhost/test', method: 'POST' };
-  const requestor = new HttpRequestor(MockLogger, 'AC123', hook, 'testsecret');
-  // Mock required internal methods for testing
-  requestor._generateSigHeader = () => ({ 'X-Signature': 'test' });
-  requestor._roundTrip = () => 10;
-  requestor.stats = stats;
-  requestor.Alerter = {
-    AlertType: {
-      WEBHOOK_CONNECTION_FAILURE: 'failure',
-      WEBHOOK_STATUS_FAILURE: 'status'
-    },
-    writeAlerts: async () => {}
-  };
+  const requestor = new HttpRequestor(mocks.MockLogger, 'AC123', hook, 'testsecret');
+  requestor.stats = mocks.MockStats;
   return requestor;
 };
 
-// Clean up after tests
+// Cleanup function for tests
 const cleanup = (requestor) => {
-  if (requestor) {
-    if (requestor.client && !requestor.client.closed) {
-      requestor.client.close();
-    }
-  }
   sinon.restore();
+  if (requestor && requestor.close) requestor.close();
 };
 
 test('HttpRequestor: should retry on connection errors when specified in hash', async (t) => {
