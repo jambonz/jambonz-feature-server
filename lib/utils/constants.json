@@ -194,6 +194,13 @@
     "Disconnect": "openai_s2s::disconnect",
     "ServerEvent": "openai_s2s::server_event"
   },
+  "LlmEvents_Aws": {
+    "Error": "error",
+    "Connect": "aws_s2s::connect",
+    "ConnectFailure": "aws_s2s::connect_failed",
+    "Disconnect": "aws_s2s::disconnect",
+    "ServerEvent": "aws_s2s::server_event"
+  },
   "LlmEvents_Google": {
     "Error": "error",
     "Connect": "google_s2s::connect",
