@@ -161,6 +161,12 @@
     "ConnectFailure": "assemblyai_transcribe::connect_failed",
     "Connect": "assemblyai_transcribe::connect"
   },
+  "AmiVoiceTranscriptionEvents": {
+    "Transcription": "amivoice_transcribe::transcription",
+    "Error": "amivoice_transcribe::error",
+    "ConnectFailure": "amivoice_transcribe::connect_failed",
+    "Connect": "amivoice_transcribe::connect"
+  },
   "VoxistTranscriptionEvents": {
     "Transcription": "voxist_transcribe::transcription",
     "Error": "voxist_transcribe::error",
