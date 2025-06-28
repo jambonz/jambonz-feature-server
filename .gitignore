@@ -1,7 +1,9 @@
 # Logs
 logs
 *.log
-.claude
+
+.claude/
+CLAUDE.md 
 
 # Runtime data
 pids

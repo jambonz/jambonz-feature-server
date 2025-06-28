@@ -100,6 +100,24 @@ app.post('/actionHook', (req, res) => {
 });
 
 /*
+ * referHook
+ */
+app.post('/referHook', (req, res) => {
+  console.log({payload: req.body}, 'POST /referHook');
+  let key = req.body.from + "_referHook"
+  addRequestToMap(key, req, hook_mapping);
+  return res.json([{"verb": "pause", "length": 2}]);
+});
+
+/*
+ * adultingHook
+ */
+app.post('/adulting', (req, res) => {
+  console.log({payload: req.body}, 'POST /adulting');
+  return res.sendStatus(200);
+});
+
+/*
 * customHook
 * For the hook to return
  */
