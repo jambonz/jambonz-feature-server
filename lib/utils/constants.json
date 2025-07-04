@@ -176,6 +176,9 @@
   "VadDetection": {
     "Detection": "vad_detect:detection"
   },
+  "SileroVadDetection": {
+    "Detection": "vad_silero:detect"
+  },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",
     "ConnectFailure": "mod_audio_fork::connect_failed",
