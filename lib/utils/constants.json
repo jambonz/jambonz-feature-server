@@ -249,6 +249,7 @@
   "KillReason": {
     "Hangup": "hangup",
     "Replaced": "replaced",
+    "ReferComplete": "refer-complete",
     "MediaTimeout": "media_timeout"
   },
   "HookMsgTypes": [
