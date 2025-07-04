@@ -1,5 +1,6 @@
 {
   "TaskName": {
+    "Alert": "alert",
     "Answer": "answer",
     "Conference": "conference",
     "Config": "config",
