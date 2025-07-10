@@ -16,6 +16,7 @@ require('./sip-request-tests');
 require('./create-call-test');
 require('./play-tests');
 require('./sip-refer-tests');
+require('./sip-refer-handler-tests');
 require('./listen-tests');
 require('./config-test');
 require('./queue-test');
