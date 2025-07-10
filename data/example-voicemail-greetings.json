@@ -163,5 +163,16 @@
     "wird sich bei Ihnen melden",
     "ich melde mich bei dir",
     "wir können nicht"
+  ],
+  "it-IT": [
+    "segreteria telefonica",
+    "risponde la segreteria telefonica",
+    "lascia un messaggio",
+    "puoi lasciare un messaggio dopo il segnale",
+    "dopo il segnale acustico",
+    "il numero chiamato non è raggiungibile",
+    "non è raggiungibile",
+    "lascia pure un messaggio",
+    "puoi lasciare un messaggio"
   ]
 }

@@ -2,6 +2,9 @@
 logs
 *.log
 
+.claude/
+CLAUDE.md 
+
 # Runtime data
 pids
 *.pid

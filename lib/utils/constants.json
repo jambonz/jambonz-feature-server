@@ -167,6 +167,12 @@
     "ConnectFailure": "voxist_transcribe::connect_failed",
     "Connect": "voxist_transcribe::connect"
   },
+  "CartesiaTranscriptionEvents": {
+    "Transcription": "cartesia_transcribe::transcription",
+    "Error": "cartesia_transcribe::error",
+    "ConnectFailure": "cartesia_transcribe::connect_failed",
+    "Connect": "cartesia_transcribe::connect"
+  },
   "VadDetection": {
     "Detection": "vad_detect:detection"
   },
@@ -237,6 +243,7 @@
   "KillReason": {
     "Hangup": "hangup",
     "Replaced": "replaced",
+    "ReferComplete": "refer-complete",
     "MediaTimeout": "media_timeout"
   },
   "HookMsgTypes": [
