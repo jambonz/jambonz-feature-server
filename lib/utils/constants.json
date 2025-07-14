@@ -1,5 +1,6 @@
 {
   "TaskName": {
+    "Alert": "alert",
     "Answer": "answer",
     "Conference": "conference",
     "Config": "config",
@@ -32,7 +33,7 @@
     "Tag": "tag",
     "Transcribe": "transcribe"
   },
-  "AllowedSipRecVerbs": ["answer", "config", "gather", "transcribe", "listen", "tag"],
+  "AllowedSipRecVerbs": ["answer", "config", "gather", "transcribe", "listen", "tag", "hangup", "sip:decline"],
   "AllowedConfirmSessionVerbs": ["config", "gather", "plays", "say", "tag"],
   "CallStatus": {
     "Trying": "trying",
@@ -137,6 +138,18 @@
     "Connect": "speechmatics_transcribe::connect",
     "Error": "speechmatics_transcribe::error"
   },
+  "OpenAITranscriptionEvents": {
+    "Transcription": "openai_transcribe::transcription",
+    "Translation": "openai_transcribe::translation",
+    "SpeechStarted": "openai_transcribe::speech_started",
+    "SpeechStopped": "openai_transcribe::speech_stopped",
+    "PartialTranscript": "openai_transcribe::partial_transcript",
+    "Info": "openai_transcribe::info",
+    "RecognitionStarted": "openai_transcribe::recognition_started",
+    "ConnectFailure": "openai_transcribe::connect_failed",
+    "Connect": "openai_transcribe::connect",
+    "Error": "openai_transcribe::error"
+  },
   "JambonzTranscriptionEvents": {
     "Transcription": "jambonz_transcribe::transcription",
     "ConnectFailure": "jambonz_transcribe::connect_failed",
@@ -154,6 +167,12 @@
     "Error": "voxist_transcribe::error",
     "ConnectFailure": "voxist_transcribe::connect_failed",
     "Connect": "voxist_transcribe::connect"
+  },
+  "CartesiaTranscriptionEvents": {
+    "Transcription": "cartesia_transcribe::transcription",
+    "Error": "cartesia_transcribe::error",
+    "ConnectFailure": "cartesia_transcribe::connect_failed",
+    "Connect": "cartesia_transcribe::connect"
   },
   "VadDetection": {
     "Detection": "vad_detect:detection"
@@ -181,6 +200,13 @@
     "ConnectFailure": "openai_s2s::connect_failed",
     "Disconnect": "openai_s2s::disconnect",
     "ServerEvent": "openai_s2s::server_event"
+  },
+  "LlmEvents_Google": {
+    "Error": "error",
+    "Connect": "google_s2s::connect",
+    "ConnectFailure": "google_s2s::connect_failed",
+    "Disconnect": "google_s2s::disconnect",
+    "ServerEvent": "google_s2s::server_event"
   },
   "LlmEvents_Elevenlabs": {
     "Error": "error",
@@ -225,6 +251,7 @@
   "KillReason": {
     "Hangup": "hangup",
     "Replaced": "replaced",
+    "ReferComplete": "refer-complete",
     "MediaTimeout": "media_timeout"
   },
   "HookMsgTypes": [

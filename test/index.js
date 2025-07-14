@@ -1,4 +1,8 @@
+require('./ws-requestor-retry-unit-test');
+require('./test_ws_retry_comprehensive');
 require('./ws-requestor-unit-test');
+require('./http-requestor-retry-test');
+require('./http-requestor-unit-test');
 require('./unit-tests');
 require('./docker_start');
 require('./create-test-db');
@@ -12,6 +16,7 @@ require('./sip-request-tests');
 require('./create-call-test');
 require('./play-tests');
 require('./sip-refer-tests');
+require('./sip-refer-handler-tests');
 require('./listen-tests');
 require('./config-test');
 require('./queue-test');
