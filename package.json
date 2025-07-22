@@ -1,6 +1,6 @@
 {
   "name": "jambonz-feature-server",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "main": "app.js",
   "engines": {
     "node": ">= 18.x"
@@ -31,10 +31,10 @@
     "@jambonz/http-health-check": "^0.0.1",
     "@jambonz/mw-registrar": "^0.2.7",
     "@jambonz/realtimedb-helpers": "^0.8.13",
-    "@jambonz/speech-utils": "^0.2.10",
+    "@jambonz/speech-utils": "^0.2.15",
     "@jambonz/stats-collector": "^0.1.10",
-    "@jambonz/time-series": "^0.2.13",
-    "@jambonz/verb-specifications": "^0.0.104",
+    "@jambonz/time-series": "^0.2.14",
+    "@jambonz/verb-specifications": "^0.0.110",
     "@modelcontextprotocol/sdk": "^1.9.0",
     "@opentelemetry/api": "^1.8.0",
     "@opentelemetry/exporter-jaeger": "^1.23.0",
@@ -48,7 +48,7 @@
     "bent": "^7.3.12",
     "debug": "^4.3.4",
     "deepcopy": "^2.1.0",
-    "drachtio-fsmrf": "^4.0.3",
+    "drachtio-fsmrf": "^4.0.4",
     "drachtio-srf": "^5.0.5",
     "express": "^4.19.2",
     "express-validator": "^7.0.1",
@@ -56,7 +56,6 @@
     "parse-url": "^9.2.0",
     "pino": "^8.20.0",
     "polly-ssml-split": "^0.1.0",
-    "proxyquire": "^2.1.3",
     "sdp-transform": "^2.15.0",
     "short-uuid": "^5.1.0",
     "sinon": "^17.0.1",
@@ -71,6 +70,7 @@
     "eslint": "7.32.0",
     "eslint-plugin-promise": "^6.1.1",
     "nyc": "^15.1.0",
+    "proxyquire": "^2.1.3",
     "tape": "^5.7.5"
   },
   "optionalDependencies": {
