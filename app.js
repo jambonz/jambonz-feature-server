@@ -5,8 +5,6 @@ const {
   JAMBONES_OTEL_SERVICE_NAME,
   JAMBONES_LOGLEVEL,
   JAMBONES_CLUSTER_ID,
-  JAMBONZ_CLEANUP_INTERVAL_MINS,
-  getCleanupIntervalMins,
   K8S,
   NODE_ENV,
   checkEnvs,
@@ -204,17 +202,20 @@ async function handle(signal) {
   }
 }
 
-if (JAMBONZ_CLEANUP_INTERVAL_MINS) {
-  const {clearFiles} = require('./lib/utils/cron-jobs');
+// Disabled in favour of OS Level Cron Job, TODO Remove in later release
+//
+//if (JAMBONZ_CLEANUP_INTERVAL_MINS) {
+//  const {clearFiles} = require('./lib/utils/cron-jobs');
 
-  /* cleanup orphaned files or channels every so often */
-  setInterval(async() => {
-    try {
-      await clearFiles();
-    } catch (err) {
-      logger.error({err}, 'app.js: error clearing files');
-    }
-  }, getCleanupIntervalMins());
-}
+//  /* cleanup orphaned files or channels every so often */
+//  setInterval(async() => {
+//    try {
+//      await clearFiles();
+//   } catch (err) {
+//      logger.error({err}, 'app.js: error clearing files');
+//    }
+//  }, getCleanupIntervalMins());
+//}
+
 
 module.exports = {srf, logger, disconnect};
