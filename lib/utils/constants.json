@@ -96,6 +96,11 @@
     "ConnectFailure": "deepgram_transcribe::connect_failed",
     "Connect": "deepgram_transcribe::connect"
   },
+  "DeepgramRiverTranscriptionEvents": {
+    "Transcription": "deepgramriver_transcribe::transcription",
+    "ConnectFailure": "deepgramriver_transcribe::connect_failed",
+    "Connect": "deepgramriver_transcribe::connect"
+  },
   "SonioxTranscriptionEvents": {
     "Transcription": "soniox_transcribe::transcription",
     "Error": "soniox_transcribe::error"
@@ -182,6 +187,9 @@
   },
   "VadDetection": {
     "Detection": "vad_detect:detection"
+  },
+  "SileroVadDetection": {
+    "Detection": "vad_silero:detect"
   },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",
