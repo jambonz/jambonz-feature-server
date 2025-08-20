@@ -48,7 +48,7 @@
     "bent": "^7.3.12",
     "debug": "^4.3.4",
     "deepcopy": "^2.1.0",
-    "drachtio-fsmrf": "^4.1.2",
+    "drachtio-fsmrf": "github:rammohan-y/drachtio-fsmrf#feat-114",
     "drachtio-srf": "^5.0.5",
     "express": "^4.19.2",
     "express-validator": "^7.0.1",
