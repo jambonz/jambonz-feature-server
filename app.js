@@ -29,6 +29,12 @@ const {LifeCycleEvents, FS_UUID_SET_NAME, SystemState, FEATURE_SERVER} = require
 const installSrfLocals = require('./lib/utils/install-srf-locals');
 const createHttpListener = require('./lib/utils/http-listener');
 const healthCheck = require('@jambonz/http-health-check');
+const ProcessMonitor = require('./lib/utils/process-monitor');
+const monitor = new ProcessMonitor(logger);
+
+// Log startup
+monitor.logStartup();
+monitor.setupSignalHandlers();
 
 logger.on('level-change', (lvl, _val, prevLvl, _prevVal, instance) => {
   if (logger !== instance) {
