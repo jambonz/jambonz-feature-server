@@ -167,6 +167,12 @@
     "ConnectFailure": "assemblyai_transcribe::connect_failed",
     "Connect": "assemblyai_transcribe::connect"
   },
+  "HoundifyTranscriptionEvents": {
+    "Transcription": "houndify_transcribe::transcription",
+    "Error": "houndify_transcribe::error",
+    "ConnectFailure": "houndify_transcribe::connect_failed",
+    "Connect": "houndify_transcribe::connect"
+  },
   "VoxistTranscriptionEvents": {
     "Transcription": "voxist_transcribe::transcription",
     "Error": "voxist_transcribe::error",
