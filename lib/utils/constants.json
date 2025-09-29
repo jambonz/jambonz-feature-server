@@ -94,12 +94,14 @@
   "DeepgramTranscriptionEvents": {
     "Transcription": "deepgram_transcribe::transcription",
     "ConnectFailure": "deepgram_transcribe::connect_failed",
-    "Connect": "deepgram_transcribe::connect"
+    "Connect": "deepgram_transcribe::connect",
+    "Error": "deepgram_transcribe::error"
   },
   "DeepgramRiverTranscriptionEvents": {
     "Transcription": "deepgramriver_transcribe::transcription",
     "ConnectFailure": "deepgramriver_transcribe::connect_failed",
-    "Connect": "deepgramriver_transcribe::connect"
+    "Connect": "deepgramriver_transcribe::connect",
+    "Error": "deepgramriver_transcribe::error"
   },
   "SonioxTranscriptionEvents": {
     "Transcription": "soniox_transcribe::transcription",
