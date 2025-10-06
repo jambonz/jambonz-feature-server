@@ -97,11 +97,11 @@
     "Connect": "deepgram_transcribe::connect",
     "Error": "deepgram_transcribe::error"
   },
-  "DeepgramRiverTranscriptionEvents": {
-    "Transcription": "deepgramriver_transcribe::transcription",
-    "ConnectFailure": "deepgramriver_transcribe::connect_failed",
-    "Connect": "deepgramriver_transcribe::connect",
-    "Error": "deepgramriver_transcribe::error"
+  "DeepgramfluxTranscriptionEvents": {
+    "Transcription": "deepgramflux_transcribe::transcription",
+    "ConnectFailure": "deepgramflux_transcribe::connect_failed",
+    "Connect": "deepgramflux_transcribe::connect",
+    "Error": "deepgramflux_transcribe::error"
   },
   "SonioxTranscriptionEvents": {
     "Transcription": "soniox_transcribe::transcription",
