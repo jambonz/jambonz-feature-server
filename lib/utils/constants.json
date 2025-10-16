@@ -103,6 +103,12 @@
     "Connect": "deepgramflux_transcribe::connect",
     "Error": "deepgramflux_transcribe::error"
   },
+  "GladiaTranscriptionEvents": {
+    "Transcription": "gladia_transcribe::transcription",
+    "ConnectFailure": "gladia_transcribe::connect_failed",
+    "Connect": "gladia_transcribe::connect",
+    "Error": "gladia_transcribe::error"
+  },
   "SonioxTranscriptionEvents": {
     "Transcription": "soniox_transcribe::transcription",
     "Error": "soniox_transcribe::error"
