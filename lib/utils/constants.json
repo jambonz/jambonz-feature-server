@@ -174,6 +174,11 @@
     "Error": "amivoice_transcribe::error",
     "ConnectFailure": "amivoice_transcribe::connect_failed",
     "Connect": "amivoice_transcribe::connect"
+  "HoundifyTranscriptionEvents": {
+    "Transcription": "houndify_transcribe::transcription",
+    "Error": "houndify_transcribe::error",
+    "ConnectFailure": "houndify_transcribe::connect_failed",
+    "Connect": "houndify_transcribe::connect"
   },
   "VoxistTranscriptionEvents": {
     "Transcription": "voxist_transcribe::transcription",
