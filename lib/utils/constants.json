@@ -311,6 +311,11 @@
     "ConnectFailure": "deepgram_tts_streaming::connect_failed",
     "Connect": "deepgram_tts_streaming::connect"
   },
+  "GoogleTtsStreamingEvents": {
+    "Empty": "google_tts_streaming::empty",
+    "ConnectFailure": "google_tts_streaming::connect_failed",
+    "Connect": "google_tts_streaming::connect"
+  },
   "CartesiaTtsStreamingEvents": {
     "Empty": "cartesia_tts_streaming::empty",
     "ConnectFailure": "cartesia_tts_streaming::connect_failed",
