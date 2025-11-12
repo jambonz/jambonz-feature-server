@@ -335,7 +335,8 @@
     "Empty": "tts_streaming::empty",
     "Pause": "tts_streaming::pause",
     "Resume": "tts_streaming::resume",
-    "ConnectFailure": "tts_streaming::connect_failed"
+    "ConnectFailure": "tts_streaming::connect_failed",
+    "Connected": "tts_streaming::connected"
   },
   "TtsStreamingConnectionStatus": {
     "NotConnected": "not_connected",
