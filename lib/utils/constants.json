@@ -103,6 +103,12 @@
     "Connect": "deepgramflux_transcribe::connect",
     "Error": "deepgramflux_transcribe::error"
   },
+  "ElevenlabsTranscriptionEvents": {
+    "Transcription": "elevenlabs_transcribe::transcription",
+    "ConnectFailure": "elevenlabs_transcribe::connect_failed",
+    "Connect": "elevenlabs_transcribe::connect",
+    "Error": "elevenlabs_transcribe::error"
+  },
   "GladiaTranscriptionEvents": {
     "Transcription": "gladia_transcribe::transcription",
     "ConnectFailure": "gladia_transcribe::connect_failed",
