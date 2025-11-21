@@ -83,7 +83,8 @@ test('invalid jambonz json create alert tests', async(t) => {
       {account_sid: 'bb845d4b-83a9-4cde-a6e9-50f3743bab3f', page: 1, page_size: 25, days: 7});
     let checked = false;
     for (let i = 0; i < data.total; i++) {
-      checked = data.data[i].message === 'malformed jambonz payload: must be array'
+      checked = data.data[i].message === 'malformed jambonz payload: must be array';
+      if (checked) break;
     }
     t.ok(checked, 'alert is raised as expected');
     disconnect();
