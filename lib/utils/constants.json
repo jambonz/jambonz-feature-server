@@ -362,5 +362,8 @@
   "WS_CLOSE_CODES": {
     "NormalClosure": 1000,
     "GoingAway": 1001
-  }
+  },
+  "NON_FANTAL_ERRORS": [
+    "File Not Found"
+  ]
 }
