@@ -8,56 +8,11 @@ const logger = {
   debug: noop
 };
 
-// Mock the constants module
-const TtsStreamingEvents = {
-  Empty: 'tts_streaming::empty',
-  Pause: 'tts_streaming::pause',
-  Resume: 'tts_streaming::resume',
-  ConnectFailure: 'tts_streaming::connect_failed',
-  Connected: 'tts_streaming::connected'
-};
+const {
+  TtsStreamingConnectionStatus
+} = require('../lib/utils/constants.json');
 
-const TtsStreamingConnectionStatus = {
-  NotConnected: 'not_connected',
-  Connected: 'connected',
-  Connecting: 'connecting',
-  Failed: 'failed'
-};
-
-// Create mock for constants module before requiring TtsStreamingBuffer
-const proxyquire = require('proxyquire');
-
-const TtsStreamingBuffer = proxyquire('../lib/utils/tts-streaming-buffer', {
-  '../utils/constants': {
-    TtsStreamingEvents,
-    TtsStreamingConnectionStatus,
-    DeepgramTtsStreamingEvents: {
-      Empty: 'deepgram_tts_streaming::empty',
-      ConnectFailure: 'deepgram_tts_streaming::connect_failed',
-      Connect: 'deepgram_tts_streaming::connect'
-    },
-    CartesiaTtsStreamingEvents: {
-      Empty: 'cartesia_tts_streaming::empty',
-      ConnectFailure: 'cartesia_tts_streaming::connect_failed',
-      Connect: 'cartesia_tts_streaming::connect'
-    },
-    ElevenlabsTtsStreamingEvents: {
-      Empty: 'elevenlabs_tts_streaming::empty',
-      ConnectFailure: 'elevenlabs_tts_streaming::connect_failed',
-      Connect: 'elevenlabs_tts_streaming::connect'
-    },
-    RimelabsTtsStreamingEvents: {
-      Empty: 'rimelabs_tts_streaming::empty',
-      ConnectFailure: 'rimelabs_tts_streaming::connect_failed',
-      Connect: 'rimelabs_tts_streaming::connect'
-    },
-    CustomTtsStreamingEvents: {
-      Empty: 'custom_tts_streaming::empty',
-      ConnectFailure: 'custom_tts_streaming::connect_failed',
-      Connect: 'custom_tts_streaming::connect'
-    }
-  }
-});
+const TtsStreamingBuffer = require('../lib/utils/tts-streaming-buffer');
 
 // Helper to create a mock CallSession
 function createMockCs(options = {}) {
