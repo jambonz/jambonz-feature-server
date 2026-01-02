@@ -34,7 +34,7 @@
     "@jambonz/speech-utils": "^0.2.26",
     "@jambonz/stats-collector": "^0.1.10",
     "@jambonz/time-series": "^0.2.15",
-    "@jambonz/verb-specifications": "^0.0.122",
+    "@jambonz/verb-specifications": "^0.0.123",
     "@modelcontextprotocol/sdk": "^1.9.0",
     "@opentelemetry/api": "^1.8.0",
     "@opentelemetry/exporter-jaeger": "^1.23.0",
