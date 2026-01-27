@@ -31,7 +31,8 @@
     "SayLegacy": "say:legacy",
     "Stream": "stream",
     "Tag": "tag",
-    "Transcribe": "transcribe"
+    "Transcribe": "transcribe",
+    "NoiseIsolation": "noiseIsolation"
   },
   "AllowedSipRecVerbs": ["answer", "config", "gather", "transcribe", "listen", "tag", "hangup", "sip:decline"],
   "AllowedConfirmSessionVerbs": ["config", "gather", "plays", "say", "tag"],
