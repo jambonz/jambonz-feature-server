@@ -60,7 +60,7 @@
     "short-uuid": "^5.1.0",
     "sinon": "^17.0.1",
     "to-snake-case": "^1.0.0",
-    "undici": "^7.5.0",
+    "undici": "^7.18.2",
     "verify-aws-sns-signature": "^0.1.0",
     "ws": "^8.18.0",
     "xml2js": "^0.6.2"
