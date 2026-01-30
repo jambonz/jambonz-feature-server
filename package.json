@@ -58,7 +58,7 @@
     "polly-ssml-split": "^0.1.0",
     "sdp-transform": "^2.15.0",
     "short-uuid": "^5.1.0",
-    "sinon": "^17.0.1",
+    "sinon": "^21.0.1",
     "to-snake-case": "^1.0.0",
     "undici": "^7.5.0",
     "verify-aws-sns-signature": "^0.1.0",
