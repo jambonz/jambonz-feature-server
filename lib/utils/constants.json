@@ -94,7 +94,20 @@
   "DeepgramTranscriptionEvents": {
     "Transcription": "deepgram_transcribe::transcription",
     "ConnectFailure": "deepgram_transcribe::connect_failed",
-    "Connect": "deepgram_transcribe::connect"
+    "Connect": "deepgram_transcribe::connect",
+    "Error": "deepgram_transcribe::error"
+  },
+  "DeepgramfluxTranscriptionEvents": {
+    "Transcription": "deepgramflux_transcribe::transcription",
+    "ConnectFailure": "deepgramflux_transcribe::connect_failed",
+    "Connect": "deepgramflux_transcribe::connect",
+    "Error": "deepgramflux_transcribe::error"
+  },
+  "GladiaTranscriptionEvents": {
+    "Transcription": "gladia_transcribe::transcription",
+    "ConnectFailure": "gladia_transcribe::connect_failed",
+    "Connect": "gladia_transcribe::connect",
+    "Error": "gladia_transcribe::error"
   },
   "SonioxTranscriptionEvents": {
     "Transcription": "soniox_transcribe::transcription",
@@ -162,6 +175,12 @@
     "ConnectFailure": "assemblyai_transcribe::connect_failed",
     "Connect": "assemblyai_transcribe::connect"
   },
+  "HoundifyTranscriptionEvents": {
+    "Transcription": "houndify_transcribe::transcription",
+    "Error": "houndify_transcribe::error",
+    "ConnectFailure": "houndify_transcribe::connect_failed",
+    "Connect": "houndify_transcribe::connect"
+  },
   "VoxistTranscriptionEvents": {
     "Transcription": "voxist_transcribe::transcription",
     "Error": "voxist_transcribe::error",
@@ -176,6 +195,9 @@
   },
   "VadDetection": {
     "Detection": "vad_detect:detection"
+  },
+  "SileroVadDetection": {
+    "Detection": "vad_silero:detect"
   },
   "ListenEvents": {
     "Connect": "mod_audio_fork::connect",
@@ -289,6 +311,11 @@
     "ConnectFailure": "deepgram_tts_streaming::connect_failed",
     "Connect": "deepgram_tts_streaming::connect"
   },
+  "GoogleTtsStreamingEvents": {
+    "Empty": "google_tts_streaming::empty",
+    "ConnectFailure": "google_tts_streaming::connect_failed",
+    "Connect": "google_tts_streaming::connect"
+  },
   "CartesiaTtsStreamingEvents": {
     "Empty": "cartesia_tts_streaming::empty",
     "ConnectFailure": "cartesia_tts_streaming::connect_failed",
@@ -313,7 +340,8 @@
     "Empty": "tts_streaming::empty",
     "Pause": "tts_streaming::pause",
     "Resume": "tts_streaming::resume",
-    "ConnectFailure": "tts_streaming::connect_failed"
+    "ConnectFailure": "tts_streaming::connect_failed",
+    "Connected": "tts_streaming::connected"
   },
   "TtsStreamingConnectionStatus": {
     "NotConnected": "not_connected",
@@ -333,5 +361,8 @@
   "WS_CLOSE_CODES": {
     "NormalClosure": 1000,
     "GoingAway": 1001
-  }
+  },
+  "NON_FANTAL_ERRORS": [
+    "File Not Found"
+  ]
 }

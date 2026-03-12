@@ -58,6 +58,46 @@ test('\'refer\' tests w/202 and NOTIFY', {timeout: 25000}, async(t) => {
   }
 });
 
+test('\'refer\' tests tel:', {timeout: 25000}, async(t) => {
+  clearModule.all();
+  const {srf, disconnect} = require('../app');
+
+  try {
+    await connect(srf);
+
+    // GIVEN
+    const verbs = [
+      {
+        verb: 'say',
+        text: 'silence_stream://100'
+      },
+      {
+        verb: 'sip:refer',
+        referTo: 'tel:+1234567890',
+        actionHook: '/actionHook'
+      }
+    ];
+    const noVerbs = [];
+
+    const from = 'refer_with_tel';
+    await provisionCallHook(from, verbs);
+    await provisionActionHook(from, noVerbs)
+
+    // THEN
+    await sippUac('uac-refer-with-notify.xml', '172.38.0.10', from);
+    t.pass('refer: successfully received 202 Accepted');
+    await sleepFor(1000);
+    const obj  = await getJSON(`http:127.0.0.1:3100/lastRequest/${from}_actionHook`);
+    t.ok(obj.body.final_referred_call_status === 200, 'refer: successfully received NOTIFY with 200 OK');
+    // console.log(`obj: ${JSON.stringify(obj)}`);
+    disconnect();
+  } catch (err) {
+    console.log(`error received: ${err}`);
+    disconnect();
+    t.error(err);
+  }
+});
+
 test('\'refer\' tests w/202 but no NOTIFY', {timeout: 25000}, async(t) => {
   clearModule.all();
   const {srf, disconnect} = require('../app');
