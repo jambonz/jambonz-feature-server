@@ -3,7 +3,7 @@
   "version": "0.9.5",
   "main": "app.js",
   "engines": {
-    "node": ">= 18.x"
+    "node": ">= 20.x"
   },
   "keywords": [
     "sip",
@@ -46,21 +46,21 @@
     "@opentelemetry/sdk-trace-node": "^1.23.0",
     "@opentelemetry/semantic-conventions": "^1.23.0",
     "bent": "^7.3.12",
-    "debug": "^4.3.4",
+    "debug": "^4.4.3",
     "deepcopy": "^2.1.0",
     "drachtio-fsmrf": "^4.1.2",
     "drachtio-srf": "^5.0.20",
-    "express": "^4.19.2",
+    "express": "^4.22.1",
     "express-validator": "^7.0.1",
     "moment": "^2.30.1",
     "parse-url": "^9.2.0",
-    "pino": "^10.1.0",
+    "pino": "^10.3.1",
     "polly-ssml-split": "^0.1.0",
     "sdp-transform": "^2.15.0",
     "short-uuid": "^5.1.0",
     "sinon": "^17.0.1",
     "to-snake-case": "^1.0.0",
-    "undici": "^7.5.0",
+    "undici": "^7.24.5",
     "verify-aws-sns-signature": "^0.1.0",
     "ws": "^8.18.0",
     "xml2js": "^0.6.2"
