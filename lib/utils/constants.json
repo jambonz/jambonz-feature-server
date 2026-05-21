@@ -179,7 +179,8 @@
     "Transcription": "houndify_transcribe::transcription",
     "Error": "houndify_transcribe::error",
     "ConnectFailure": "houndify_transcribe::connect_failed",
-    "Connect": "houndify_transcribe::connect"
+    "Connect": "houndify_transcribe::connect",
+    "EoqVadTriggered": "houndify_transcribe::eoq_vad_triggered"
   },
   "VoxistTranscriptionEvents": {
     "Transcription": "voxist_transcribe::transcription",
