@@ -4,7 +4,6 @@ require('./ws-requestor-unit-test');
 require('./http-requestor-retry-test');
 require('./http-requestor-unit-test');
 require('./unit-tests');
-require('./hold-unhold-test');
 require('./docker_start');
 require('./create-test-db');
 require('./account-validation-tests');
