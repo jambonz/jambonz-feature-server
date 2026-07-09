@@ -24,6 +24,7 @@ Configuration is provided via environment variables:
 |HTTP_IP| IP Address for API requests from jambonz-api-server |no|
 |JAMBONES_GATHER_EARLY_HINTS_MATCH| if true and hints are provided, gather will opportunistically review interim transcripts if possible to reduce ASR latency |no|
 |JAMBONES_FREESWITCH| IP:port:secret for Freeswitch server (e.g. '127.0.0.1:8021:JambonzR0ck$'|yes|
+|JAMBONES_HOLD_UNHOLD_EVENTS| if set, surface in-dialog hold/un-hold: emits a 'hold'/'unhold' event and, when sipRequestWithinDialogHook is configured, delivers it to the application. Disabled when unset|no|
 |JAMBONES_LOGLEVEL| log level for application, 'info' or 'debug'|no|
 |JAMBONES_MYSQL_HOST| mysql host|yes|
 |JAMBONES_MYSQL_USER| mysql username|yes|
