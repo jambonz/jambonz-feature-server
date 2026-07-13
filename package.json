@@ -57,7 +57,7 @@
     "pino": "^10.3.1",
     "polly-ssml-split": "^0.1.0",
     "sdp-transform": "^2.15.0",
-    "short-uuid": "^5.1.0",
+    "short-uuid": "^6.0.0",
     "sinon": "^17.0.1",
     "to-snake-case": "^1.0.0",
     "undici": "^7.24.5",
