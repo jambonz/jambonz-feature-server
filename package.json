@@ -62,7 +62,7 @@
     "to-snake-case": "^1.0.0",
     "undici": "^7.24.5",
     "verify-aws-sns-signature": "^0.1.0",
-    "ws": "^8.18.0",
+    "ws": "^8.21.1",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
