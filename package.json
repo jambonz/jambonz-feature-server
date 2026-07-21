@@ -43,7 +43,7 @@
     "@opentelemetry/instrumentation": "^0.50.0",
     "@opentelemetry/resources": "^1.23.0",
     "@opentelemetry/sdk-trace-base": "^1.23.0",
-    "@opentelemetry/sdk-trace-node": "^1.23.0",
+    "@opentelemetry/sdk-trace-node": "^2.0.0",
     "@opentelemetry/semantic-conventions": "^1.23.0",
     "bent": "^7.3.12",
     "debug": "^4.4.3",
