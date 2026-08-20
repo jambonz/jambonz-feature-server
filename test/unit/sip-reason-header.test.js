@@ -38,6 +38,12 @@ const makeCallInfo = () => new CallInfo({
   traceId: '615e314ac26241863b905931d9aad440'
 });
 
+
+/* mirrors filterNullsAndObjects in realtimedb-helpers, which decides what actually
+   reaches the redis call hash via hmset */
+const redisFields = (callInfo) => Object.keys(callInfo)
+  .filter((k) => callInfo[k] !== null && typeof callInfo[k] !== 'undefined' && typeof callInfo[k] !== 'object');
+
 /* the payload a call status webhook consumer actually receives */
 const statusPayload = (callInfo) => snakeCaseKeys(callInfo.toJSON(), ['customerData', 'sip', 'env_vars', 'args']);
 
@@ -125,5 +131,28 @@ test('status changes with no SIP message at all are handled', () => {
   const callInfo = makeCallInfo();
   callInfo.duration = 7;
   callInfo.updateCallStatus(CallStatus.Completed, 200, 'OK', reasonHeaderFromSipMessage(undefined));
+  assert.ok(!('sip_reason_header' in statusPayload(callInfo)));
+});
+
+
+test('clearing the Reason header overwrites the stale value in the redis call record', () => {
+  const callInfo = makeCallInfo();
+  const prov = makeSipMessage('SIP/2.0 183 Session Progress', ['Reason: Q.850 ;cause=31']);
+  const ok = makeSipMessage('SIP/2.0 200 OK');
+
+  callInfo.updateCallStatus(CallStatus.EarlyMedia, 183, 'Session Progress', reasonHeaderFromSipMessage(prov));
+  assert.ok(redisFields(callInfo).includes('sipReasonHeader'));
+
+  callInfo.updateCallStatus(CallStatus.InProgress, 200, 'OK', reasonHeaderFromSipMessage(ok));
+
+  /* The redis hash is written with hmset, which MERGES: a key that is absent or
+     undefined leaves whatever was written earlier in place, so GET /Calls/:sid would
+     report a cause from a previous status change. The cleared value must therefore be
+     an empty string - present, falsy, and able to survive the null/undefined filter. */
+  assert.strictEqual(callInfo.sipReasonHeader, '', 'cleared header must be an empty string, not undefined');
+  assert.ok(redisFields(callInfo).includes('sipReasonHeader'),
+    'sipReasonHeader must survive the redis filter so hmset overwrites the stale value');
+
+  /* ...while the webhook payload still omits the key entirely */
   assert.ok(!('sip_reason_header' in statusPayload(callInfo)));
 });
