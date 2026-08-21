@@ -135,31 +135,28 @@ test('status changes with no SIP message at all are handled', () => {
 });
 
 
-test('clearing the Reason header overwrites the stale value in the redis call record', () => {
+test('the Reason header never enters the redis call record', () => {
   const callInfo = makeCallInfo();
-  const prov = makeSipMessage('SIP/2.0 183 Session Progress', ['Reason: Q.850 ;cause=31']);
-  const ok = makeSipMessage('SIP/2.0 200 OK');
+  const res = makeSipMessage('SIP/2.0 480 Temporarily Unavailable', ['Reason: Q.850 ;cause=31']);
 
-  callInfo.updateCallStatus(CallStatus.EarlyMedia, 183, 'Session Progress', reasonHeaderFromSipMessage(prov));
-  assert.strictEqual(callInfo.toRedisJSON().sipReasonHeader, 'Q.850 ;cause=31');
+  callInfo.updateCallStatus(CallStatus.Failed, 480, 'Temporarily Unavailable', reasonHeaderFromSipMessage(res));
 
-  callInfo.updateCallStatus(CallStatus.InProgress, 200, 'OK', reasonHeaderFromSipMessage(ok));
+  /* It belongs on the webhook... */
+  assert.strictEqual(statusPayload(callInfo).sip_reason_header, 'Q.850 ;cause=31');
 
-  /* The redis hash is written with hmset, which MERGES: a key that is absent or undefined
-     leaves whatever an earlier status change wrote, so GET /Calls/:sid would report a cause
-     from the wrong event. Assert through BOTH writers, because they send different shapes
-     and only one of them is fixed by storing '' on the instance:
-       - CallSession (inbound, REST-created, adulting) sends toRedisJSON()
-       - SingleDialer (dial-verb child legs) sends the instance itself
-     Asserting only the instance would pass while the CallSession path stayed broken. */
-  assert.ok(redisFields(callInfo.toRedisJSON()).includes('sipReasonHeader'),
-    'CallSession writes toRedisJSON(); the key must be present so hmset overwrites the stale value');
-  assert.strictEqual(callInfo.toRedisJSON().sipReasonHeader, '');
-  assert.ok(redisFields(callInfo).includes('sipReasonHeader'),
-    'SingleDialer writes the instance; the key must be present there too');
-  assert.strictEqual(callInfo.sipReasonHeader, '');
+  /* ...and must be kept out of the redis call record, which is written with hmset - a
+     MERGE. A field that can go from set back to unset would otherwise strand a cause from
+     an earlier status change where GET /Calls/:sid reports it.
+     Both writers must exclude it, and they project from DIFFERENT bases, so assert both:
+       - CallSession (inbound, REST-created, adulting) writes the webhook payload
+       - SingleDialer (dial-verb child legs) writes the CallInfo instance itself
+     Checking only one would pass while the other kept writing the field. */
+  assert.ok(!redisFields(CallInfo.toRedisRecord(callInfo.toJSON())).includes('sipReasonHeader'),
+    'CallSession must not write sipReasonHeader to the call record');
+  assert.ok(!redisFields(CallInfo.toRedisRecord(callInfo)).includes('sipReasonHeader'),
+    'SingleDialer must not write sipReasonHeader to the call record');
 
-  /* ...while the webhook payload still omits the key entirely */
-  assert.ok(!('sip_reason_header' in statusPayload(callInfo)));
-  assert.ok(!('sipReasonHeader' in callInfo.toJSON()), 'toJSON must keep the key out of the webhook');
+  /* the exclusion must not take anything else with it */
+  assert.ok(redisFields(CallInfo.toRedisRecord(callInfo.toJSON())).includes('sipReason'));
+  assert.ok(redisFields(CallInfo.toRedisRecord(callInfo.toJSON())).includes('callStatus'));
 });
