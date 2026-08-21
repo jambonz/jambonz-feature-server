@@ -147,10 +147,11 @@ test('the Reason header never enters the redis call record', () => {
   /* ...and must be kept out of the redis call record, which is written with hmset - a
      MERGE. A field that can go from set back to unset would otherwise strand a cause from
      an earlier status change where GET /Calls/:sid reports it.
-     Both writers must exclude it, and they project from DIFFERENT bases, so assert both:
-       - CallSession (inbound, REST-created, adulting) writes the webhook payload
-       - SingleDialer (dial-verb child legs) writes the CallInfo instance itself
-     Checking only one would pass while the other kept writing the field. */
+     There is more than one writer and they project from DIFFERENT bases - the status
+     change and recording-flag writes send the webhook payload, SingleDialer sends the
+     CallInfo instance - so assert the projection holds for both shapes. The sessions apply
+     it by wrapping updateCallStatus at the boundary rather than at each call site, so a
+     newly added writer cannot bypass it by forgetting to ask. */
   assert.ok(!redisFields(CallInfo.toRedisRecord(callInfo.toJSON())).includes('sipReasonHeader'),
     'CallSession must not write sipReasonHeader to the call record');
   assert.ok(!redisFields(CallInfo.toRedisRecord(callInfo)).includes('sipReasonHeader'),
