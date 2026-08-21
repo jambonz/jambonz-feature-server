@@ -141,18 +141,25 @@ test('clearing the Reason header overwrites the stale value in the redis call re
   const ok = makeSipMessage('SIP/2.0 200 OK');
 
   callInfo.updateCallStatus(CallStatus.EarlyMedia, 183, 'Session Progress', reasonHeaderFromSipMessage(prov));
-  assert.ok(redisFields(callInfo).includes('sipReasonHeader'));
+  assert.strictEqual(callInfo.toRedisJSON().sipReasonHeader, 'Q.850 ;cause=31');
 
   callInfo.updateCallStatus(CallStatus.InProgress, 200, 'OK', reasonHeaderFromSipMessage(ok));
 
-  /* The redis hash is written with hmset, which MERGES: a key that is absent or
-     undefined leaves whatever was written earlier in place, so GET /Calls/:sid would
-     report a cause from a previous status change. The cleared value must therefore be
-     an empty string - present, falsy, and able to survive the null/undefined filter. */
-  assert.strictEqual(callInfo.sipReasonHeader, '', 'cleared header must be an empty string, not undefined');
+  /* The redis hash is written with hmset, which MERGES: a key that is absent or undefined
+     leaves whatever an earlier status change wrote, so GET /Calls/:sid would report a cause
+     from the wrong event. Assert through BOTH writers, because they send different shapes
+     and only one of them is fixed by storing '' on the instance:
+       - CallSession (inbound, REST-created, adulting) sends toRedisJSON()
+       - SingleDialer (dial-verb child legs) sends the instance itself
+     Asserting only the instance would pass while the CallSession path stayed broken. */
+  assert.ok(redisFields(callInfo.toRedisJSON()).includes('sipReasonHeader'),
+    'CallSession writes toRedisJSON(); the key must be present so hmset overwrites the stale value');
+  assert.strictEqual(callInfo.toRedisJSON().sipReasonHeader, '');
   assert.ok(redisFields(callInfo).includes('sipReasonHeader'),
-    'sipReasonHeader must survive the redis filter so hmset overwrites the stale value');
+    'SingleDialer writes the instance; the key must be present there too');
+  assert.strictEqual(callInfo.sipReasonHeader, '');
 
   /* ...while the webhook payload still omits the key entirely */
   assert.ok(!('sip_reason_header' in statusPayload(callInfo)));
+  assert.ok(!('sipReasonHeader' in callInfo.toJSON()), 'toJSON must keep the key out of the webhook');
 });
