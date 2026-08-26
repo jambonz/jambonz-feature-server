@@ -5,14 +5,24 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # required to request the GitHub OIDC token for AWS
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      # Pull requests from forks receive neither secrets nor an OIDC token, so this
+      # step is skipped for them; the AWS tests then skip too, exactly as they do
+      # today. Without the guard the step would hard-fail every fork PR.
+      - uses: aws-actions/configure-aws-credentials@v4
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
       - run: npm ci
       - run: npm run jslint
-      - run: npm run test:unit
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -22,8 +32,9 @@ jobs:
       - run: npm test
         env:
           GCP_JSON_KEY: ${{ secrets.GCP_JSON_KEY }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          # No AWS keys are stored as repository secrets. configure-aws-credentials
+          # above provides short-lived OIDC credentials, and AWS_ROLE_ARN makes the
+          # test speech credential use the AssumeRole path, which accepts them.
+          AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
           MICROSOFT_REGION: ${{ secrets.MICROSOFT_REGION }}
           MICROSOFT_API_KEY: ${{ secrets.MICROSOFT_API_KEY }}

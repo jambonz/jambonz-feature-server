@@ -7,6 +7,7 @@ const {provisionCallHook} = require('./utils')
 const {
   GCP_JSON_KEY,
   AWS_ACCESS_KEY_ID,
+  AWS_ROLE_ARN,
   AWS_SECRET_ACCESS_KEY,
   SONIOX_API_KEY,
   DEEPGRAM_API_KEY,
@@ -190,7 +191,7 @@ test('\'gather\' test - microsoft', async(t) => {
 });
 
 test('\'gather\' test - aws', async(t) => {
-  if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY) {
+  if (!AWS_ROLE_ARN && (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY)) {
     t.pass('skipping aws tests');
     return t.end();
   }

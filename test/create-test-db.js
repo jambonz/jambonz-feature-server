@@ -5,6 +5,7 @@ const {encrypt} = require('../lib/utils/encrypt-decrypt');
 const {
   GCP_JSON_KEY,
   AWS_ACCESS_KEY_ID,
+  AWS_ROLE_ARN,
   AWS_SECRET_ACCESS_KEY,
   AWS_REGION,
   MICROSOFT_REGION,
@@ -32,7 +33,19 @@ test('creating schema', (t) => {
       t.pass('adding google credentials');
       sql.push(`UPDATE speech_credentials SET credential='${google_credential}' WHERE vendor='google';`);
     }
-    if (AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY) {
+    // Prefer role_arn. Under GitHub OIDC the ambient credentials are temporary, and
+    // speech-utils' getAwsAuthToken calls GetSessionToken on its access-key branch --
+    // which AWS rejects for session credentials. The role_arn branch calls AssumeRole
+    // instead, which works with temporary credentials.
+    if (AWS_ROLE_ARN) {
+      const aws_credential = encrypt(JSON.stringify({
+        role_arn: AWS_ROLE_ARN,
+        aws_region: AWS_REGION
+      }));
+      t.pass('adding aws credentials (role_arn)');
+      sql.push(`UPDATE speech_credentials SET credential='${aws_credential}' WHERE vendor='aws';`);
+    }
+    else if (AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY) {
       const aws_credential = encrypt(JSON.stringify({
         access_key_id: AWS_ACCESS_KEY_ID,
         secret_access_key: AWS_SECRET_ACCESS_KEY,
