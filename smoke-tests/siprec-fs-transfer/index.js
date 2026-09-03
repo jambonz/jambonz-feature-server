@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Standalone smoke test for SIPREC recording across a cross-feature-server dequeue.
  * Needs a real multi-feature-server deployment, so it is deliberately outside the
@@ -9,6 +7,7 @@
 const http = require('http');
 const crypto = require('crypto');
 const FakeSrs = require('./fake-srs');
+const FakeEndpoint = require('./fake-endpoint');
 
 const cfg = {
   httpPort: parseInt(process.env.SMOKE_HTTP_PORT || '3111', 10),
@@ -22,6 +21,9 @@ const cfg = {
   agentTo: process.env.SMOKE_AGENT_TO_JSON ?
     JSON.parse(process.env.SMOKE_AGENT_TO_JSON) :
     (process.env.SMOKE_AGENT_SIP_URI ? {type: 'sip', sipUri: process.env.SMOKE_AGENT_SIP_URI} : null),
+  mode: process.env.SMOKE_MODE || 'rest',
+  epSipPort: parseInt(process.env.SMOKE_EP_SIP_PORT || '5094', 10),
+  epRtpPortBase: parseInt(process.env.SMOKE_EP_RTP_PORT_BASE || '40200', 10),
   queue: process.env.SMOKE_QUEUE || 'smoke-siprec',
   settleSecs: parseInt(process.env.SMOKE_SETTLE_SECS || '15', 10),
   hangupBy: process.env.SMOKE_HANGUP_BY || 'jambonz',
@@ -36,7 +38,7 @@ const checkConfig = () => {
   if (!cfg.httpAdvertise) missing.push('SMOKE_HTTP_ADVERTISE');
   if (!cfg.srsAdvertiseIp) missing.push('SMOKE_SRS_ADVERTISE_IP');
   if (!cfg.accountSid) missing.push('SMOKE_ACCOUNT_SID');
-  if (!cfg.agentTo) missing.push('SMOKE_AGENT_SIP_URI (or SMOKE_AGENT_TO_JSON)');
+  if (!cfg.agentTo && cfg.mode !== 'rest') missing.push('SMOKE_AGENT_SIP_URI (or SMOKE_AGENT_TO_JSON)');
   if (cfg.featureServers.length < 2) missing.push('SMOKE_FEATURE_SERVERS (need at least 2)');
   if (missing.length) {
     console.error(`missing configuration: ${missing.join(', ')}\nsee README.md`);
@@ -79,8 +81,8 @@ const callerFs = (req) => {
   return cfg.featureServers.find((fs) => fs.split(':')[0] === addr) || addr;
 };
 
-const verbsForInbound = (srsUrl) => [
-  {verb: 'answer'},
+const verbsForInbound = (srsUrl, needsAnswer) => [
+  ...(needsAnswer ? [{verb: 'answer'}] : []),
   {
     verb: 'config',
     record: {
@@ -118,7 +120,7 @@ const startAppServer = (srs) => {
           state.inbound = {callSid: payload.call_sid, fs};
           state.tEnqueued = Date.now();
           log(`inbound call ${payload.call_sid} answered on feature server ${fs}`);
-          return reply(verbsForInbound(srs.srsUrl));
+          return reply(verbsForInbound(srs.srsUrl, cfg.mode !== 'rest'));
 
         case '/wait':
           /* after the REFER the receiving feature server re-runs enqueue and fetches
@@ -158,19 +160,18 @@ const pickOtherFs = (fsA) => {
   return other;
 };
 
-const createAgentCall = async(fsB) => {
-  const url = `http://${fsB}/v1/createCall`;
+const createCall = async(fs, {to, hook, label}) => {
   const body = {
     account_sid: cfg.accountSid,
     from: cfg.agentFrom,
-    to: cfg.agentTo,
-    call_hook: {url: `http://${cfg.httpAdvertise}/agent`, method: 'POST'},
+    to,
+    call_hook: {url: `http://${cfg.httpAdvertise}${hook}`, method: 'POST'},
     call_status_hook: {url: `http://${cfg.httpAdvertise}/status`, method: 'POST'}
   };
-  log(`creating agent call on feature server ${fsB}`);
-  const res = await postJson(url, body);
+  log(`creating ${label} call on feature server ${fs}`);
+  const res = await postJson(`http://${fs}/v1/createCall`, body);
   if (res.status !== 201 && res.status !== 200) {
-    throw new Error(`createCall on ${fsB} failed: ${res.status} ${res.body}`);
+    throw new Error(`createCall on ${fs} failed: ${res.status} ${res.body}`);
   }
   return res;
 };
@@ -192,7 +193,7 @@ const hangup = async() => {
   log('could not hang up via the feature server API - hang up the caller manually');
 };
 
-const report = (srs) => {
+const report = (srs, endpoint) => {
   const t0 = state.tEnqueued;
   const tTransfer = state.tWaitHookFromFsB || state.tDequeueReturned;
   const before = srs.window(Math.min(t0 + 2000, tTransfer - 1000), tTransfer);
@@ -217,6 +218,10 @@ const report = (srs) => {
     after.perStream.map((s) => `stream ${s.label} ${s.rate.toFixed(0)}/s`).join(', '));
   console.log(`packet rate         : ${rate(before).toFixed(0)}/s before -> ${rate(after).toFixed(0)}/s after`);
   console.log(`longest silence after transfer: ${after.longestGapMs} ms`);
+  if (endpoint && endpoint.answered) {
+    console.log(`test endpoint      : answered ${endpoint.answered} leg(s), ` +
+      `sent ${[...endpoint.calls.values()].reduce((sum, c) => sum + c.sent, 0)} rtp packets`);
+  }
   console.log('events:');
   for (const e of srs.events) {
     console.log(`  +${((e.at - t0) / 1000).toFixed(1)}s  ${e.event}${e.detail ? ` (${e.detail})` : ''}`);
@@ -268,20 +273,38 @@ const main = async() => {
     advertiseIp: cfg.srsAdvertiseIp
   });
   await srs.start();
+  const endpoint = new FakeEndpoint(log, {
+    sipPort: cfg.epSipPort,
+    rtpPortBase: cfg.epRtpPortBase,
+    advertiseIp: cfg.srsAdvertiseIp
+  });
+  if (cfg.mode === 'rest') await endpoint.start();
   const server = await startAppServer(srs);
   log(`app hooks listening on http://${cfg.httpAdvertise} (local port ${cfg.httpPort})`);
-  console.log('');
-  console.log('point a jambonz application at this call hook and place ONE inbound call:');
-  console.log(`  call hook        http://${cfg.httpAdvertise}/inbound`);
-  console.log(`  call status hook http://${cfg.httpAdvertise}/status`);
-  console.log('the caller must transmit audio continuously (sipp with a pcap, or a softphone');
-  console.log('playing music) - a muted caller makes the media check meaningless.');
-  console.log('');
+
+  if (cfg.mode === 'rest') {
+    /* the test dials its own endpoint for both legs, so it needs nothing configured
+       in the portal - the recorded leg is a REST call through sbc-outbound */
+    await createCall(cfg.featureServers[0], {
+      to: {type: 'sip', sipUri: endpoint.uri('caller')},
+      hook: '/inbound',
+      label: 'recorded'
+    });
+  }
+  else {
+    console.log('');
+    console.log('point a jambonz application at this call hook and place ONE inbound call:');
+    console.log(`  call hook        http://${cfg.httpAdvertise}/inbound`);
+    console.log(`  call status hook http://${cfg.httpAdvertise}/status`);
+    console.log('the caller must transmit audio continuously - a muted caller makes the');
+    console.log('media check meaningless.');
+    console.log('');
+  }
 
   const deadline = Date.now() + (cfg.waitSecs * 1000);
   while (!state.inbound && Date.now() < deadline) await sleep(500);
   if (!state.inbound) {
-    console.error(`no inbound call within ${cfg.waitSecs}s, giving up`);
+    console.error(`no call reached the app within ${cfg.waitSecs}s, giving up`);
     process.exit(2);
   }
 
@@ -293,7 +316,11 @@ const main = async() => {
     console.error(`inbound call landed on ${state.inbound.fs} and no other feature server is configured`);
     process.exit(2);
   }
-  await createAgentCall(state.fsB);
+  await createCall(state.fsB, {
+    to: cfg.mode === 'rest' ? {type: 'sip', sipUri: endpoint.uri('agent')} : cfg.agentTo,
+    hook: '/agent',
+    label: 'agent'
+  });
 
   const bridgeDeadline = Date.now() + 45000;
   while (!state.tDequeueReturned && Date.now() < bridgeDeadline) await sleep(250);
@@ -309,8 +336,9 @@ const main = async() => {
   const byeDeadline = Date.now() + 10000;
   while (!srs.events.some((e) => e.event === 'bye') && Date.now() < byeDeadline) await sleep(250);
 
-  const passed = report(srs);
+  const passed = report(srs, endpoint);
   await srs.stop();
+  await endpoint.stop();
   server.close();
   process.exit(passed ? 0 : 1);
 };

@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Minimal SIPREC recorder: answers the SIPREC INVITE, then counts the RTP it is
  * forked. Enough to tell "still receiving media" from "went silent", which is
@@ -8,35 +6,9 @@
 
 const dgram = require('dgram');
 const Emitter = require('events');
+const {CRLF, parseMsg, buildResponse, extractSdp} = require('./sip');
 
-const CRLF = '\r\n';
 const BUCKET_MS = 250;
-
-const parseMsg = (buf) => {
-  const s = buf.toString('utf8');
-  const i = s.indexOf(CRLF + CRLF);
-  const head = i === -1 ? s : s.slice(0, i);
-  const body = i === -1 ? '' : s.slice(i + 4);
-  const [startLine, ...rawHeaders] = head.split(CRLF);
-  const headers = {};
-  for (const l of rawHeaders) {
-    const m = /^([^:]+):\s*(.*)$/.exec(l);
-    if (m && headers[m[1].trim().toLowerCase()] === undefined) {
-      headers[m[1].trim().toLowerCase()] = m[2].trim();
-    }
-  }
-  const [method, uri] = startLine.split(/\s+/);
-  return {method, uri, startLine, rawHeaders, headers, body};
-};
-
-/* the SDP we care about is one part of the SIPREC multipart body */
-const extractSdp = (body) => {
-  const i = body.indexOf('v=0');
-  if (i === -1) return null;
-  const rest = body.slice(i);
-  const m = /\r?\n--/.exec(rest);
-  return m ? rest.slice(0, m.index) : rest;
-};
 
 const answerPayloads = (fmt) => {
   const offered = fmt.trim().split(/\s+/);
@@ -183,23 +155,12 @@ class FakeSrs extends Emitter {
     return lines.join(CRLF) + CRLF;
   }
 
-  _response(req, status, reason, {body, contentType} = {}) {
-    const out = [`SIP/2.0 ${status} ${reason}`];
-    for (const l of req.rawHeaders) {
-      const name = l.split(':')[0].trim().toLowerCase();
-      if (['via', 'from', 'call-id', 'cseq', 'record-route'].includes(name)) out.push(l);
-    }
-    let to = req.headers['to'];
-    if (!/;tag=/i.test(to)) to += `;tag=${this.toTag}`;
-    out.push(`To: ${to}`);
-    out.push(`Contact: <sip:${this.advertiseIp}:${this.sipPort}>`);
-    out.push('User-Agent: jambonz-smoke-srs');
-    if (body) {
-      out.push(`Content-Type: ${contentType}`);
-      out.push(`Content-Length: ${Buffer.byteLength(body)}`);
-    }
-    else out.push('Content-Length: 0');
-    return out.join(CRLF) + CRLF + CRLF + (body || '');
+  _response(req, status, reason, opts = {}) {
+    return buildResponse(req, status, reason, {
+      ...opts,
+      toTag: this.toTag,
+      contact: `${this.advertiseIp}:${this.sipPort}`
+    });
   }
 
   _send(msg, rinfo) {
