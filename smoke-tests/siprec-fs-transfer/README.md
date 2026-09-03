@@ -37,6 +37,11 @@ It then prints PASS/FAIL with the packet rates it judged on.
 - two or more feature servers, reachable from this host on port 3000
 - this host reachable **from** the feature servers (HTTP hooks) and **from rtpengine**
   (SIP + RTP for the fake SRS)
+- `SMOKE_ACCOUNT_SID`, and nothing else, in the default `rest` mode - the script places
+  both legs itself and answers them with its own endpoint
+
+In `inbound` mode only, additionally:
+
 - an application in the jambonz portal whose call hook points at this script
 - a caller that transmits audio continuously - sipp with a pcap, or a softphone playing
   music. A muted caller sends no RTP, and the media check then proves nothing (the

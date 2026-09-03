@@ -45,22 +45,28 @@ class FakeSrs extends Emitter {
 
   get srsUrl() { return `sip:${this.advertiseIp}:${this.sipPort}`; }
 
-  /* packets/sec seen on any stream over a window, and the longest silent stretch in it */
+  /* packets/sec per stream over a window, and the longest stretch in it with no
+     packet on ANY stream - merged, because one side of a call can legitimately be
+     quiet while the recording is fine */
   window(from, to) {
     const perStream = this.streams.map((s) => {
       const buckets = s.buckets.filter((b) => b.t >= from && b.t < to);
       const packets = buckets.reduce((sum, b) => sum + b.n, 0);
       return {label: s.label, packets, rate: packets / Math.max(1, (to - from) / 1000)};
     });
+
+    const busy = this.streams
+      .flatMap((s) => s.buckets.filter((b) => b.t >= from && b.t < to && b.n > 0))
+      .map((b) => b.t)
+      .sort((a, b) => a - b);
     let longestGapMs = 0;
-    for (const s of this.streams) {
-      let last = from;
-      for (const b of s.buckets.filter((b) => b.t >= from && b.t < to && b.n > 0)) {
-        longestGapMs = Math.max(longestGapMs, b.t - last);
-        last = b.t + BUCKET_MS;
-      }
-      longestGapMs = Math.max(longestGapMs, to - last);
+    let last = from;
+    for (const t of busy) {
+      longestGapMs = Math.max(longestGapMs, t - last);
+      last = Math.max(last, t + BUCKET_MS);
     }
+    longestGapMs = Math.max(longestGapMs, to - last);
+
     return {perStream, longestGapMs, totalPackets: perStream.reduce((sum, s) => sum + s.packets, 0)};
   }
 
