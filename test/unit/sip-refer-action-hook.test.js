@@ -6,6 +6,7 @@ const {KillReason} = require('../../lib/utils/constants');
 const proxyquire = require('proxyquire').noCallThru();
 
 const ACTION_HOOK = '/refer-action';
+const EVENT_HOOK = '/refer-event';
 const REFER_TO = '+15551234567';
 const REFER_ACCEPTED = 202;
 const REFER_DECLINED = 603;
@@ -58,8 +59,8 @@ const makeCallSession = (referStatus) => {
   };
 };
 
-const makeTask = () => {
-  const task = new TaskSipRefer(logger, {referTo: REFER_TO, actionHook: ACTION_HOOK});
+const makeTask = (opts = {}) => {
+  const task = new TaskSipRefer(logger, {referTo: REFER_TO, actionHook: ACTION_HOOK, ...opts});
   task.ctx = context.active();
   return task;
 };
@@ -174,6 +175,42 @@ test('exec waits for an in-flight actionHook when a BYE races the final NOTIFY',
   releaseHook();
   await execPromise;
   assert.strictEqual(cs.hookCalls.length, 1, 'actionHook should have been called exactly once');
+});
+
+test('the final NOTIFY status still reaches the actionHook when a BYE races the eventHook round trip', async() => {
+  const cs = makeCallSession(REFER_ACCEPTED);
+  let releaseEvent;
+  const eventGate = new Promise((resolve) => {
+    releaseEvent = resolve;
+  });
+  const recordHook = cs.requestor.request;
+  cs.requestor.request = async(type, hook, params, httpHeaders) => {
+    /* hold the transfer-status eventHook mid round trip so the BYE can race it */
+    if (EVENT_HOOK === hook) await eventGate;
+    return recordHook(type, hook, params, httpHeaders);
+  };
+
+  const task = makeTask({eventHook: EVENT_HOOK});
+  const execPromise = task.exec(cs);
+  await settle();
+
+  /* final NOTIFY arrives; _handleNotify parks awaiting the eventHook round trip */
+  const {req, res} = makeNotify(FINAL_NOTIFY_STATUS);
+  cs.dlg.emit('notify', req, res);
+  await settle();
+
+  /* the BYE lands while that eventHook request is still in flight, killing the task */
+  task.kill(cs);
+  await settle();
+
+  releaseEvent();
+  await execPromise;
+
+  const action = cs.hookCalls.find((c) => ACTION_HOOK === c.hook);
+  assert.ok(action, 'actionHook should have been called');
+  assert.strictEqual(action.params.refer_status, REFER_ACCEPTED);
+  assert.strictEqual(action.params.final_referred_call_status, FINAL_NOTIFY_STATUS,
+    'final_referred_call_status must survive a BYE racing the final NOTIFY eventHook');
 });
 
 test('an actionHook response replaces the application only when the verb was not itself replaced', async() => {
