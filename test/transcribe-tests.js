@@ -6,7 +6,8 @@ const clearModule = require('clear-module');
 const {provisionCallHook} = require('./utils')
 const {
   GCP_JSON_KEY,
-  AWS_ACCESS_KEY_ID,  
+  AWS_ACCESS_KEY_ID,
+  AWS_ROLE_ARN,  
   AWS_SECRET_ACCESS_KEY,
   MICROSOFT_REGION,
   MICROSOFT_API_KEY,
@@ -103,7 +104,7 @@ test('\'transcribe\' test - microsoft', async(t) => {
 });
 
 test('\'transcribe\' test - aws', async(t) => {
-  if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY) {
+  if (!AWS_ROLE_ARN && (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY)) {
     t.pass('skipping aws tests');
     return t.end();
   }

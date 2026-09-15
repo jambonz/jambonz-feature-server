@@ -8,6 +8,9 @@ const {
 } = require('../lib/config');
 const logger = require('pino')({level: JAMBONES_LOGLEVEL});
 
+// The exact message the ws v8 library throws on an opening-handshake timeout (issue #1565).
+const HANDSHAKE_TIMEOUT_MESSAGE = 'Opening handshake has timed out';
+
 // Mock WebSocket specifically for retry testing
 class RetryMockWebSocket {
   static retryScenarios = new Map();
@@ -122,6 +125,15 @@ class RetryMockWebSocket {
             err.code = 'ECONNREFUSED';
           }
           this.eventListeners.get('error')(err);
+        }
+      });
+    } else if (behavior.type === 'handshake-timeout') {
+      // Simulate the ws v8 opening-handshake timeout: a plain Error with no
+      // .code property and .name === 'Error' (see issue #1565).
+      setImmediate(() => {
+        console.log(`RetryMockWebSocket: triggering handshake timeout`);
+        if (this.eventListeners.has('error')) {
+          this.eventListeners.get('error')(new Error(HANDSHAKE_TIMEOUT_MESSAGE));
         }
       });
     } else if (behavior.type === 'success') {
@@ -570,6 +582,82 @@ test('WS Retry - rp=ct (connection timeout) should retry network errors', async 
   t.ok(result, 'ws successfully retried connection timeout and got response');
   t.equal(RetryMockWebSocket.getConnectionAttempts('rc=2&rp=ct'), 2, 'should have made 2 connection attempts');
   t.end();
+});
+
+test('WS Retry - handshake timeout with default (ct) policy should retry and succeed', async (t) => {
+  // GIVEN a handshake-timeout error (ws v8 throws a code-less Error) on the first
+  // attempt, and the default retry policy (no hash params => ct). Regression for #1565:
+  // this error type was never classified as retryable, so the call failed on attempt 1.
+  RetryMockWebSocket.clearScenarios();
+
+  const retryScenario = {
+    attempts: [
+      { type: 'handshake-timeout' },
+      { type: 'success' }
+    ]
+  };
+  RetryMockWebSocket.setRetryScenario('ws://localhost:3000', retryScenario);
+
+  const hook = {
+    url: 'ws://localhost:3000', // No hash parameters - defaults to ct policy
+    username: 'username',
+    password: 'password'
+  };
+
+  const params = {
+    callSid: 'test_handshake_timeout_ct'
+  };
+
+  // WHEN
+  const requestor = new WsRequestor(logger, "account_sid", hook, "webhook_secret");
+  const result = await requestor.request('session:new', hook, params, {});
+
+  // THEN
+  t.ok(result, 'ws retried the handshake timeout under the default ct policy and got a response');
+  t.equal(RetryMockWebSocket.getConnectionAttempts('ws://localhost:3000'), 2,
+    'should have made 2 connection attempts');
+  t.end();
+});
+
+test('WS Retry - handshake timeout with rp=4xx should not retry', async (t) => {
+  // GIVEN a handshake-timeout error but a retry policy that only covers 4xx.
+  // Guards that the #1565 fix buckets the error as ct, not as always-retryable.
+  RetryMockWebSocket.clearScenarios();
+
+  const originalUrl = 'ws://localhost:3000#rc=2&rp=4xx';
+  const cleanUrl = 'ws://localhost:3000';
+  RetryMockWebSocket.setUrlMapping(cleanUrl, originalUrl);
+
+  const retryScenario = {
+    attempts: [
+      { type: 'handshake-timeout' }
+    ]
+  };
+  RetryMockWebSocket.setRetryScenario('rc=2&rp=4xx', retryScenario);
+
+  const hook = {
+    url: originalUrl,
+    username: 'username',
+    password: 'password'
+  };
+
+  const params = {
+    callSid: 'test_handshake_timeout_no_retry'
+  };
+
+  // WHEN & THEN
+  const requestor = new WsRequestor(logger, "account_sid", hook, "webhook_secret");
+  try {
+    await requestor.request('session:new', hook, params, {});
+    t.fail('Should have thrown an error');
+  } catch (err) {
+    const errorMessage = err.message || err.toString() || String(err);
+    t.ok(errorMessage.includes(HANDSHAKE_TIMEOUT_MESSAGE),
+      'ws properly failed without retry for handshake timeout when rp=4xx');
+    t.equal(RetryMockWebSocket.getConnectionAttempts('rc=2&rp=4xx'), 1,
+      'should have made only 1 connection attempt');
+    t.end();
+  }
 });
 
 test('WS Retry - default behavior (no hash params) should use ct policy', async (t) => {
