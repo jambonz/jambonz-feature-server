@@ -104,7 +104,7 @@ test('an empty final arriving after a deferred UtteranceEnd returns the buffer',
   assert.deepStrictEqual(resolved, [{reason: 'speech', transcript: 'pay my bill'}]);
 });
 
-test('UtteranceEnd ahead of a late final waits for it, then returns both (#1088)', async() => {
+test('a final with words after a deferred UtteranceEnd keeps listening for the next UtteranceEnd (#1088)', async() => {
   const {send, resolved} = makeGather();
   await send(firstUtterance);
   await send(results({start: 3, duration: 1.5, is_final: false, words: [{word: 'please', start: 3.8, end: 4.2}]}));
@@ -112,7 +112,11 @@ test('UtteranceEnd ahead of a late final waits for it, then returns both (#1088)
   await send(utteranceEnd);
   assert.deepStrictEqual(resolved, []);
 
+  /* the caller may still be talking, so the words alone must not end the gather */
   await send(results({start: 3, duration: 1.5, is_final: true, words: [{word: 'please', start: 3.8, end: 4.2}]}));
+  assert.deepStrictEqual(resolved, []);
+
+  await send({...utteranceEnd, last_word_end: 4.2});
   assert.deepStrictEqual(resolved, [{reason: 'speech', transcript: 'pay my bill please'}]);
 });
 
