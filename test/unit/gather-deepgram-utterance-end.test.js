@@ -29,10 +29,17 @@ const makeGather = () => {
     _startTimer() {},
     _startAsrTimer() {},
     _clearAsrTimer() {},
-    _resolve: (reason, evt) => resolved.push({reason, transcript: evt.alternatives[0].transcript})
+    _resolve(reason, evt) {
+      this.resolved = true;
+      resolved.push({reason, transcript: evt.alternatives[0].transcript});
+    }
   });
   const fsEvent = {getHeader: () => undefined};
-  const send = (evt) => gather._onTranscription(cs, {}, evt, fsEvent);
+  /* a deferred UtteranceEnd resolves on setImmediate, after the final has been handled */
+  const send = async(evt) => {
+    gather._onTranscription(cs, {}, evt, fsEvent);
+    await new Promise((resolve) => setImmediate(resolve));
+  };
   return {gather, send, resolved};
 };
 
@@ -58,41 +65,63 @@ const firstUtterance = results({
 const strayInterim = results({start: 3, duration: 1.5, is_final: false, words: [{word: 'uh', start: 4.0, end: 4.2}]});
 const utteranceEnd = {type: 'UtteranceEnd', channel: [0, 1], last_word_end: 2.9};
 
-test('an empty final covering a stray interim word lets UtteranceEnd return the buffer', () => {
+test('an empty final covering a stray interim word lets UtteranceEnd return the buffer', async() => {
   const {gather, send, resolved} = makeGather();
-  send(firstUtterance);
-  send(strayInterim);
+  await send(firstUtterance);
+  await send(strayInterim);
   assert.strictEqual(gather._dgTimeOfLastUnprocessedWord, 4.2);
 
-  send(results({start: 3, duration: 2, is_final: true}));
+  await send(results({start: 3, duration: 2, is_final: true}));
   assert.strictEqual(gather._dgTimeOfLastUnprocessedWord, null);
 
-  send(utteranceEnd);
+  await send(utteranceEnd);
   assert.deepStrictEqual(resolved, [{reason: 'speech', transcript: 'pay my bill'}]);
 });
 
-test('an empty final that ends before the interim word keeps UtteranceEnd waiting', () => {
+test('an empty final that ends before the interim word keeps UtteranceEnd waiting', async() => {
   const {gather, send, resolved} = makeGather();
-  send(firstUtterance);
-  send(strayInterim);
+  await send(firstUtterance);
+  await send(strayInterim);
 
   /* deepgram finalized [3, 4.0) but the word ending at 4.2 falls in the next segment */
-  send(results({start: 3, duration: 1.0, is_final: true}));
+  await send(results({start: 3, duration: 1.0, is_final: true}));
   assert.strictEqual(gather._dgTimeOfLastUnprocessedWord, 4.2);
 
-  send(utteranceEnd);
+  await send(utteranceEnd);
   assert.deepStrictEqual(resolved, []);
 });
 
-test('UtteranceEnd ahead of a late final still waits for it (#1088)', () => {
+test('an empty final arriving after a deferred UtteranceEnd returns the buffer', async() => {
   const {send, resolved} = makeGather();
-  send(firstUtterance);
-  send(results({start: 3, duration: 1.5, is_final: false, words: [{word: 'please', start: 3.8, end: 4.2}]}));
+  await send(firstUtterance);
+  await send(strayInterim);
 
-  send(utteranceEnd);
+  await send(utteranceEnd);
   assert.deepStrictEqual(resolved, []);
 
-  send(results({start: 3, duration: 1.5, is_final: true, words: [{word: 'please', start: 3.8, end: 4.2}]}));
-  send({...utteranceEnd, last_word_end: 4.2});
+  /* deepgram sends no second UtteranceEnd until new speech, so this final must end the gather */
+  await send(results({start: 3, duration: 2, is_final: true}));
+  assert.deepStrictEqual(resolved, [{reason: 'speech', transcript: 'pay my bill'}]);
+});
+
+test('UtteranceEnd ahead of a late final waits for it, then returns both (#1088)', async() => {
+  const {send, resolved} = makeGather();
+  await send(firstUtterance);
+  await send(results({start: 3, duration: 1.5, is_final: false, words: [{word: 'please', start: 3.8, end: 4.2}]}));
+
+  await send(utteranceEnd);
+  assert.deepStrictEqual(resolved, []);
+
+  await send(results({start: 3, duration: 1.5, is_final: true, words: [{word: 'please', start: 3.8, end: 4.2}]}));
   assert.deepStrictEqual(resolved, [{reason: 'speech', transcript: 'pay my bill please'}]);
+});
+
+test('a deferred UtteranceEnd is not resolved by a final that ends before the pending word', async() => {
+  const {send, resolved} = makeGather();
+  await send(firstUtterance);
+  await send(strayInterim);
+
+  await send(utteranceEnd);
+  await send(results({start: 3, duration: 1.0, is_final: true}));
+  assert.deepStrictEqual(resolved, []);
 });
