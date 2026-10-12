@@ -5,12 +5,13 @@ const Emitter = require('events');
 const DtmfInput = require('../../lib/utils/dtmf-input');
 
 const noop = () => {};
-const logger = {error: noop, info: noop, debug: noop, warn: noop};
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const make = (opts) => {
+const make = (t, opts) => {
+  t.mock.timers.enable({apis: ['setTimeout']});
   const keys = [];
   const entries = [];
+  const warnings = [];
+  const logger = {error: noop, info: noop, debug: noop, warn: (...args) => warnings.push(args)};
   const ep = new Emitter();
   const input = new DtmfInput(logger, opts, {
     onKey: (d) => keys.push(d),
@@ -18,85 +19,104 @@ const make = (opts) => {
   });
   input.start(ep);
   const press = (digits) => [...digits].forEach((dtmf) => ep.emit('dtmf', {dtmf}));
-  return {ep, input, keys, entries, press};
+  const tick = (secs) => t.mock.timers.tick(secs * 1000);
+  return {ep, input, keys, entries, warnings, press, tick};
 };
 
-test('finishOnKey completes the entry and is not included', () => {
-  const {input, keys, entries, press} = make({finishOnKey: '#'});
+test('finishOnKey completes the entry and is not included', (t) => {
+  const {keys, entries, press} = make(t, {finishOnKey: '#'});
   press('1234#');
   assert.deepStrictEqual(entries, ['1234']);
   assert.deepStrictEqual(keys, ['1', '2', '3', '4', '#']);
-  input.stop();
 });
 
-test('finishOnKey on an empty buffer sends nothing', () => {
-  const {input, entries, press} = make({finishOnKey: '#'});
+test('finishOnKey on an empty buffer sends nothing', (t) => {
+  const {entries, press} = make(t, {finishOnKey: '#'});
   press('#');
   assert.deepStrictEqual(entries, []);
-  input.stop();
 });
 
-test('no finishOnKey by default: # is an ordinary digit', () => {
-  const {input, entries, press} = make({numDigits: 3});
+test('no finishOnKey by default: # is an ordinary digit', (t) => {
+  const {entries, press} = make(t, {numDigits: 3});
   press('1#2');
   assert.deepStrictEqual(entries, ['1#2']);
-  input.stop();
 });
 
-test('numDigits and maxDigits complete the entry', () => {
-  const a = make({numDigits: 2});
-  a.press('1234');
-  assert.deepStrictEqual(a.entries, ['12', '34']);
-  a.input.stop();
-  const b = make({maxDigits: 3});
-  b.press('12345');
-  assert.deepStrictEqual(b.entries, ['123']);
-  b.input.stop();
+test('numDigits completes the entry', (t) => {
+  const {entries, press} = make(t, {numDigits: 2});
+  press('1234');
+  assert.deepStrictEqual(entries, ['12', '34']);
 });
 
-test('interDigitTimeout completes the entry once the caller stops typing', async() => {
-  const {input, entries, press} = make({interDigitTimeout: 0.05});
+test('maxDigits completes the entry', (t) => {
+  const {entries, press} = make(t, {maxDigits: 3});
+  press('12345');
+  assert.deepStrictEqual(entries, ['123']);
+});
+
+test('each key restarts the inter-digit timer', (t) => {
+  const {entries, press, tick} = make(t, {interDigitTimeout: 2});
   press('56');
-  await wait(25);
+  tick(1.5);
   press('7');
-  await wait(30);
-  assert.deepStrictEqual(entries, [], 'each key restarts the inter-digit timer');
-  await wait(40);
+  tick(1.5);
+  assert.deepStrictEqual(entries, []);
+  tick(0.5);
   assert.deepStrictEqual(entries, ['567']);
-  input.stop();
 });
 
-test('interDigitTimeout waits for minDigits', async() => {
-  const {input, entries, press} = make({interDigitTimeout: 0.03, minDigits: 3, timeout: 0});
+test('the inter-digit timer replaces the overall timeout while typing', (t) => {
+  const {entries, press, tick} = make(t, {interDigitTimeout: 5, timeout: 15});
+  for (let i = 0; i < 20; i++) {
+    press(String(i % 10));
+    tick(1);
+  }
+  assert.deepStrictEqual(entries, []);
+  tick(4);
+  assert.deepStrictEqual(entries, ['01234567890123456789']);
+});
+
+test('interDigitTimeout waits for minDigits', (t) => {
+  const {entries, press, tick} = make(t, {interDigitTimeout: 1, minDigits: 3, timeout: 0});
   press('12');
-  await wait(60);
+  tick(5);
   assert.deepStrictEqual(entries, []);
   press('3');
-  await wait(60);
+  tick(1);
   assert.deepStrictEqual(entries, ['123']);
-  input.stop();
 });
 
-test('timeout completes the entry, or drops it below minDigits', async() => {
-  const a = make({timeout: 0.05});
-  a.press('42');
-  await wait(80);
-  assert.deepStrictEqual(a.entries, ['42']);
-  a.input.stop();
-  const b = make({timeout: 0.05, minDigits: 3});
-  b.press('42');
-  await wait(80);
-  assert.deepStrictEqual(b.entries, []);
-  b.input.stop();
+test('timeout defaults to 15s and completes the entry', (t) => {
+  const {entries, press, tick} = make(t, {});
+  press('42');
+  tick(14.9);
+  assert.deepStrictEqual(entries, []);
+  tick(0.1);
+  assert.deepStrictEqual(entries, ['42']);
 });
 
-test('stop removes only its own listener and discards the buffer', async() => {
-  const {ep, input, entries, press} = make({interDigitTimeout: 0.03});
-  const other = noop;
-  ep.on('dtmf', other);
+test('timeout below minDigits drops the entry', (t) => {
+  const {entries, press, tick} = make(t, {timeout: 1, minDigits: 3});
+  press('42');
+  tick(1);
+  assert.deepStrictEqual(entries, []);
+});
+
+test('warns when no option can ever complete an entry', (t) => {
+  assert.strictEqual(make(t, {timeout: 0}).warnings.length, 1);
+});
+
+test('no warning when one option completes an entry', (t) => {
+  assert.strictEqual(make(t, {timeout: 0, finishOnKey: '#'}).warnings.length, 0);
+});
+
+test('stop removes only its own listener and discards the buffer', (t) => {
+  const {ep, input, entries, press, tick} = make(t, {interDigitTimeout: 1});
+  ep.on('dtmf', noop);
   press('9');
   input.stop();
-  await wait(50);
+  tick(2);
+  press('8');
   assert.deepStrictEqual(entries, []);
-  assert.deepStrictEqual(ep.listeners('dtmf'), [other]);
+  assert.deepStrictEqual(ep.listeners('dtmf'), [noop]);
 });
