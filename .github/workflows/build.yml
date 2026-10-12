@@ -1,6 +1,12 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  # Only main on push. Branch pushes are already covered by the pull_request run;
+  # `on: [push, pull_request]` ran both, burning two runners on identical work and
+  # doubling the exposure to runner flakes.
+  push:
+    branches: [main]
+  pull_request
 
 jobs:
   build:
