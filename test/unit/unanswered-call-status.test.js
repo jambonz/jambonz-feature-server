@@ -83,3 +83,38 @@ test('call already answered or declined: nothing sent', () => {
   assert.deepStrictEqual(calls.sent, []);
   assert.deepStrictEqual(calls.statusCallback, []);
 });
+
+const TaskHangup = require('../../lib/tasks/hangup');
+const logger = {debug: () => {}, info: () => {}, error: () => {}};
+
+const makeHangupCs = ({dlg = null, finalResponseSent = false} = {}) => {
+  const calls = {released: 0};
+  const cs = {
+    dlg,
+    res: {finalResponseSent},
+    _callReleased: () => calls.released++,
+    _recordActionEvent: () => {}
+  };
+  return {cs, calls};
+};
+
+test('hangup verb on an unanswered call releases the session instead of being skipped', async() => {
+  const task = new TaskHangup(logger, {});
+  const {cs, calls} = makeHangupCs();
+
+  assert.notStrictEqual(task.preconditions, 'stable-call');
+  await task.exec(cs);
+
+  assert.strictEqual(calls.released, 1);
+});
+
+test('hangup verb on an answered call still sends BYE', async() => {
+  const task = new TaskHangup(logger, {headers: {'X-Foo': 'bar'}});
+  const destroyed = [];
+  const {cs, calls} = makeHangupCs({dlg: {destroy: async(opts) => destroyed.push(opts)}});
+
+  await task.exec(cs);
+
+  assert.deepStrictEqual(destroyed, [{headers: {'X-Foo': 'bar'}}]);
+  assert.strictEqual(calls.released, 1);
+});
