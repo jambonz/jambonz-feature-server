@@ -9,30 +9,44 @@ const CallSession = require('../../lib/session/call-session');
 
 /* only what _evalEndpointPrecondition touches when endpoint creation fails */
 const makeSession = ({finalResponseSent = false} = {}) => {
-  const calls = {released: 0};
+  const calls = {released: 0, creates: 0};
   const session = Object.create(CallSession.prototype);
   Object.assign(session, {
     callGone: false,
     ep: null,
-    req: {body: 'v=0'},
+    req: {body: 'v=0', locals: {}},
+    callInfo: {callId: 'call-id', callSid: 'call-sid'},
     res: {finalResponseSent, send: () => {}},
     logger: {debug: () => {}, info: () => {}, error: () => {}},
-    _createMediaEndpoint: async() => { throw new Error('timeout creating media endpoint'); },
+    _createMediaEndpoint: async() => {
+      calls.creates++;
+      throw new Error('timeout creating media endpoint');
+    },
     _callReleased: () => calls.released++
   });
   return {session, calls};
 };
 
-test('endpoint creation failure ends an unanswered call as a media server failure', async() => {
+test('endpoint failure on an unanswered call marks the media server failed but keeps the session', async() => {
   const {session, calls} = makeSession();
 
   await assert.rejects(session._evalEndpointPrecondition({name: 'play'}), /unable to allocate endpoint/);
 
   assert.strictEqual(session._mediaServerFailure, true);
-  assert.strictEqual(calls.released, 1, 'later verbs must not retry against a dead media server');
+  /* a sip:decline or dial the app queued meanwhile must still run */
+  assert.strictEqual(calls.released, 0);
 });
 
-test('endpoint creation failure after a final response leaves the session alone', async() => {
+test('later media verbs fail at once instead of waiting on the dead media server again', async() => {
+  const {session, calls} = makeSession();
+
+  await assert.rejects(session._evalEndpointPrecondition({name: 'play'}));
+  await assert.rejects(session._evalEndpointPrecondition({name: 'llm'}), /media server unavailable/);
+
+  assert.strictEqual(calls.creates, 1);
+});
+
+test('endpoint failure after a final response does not mark the media server failed', async() => {
   const {session, calls} = makeSession({finalResponseSent: true});
 
   await assert.rejects(session._evalEndpointPrecondition({name: 'play'}));
