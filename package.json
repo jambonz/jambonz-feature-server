@@ -3,7 +3,7 @@
   "version": "0.9.14",
   "main": "app.js",
   "engines": {
-    "node": ">= 20.x"
+    "node": ">= 24.22.1"
   },
   "keywords": [
     "sip",

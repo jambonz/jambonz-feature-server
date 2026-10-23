@@ -9,14 +9,14 @@ jobs:
       id-token: write   # required to request the GitHub OIDC token for AWS
       contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24.x
       # Pull requests from forks receive neither secrets nor an OIDC token, so this
       # step is skipped for them; the AWS tests then skip too, exactly as they do
       # today. Without the guard the step would hard-fail every fork PR.
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v6
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
