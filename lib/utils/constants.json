@@ -163,6 +163,15 @@
     "Connect": "openai_transcribe::connect",
     "Error": "openai_transcribe::error"
   },
+  "ViadialogTranscriptionEvents": {
+    "Transcription": "viadialog_transcribe::transcription",
+    "SpeechStarted": "viadialog_transcribe::speech_started",
+    "SpeechStopped": "viadialog_transcribe::speech_stopped",
+    "PartialTranscript": "viadialog_transcribe::partial_transcript",
+    "ConnectFailure": "viadialog_transcribe::connect_failed",
+    "Connect": "viadialog_transcribe::connect",
+    "Error": "viadialog_transcribe::error"
+  },
   "JambonzTranscriptionEvents": {
     "Transcription": "jambonz_transcribe::transcription",
     "ConnectFailure": "jambonz_transcribe::connect_failed",
@@ -325,6 +334,11 @@
     "Empty": "elevenlabs_tts_streaming::empty",
     "ConnectFailure": "elevenlabs_tts_streaming::connect_failed",
     "Connect": "elevenlabs_tts_streaming::connect"
+  },
+  "ViadialogTtsStreamingEvents": {
+    "Empty": "viadialog_tts_streaming::empty",
+    "ConnectFailure": "viadialog_tts_streaming::connect_failed",
+    "Connect": "viadialog_tts_streaming::connect"
   },
   "RimelabsTtsStreamingEvents": {
     "Empty": "rimelabs_tts_streaming::empty",
